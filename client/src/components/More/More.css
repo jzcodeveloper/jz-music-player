@@ -1,0 +1,97 @@
+.More {
+  width: 100%;
+}
+
+.More > div {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  align-items: center;
+  justify-items: center;
+  padding: 10px;
+}
+
+.More figure {
+  width: 200px;
+  margin: 15px;
+  max-width: 100%;
+  border: 1px solid #000;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  padding: 10px;
+  border-radius: 10px;
+  transition: transform 1s;
+  cursor: pointer;
+}
+
+.More img {
+  width: 100%;
+  border-radius: 5px;
+}
+
+.More a {
+  display: block;
+  color: brown;
+  font-size: 1em;
+  text-decoration: none;
+  text-align: center;
+  padding: 2px;
+  z-index: 10;
+}
+
+.More figure:hover,
+.More figure:active {
+  transform: scale(1.1);
+}
+
+.More > div:nth-child(2) {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.More button {
+  display: block;
+  margin: 0 auto;
+  outline: none;
+  background-color: rgb(51, 178, 224);
+  font-weight: bold;
+  font-size: 0.9em;
+  border: 2px solid transparent;
+  color: white;
+  cursor: pointer;
+  padding: 10px 35px;
+  border-radius: 20px;
+  transition: transform 0.1s;
+}
+
+.More button:hover,
+.More button:active {
+  background-color: rgb(73, 195, 240);
+}
+
+.More button:active {
+  transform: scale(1.1);
+}
+
+@media (max-width: 1290px) {
+  .More > div {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+}
+
+@media (max-width: 1030px) {
+  .More > div {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+@media (max-width: 780px) {
+  .More > div {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 525px) {
+  .More > div {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,102 @@
+.Player {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  display: flex;
+  margin-bottom: -40px;
+  background-image: url("../../assets//background.jpg");
+  background-position: 50%;
+}
+
+.Player ul {
+  margin: 0;
+  padding: 0;
+  height: 500px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  width: 50%;
+  list-style: none;
+  display: flex;
+  flex-flow: column;
+}
+
+.Player li {
+  border: 1px solid white;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  margin: 10px;
+}
+
+.Player span {
+  display: block;
+  padding: 5px;
+  border-radius: 5px;
+  color: white;
+  font-size: 1em;
+  cursor: pointer;
+  word-break: break-word;
+}
+
+.Player span:hover,
+.Player span:active,
+.Player span.active {
+  color: brown;
+}
+
+.Player span.active {
+  animation: anim 4s ease;
+  animation-iteration-count: infinite;
+}
+
+@keyframes anim {
+  0% {
+    background-color: transparent;
+  }
+  50% {
+    background-color: brown;
+    color: white;
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+.Player > div {
+  width: 100%;
+  margin: 10px;
+  position: relative;
+  display: flex;
+  flex-flow: column;
+  justify-content: flex-end;
+}
+
+.Player > div > div:first-child {
+  position: absolute;
+  top: 100px;
+  left: 0;
+  width: 100%;
+}
+
+.Player p {
+  color: white;
+  text-align: center;
+  font-size: 1.2em;
+}
+
+.Player audio {
+  width: 100%;
+}
+
+@media (max-width: 600px) {
+  .Player ul {
+    height: 350px;
+    width: 300px;
+  }
+  .Player > div > div:first-child {
+    position: absolute;
+    top: 20px;
+    left: 0;
+    width: 100%;
+  }
+}
