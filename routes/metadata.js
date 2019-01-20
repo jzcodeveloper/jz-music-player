@@ -49,14 +49,11 @@ router.get("/metadata", (req, res) => {
   );
 
   promises.push(
-    Song.find({})
-      .sort({ duration: -1 })
-      .limit(limit)
-      .then(songs => {
-        songsInfo = songs;
-        //songsInfo.sort((a,b)=>b.duration-a.duration);
-        //songsInfo.splice(limit)
-      })
+    Song.find({}).then(songs => {
+      songsInfo = songs;
+      songsInfo.sort((a, b) => b.duration - a.duration);
+      songsInfo.splice(limit);
+    })
   );
 
   Promise.all(promises).then(() => {
