@@ -38,8 +38,6 @@ mongoose
 // Serve static assets if in production
 if (process.env.NODE_ENV === "production") {
   // Set static folder
-  const folders = fs.readdirSync("/app/client");
-  console.log(folders);
   app.use(express.static("client/build"));
   // Always renders index.html
   app.get("*", (req, res) => {

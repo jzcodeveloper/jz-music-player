@@ -50,10 +50,12 @@ router.get("/metadata", (req, res) => {
 
   promises.push(
     Song.find({})
+      .sort({ duration: -1 })
+      .limit(limit)
       .then(songs => {
         songsInfo = songs;
-        songsInfo.sort((a,b)=>b.duration-a.duration);
-        songsInfo.splice(limit)
+        //songsInfo.sort((a,b)=>b.duration-a.duration);
+        //songsInfo.splice(limit)
       })
   );
 
@@ -87,8 +89,8 @@ router.get("/albums", (req, res) => {
       }
     ]).then(info => {
       albumsInfo = {
-        count:info.length,
-        info:info.slice(from,from+limit)
+        count: info.length,
+        info: info.slice(from, from + limit)
       };
     })
   );
@@ -119,8 +121,8 @@ router.get("/artists", (req, res) => {
       }
     ]).then(info => {
       artistsInfo = {
-        count:info.length,
-        info:info.slice(from,from+limit)
+        count: info.length,
+        info: info.slice(from, from + limit)
       };
     })
   );
@@ -140,13 +142,12 @@ router.get("/songs", (req, res) => {
   let songsInfo = null;
 
   promises.push(
-    Song.find({})
-      .then(info => {
-        songsInfo = {
-          count:info.length,
-          info: info.slice(from, from + limit)
-        };        
-      })
+    Song.find({}).then(info => {
+      songsInfo = {
+        count: info.length,
+        info: info.slice(from, from + limit)
+      };
+    })
   );
 
   Promise.all(promises).then(() => {
