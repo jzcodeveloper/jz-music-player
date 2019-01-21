@@ -53,16 +53,16 @@ class More extends Component {
                   alt="Album Art"
                 />
                 <Link
-                  to={`/player/${pathname[2]}/${
-                    info.title ? info.title : info._id
-                  }`}
+                  to={`/player/${pathname[2]}/${info.title ||
+                    info.artist ||
+                    info.album}`}
                 >
-                  {info.title ? info.title : info._id}
+                  {info.title || info.artist || info.album}
                 </Link>
               </figure>
             ))}
           </div>
-          {(this.state.from+this.state.limit) < this.props.more.count ? (
+          {this.state.from + this.state.limit < this.props.more.count ? (
             <button onClick={this.onClick}>Load more...</button>
           ) : null}
         </div>

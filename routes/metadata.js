@@ -3,6 +3,8 @@ const router = express.Router();
 const passport = require("../config/passport");
 
 const Song = require("../models/Song");
+const Album = require("../models/Album");
+const Artist = require("../models/Artist");
 
 //Sends albums/artists/songs metadata with limit
 router.get("/metadata", (req, res) => {
@@ -15,45 +17,36 @@ router.get("/metadata", (req, res) => {
   let songsInfo = null;
 
   promises.push(
-    Song.aggregate([
-      {
-        $group: {
-          _id: "$album",
-          duration: { $sum: "$duration" },
-          count: { $sum: 1 },
-          albumArt: { $first: "$albumArt" }
-        }
-      }
-    ]).then(songs => {
-      albumsInfo = songs;
-      albumsInfo.sort((a, b) => b.count - a.count);
-      albumsInfo.splice(limit);
-    })
+    Album.find({})
+      .sort({ count: -1 })
+      .limit(limit)
+      .then(albums => {
+        albumsInfo = albums;
+        //albumsInfo.sort((a, b) => b.count - a.count);
+        //albumsInfo.splice(limit);
+      })
   );
 
   promises.push(
-    Song.aggregate([
-      {
-        $group: {
-          _id: "$artist",
-          duration: { $sum: "$duration" },
-          count: { $sum: 1 },
-          albumArt: { $first: "$albumArt" }
-        }
-      }
-    ]).then(songs => {
-      artistsInfo = songs;
-      artistsInfo.sort((a, b) => b.count - a.count);
-      artistsInfo.splice(limit);
-    })
+    Artist.find({})
+      .sort({ count: -1 })
+      .limit(limit)
+      .then(artists => {
+        artistsInfo = artists;
+        //artistsInfo.sort((a, b) => b.count - a.count);
+        //artistsInfo.splice(limit);
+      })
   );
 
   promises.push(
-    Song.find({}).then(songs => {
-      songsInfo = songs;
-      songsInfo.sort((a, b) => b.duration - a.duration);
-      songsInfo.splice(limit);
-    })
+    Song.find({})
+      .sort({ duration: -1 })
+      .limit(limit)
+      .then(songs => {
+        songsInfo = songs;
+        //songsInfo.sort((a, b) => b.duration - a.duration);
+        //songsInfo.splice(limit);
+      })
   );
 
   Promise.all(promises).then(() => {
@@ -75,21 +68,16 @@ router.get("/albums", (req, res) => {
   let albumsInfo = null;
 
   promises.push(
-    Song.aggregate([
-      {
-        $group: {
-          _id: "$album",
-          duration: { $sum: "$duration" },
-          count: { $sum: 1 },
-          albumArt: { $first: "$albumArt" }
-        }
-      }
-    ]).then(info => {
-      albumsInfo = {
-        count: info.length,
-        info: info.slice(from, from + limit)
-      };
-    })
+    Album.find({})
+      .skip(from)
+      .limit(limit)
+      .then(info => {
+        albumsInfo = {
+          count: 26,
+          //info: info.slice(from, from + limit)
+          info
+        };
+      })
   );
 
   Promise.all(promises).then(() => {
@@ -107,21 +95,16 @@ router.get("/artists", (req, res) => {
   let artistsInfo = null;
 
   promises.push(
-    Song.aggregate([
-      {
-        $group: {
-          _id: "$artist",
-          duration: { $sum: "$duration" },
-          count: { $sum: 1 },
-          albumArt: { $first: "$albumArt" }
-        }
-      }
-    ]).then(info => {
-      artistsInfo = {
-        count: info.length,
-        info: info.slice(from, from + limit)
-      };
-    })
+    Artist.find({})
+      .skip(from)
+      .limit(limit)
+      .then(info => {
+        artistsInfo = {
+          count: 1179,
+          //info: info.slice(from, from + limit)
+          info
+        };
+      })
   );
 
   Promise.all(promises).then(() => {
@@ -139,12 +122,16 @@ router.get("/songs", (req, res) => {
   let songsInfo = null;
 
   promises.push(
-    Song.find({}).then(info => {
-      songsInfo = {
-        count: info.length,
-        info: info.slice(from, from + limit)
-      };
-    })
+    Song.find({})
+      .skip(from)
+      .limit(limit)
+      .then(info => {
+        songsInfo = {
+          count: 3551,
+          //info: info.slice(from, from + limit)
+          info
+        };
+      })
   );
 
   Promise.all(promises).then(() => {

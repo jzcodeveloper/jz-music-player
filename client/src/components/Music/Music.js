@@ -45,7 +45,7 @@ class Music extends Component {
                   }
                   alt="Album Art"
                 />
-                <Link to={`/player/albums/${album._id}`}>{album._id}</Link>
+                <Link to={`/player/albums/${album.album}`}>{album.album}</Link>
               </figure>
             ))}
             <figure>
@@ -64,7 +64,9 @@ class Music extends Component {
                   }
                   alt="Album Art"
                 />
-                <Link to={`/player/artists/${artist._id}`}>{artist._id}</Link>
+                <Link to={`/player/artists/${artist.artist}`}>
+                  {artist.artist}
+                </Link>
               </figure>
             ))}
             <figure>
@@ -74,7 +76,7 @@ class Music extends Component {
           <span>TOP SONGS</span>
           <div>
             {this.props.songs.map(song => (
-              <figure key={song.title}>
+              <figure key={song._id}>
                 <img
                   src={
                     song.albumArt !== ""
