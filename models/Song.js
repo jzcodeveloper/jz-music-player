@@ -6,7 +6,8 @@ const Song = new Schema({
     type: String
   },
   albumArt: {
-    type: String
+    type: Schema.Types.ObjectId,
+    ref:'AlbumArt'
   },
   albumArtist: {
     type: String

@@ -8,6 +8,9 @@ const passport = require("passport");
 const app = express();
 const port = process.env.PORT || 5000;
 
+// Models
+require('./models/AlbumArt')
+
 //Importing routes
 const auth = require("./routes/auth");
 const metadata = require("./routes/metadata");

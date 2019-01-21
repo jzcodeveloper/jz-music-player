@@ -20,6 +20,7 @@ router.get("/metadata", (req, res) => {
     Album.find({})
       .sort({ count: -1 })
       .limit(limit)
+      .populate("albumArt")
       .then(albums => {
         albumsInfo = albums;
         //albumsInfo.sort((a, b) => b.count - a.count);
@@ -31,6 +32,7 @@ router.get("/metadata", (req, res) => {
     Artist.find({})
       .sort({ count: -1 })
       .limit(limit)
+      .populate("albumArt")
       .then(artists => {
         artistsInfo = artists;
         //artistsInfo.sort((a, b) => b.count - a.count);
@@ -42,6 +44,7 @@ router.get("/metadata", (req, res) => {
     Song.find({})
       .sort({ duration: -1 })
       .limit(limit)
+      .populate("albumArt")
       .then(songs => {
         songsInfo = songs;
         //songsInfo.sort((a, b) => b.duration - a.duration);
@@ -71,6 +74,7 @@ router.get("/albums", (req, res) => {
     Album.find({})
       .skip(from)
       .limit(limit)
+      .populate("albumArt")
       .then(info => {
         albumsInfo = {
           count: 26,
@@ -98,6 +102,7 @@ router.get("/artists", (req, res) => {
     Artist.find({})
       .skip(from)
       .limit(limit)
+      .populate("albumArt")
       .then(info => {
         artistsInfo = {
           count: 1179,
@@ -125,6 +130,7 @@ router.get("/songs", (req, res) => {
     Song.find({})
       .skip(from)
       .limit(limit)
+      .populate("albumArt")
       .then(info => {
         songsInfo = {
           count: 3551,

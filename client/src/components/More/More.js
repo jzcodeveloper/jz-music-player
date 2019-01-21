@@ -46,8 +46,8 @@ class More extends Component {
               <figure key={info._id}>
                 <img
                   src={
-                    info.albumArt !== ""
-                      ? "data:image/jpeg;base64," + info.albumArt
+                    info.albumArt.albumArt !== ""
+                      ? "data:image/jpeg;base64," + info.albumArt.albumArt
                       : background
                   }
                   alt="Album Art"
