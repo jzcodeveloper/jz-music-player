@@ -4,30 +4,6 @@ const passport = require("../config/passport");
 const validateLogin = require("../validation/login");
 const validateRegister = require("../validation/register");
 
-/*
-
-// Get routes
-router.get("/example", (req, res) => {
-  res.json(body);
-});
-
-// Post routes
-router.post("/example", (req, res) => {
-  res.json(body);
-});
-
-// Put routes
-router.put("/example/:id", (req, res) => {
-  res.json(body);
-});
-
-// Delete routes
-router.delete("/example/:id", (req, res) => {
-  res.json(body);
-});
-
-*/
-
 // Post routes
 router.post("/login", (req, res) => {
   const { errors, isValid } = validateLogin(req.body);
