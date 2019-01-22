@@ -3,18 +3,18 @@
 }
 
 .More > div {
-  text-align: center;
+  width: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   align-items: center;
   justify-items: center;
   padding: 10px;
+  box-sizing: border-box;
 }
 
 .More figure {
   width: 200px;
   margin: 15px;
-  max-width: 100%;
   border: 1px solid #000;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   padding: 10px;
