@@ -5,7 +5,6 @@
 }
 
 .Login form {
-  text-align: center;
   width: 50%;
   display: flex;
   flex-flow: column;
@@ -13,12 +12,14 @@
 }
 
 .Login h1 {
+  text-align: center;
   font-size: 3em;
   font-weight: normal;
   margin: 20px auto;
 }
 
 .Login span {
+  text-align: center;
   margin: auto;
 }
 
