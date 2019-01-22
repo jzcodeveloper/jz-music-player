@@ -21,3 +21,14 @@
   border: 2px solid brown;
   background-color: white;
 }
+
+@media (max-width: 600px) {
+  ::-webkit-scrollbar-track {
+    background-color: white;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border: 2px solid white;
+    background-color: brown;
+  }
+}
