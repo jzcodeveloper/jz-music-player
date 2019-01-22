@@ -5,6 +5,7 @@
 }
 
 .Register form {
+  text-align: center;
   width: 50%;
   display: flex;
   flex-flow: column;
