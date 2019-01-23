@@ -38,7 +38,7 @@ router.get("/albums", async (req, res) => {
   const limit = Number(req.query.limit);
 
   const albumsInfo = {
-    count: 26,
+    count: await Album.find({}).countDocuments(),
     info: await Album.find({})
       .skip(from)
       .limit(limit)
@@ -54,7 +54,7 @@ router.get("/artists", async (req, res) => {
   const limit = Number(req.query.limit);
 
   const artistsInfo = {
-    count: 1179,
+    count: await Artist.find({}).countDocuments(),
     info: await Artist.find({})
       .skip(from)
       .limit(limit)
@@ -70,7 +70,7 @@ router.get("/songs", async (req, res) => {
   const limit = Number(req.query.limit);
 
   const songsInfo = {
-    count: 3551,
+    count: await Song.find({}).countDocuments(),
     info: await Song.find({})
       .skip(from)
       .limit(limit)
