@@ -1,3 +1,7 @@
+//Models
+require("./models/AlbumArt");
+
+//Dependencies
 const express = require("express");
 const path = require("path");
 const fs = require("fs");
@@ -8,37 +12,32 @@ const passport = require("passport");
 const app = express();
 const port = process.env.PORT || 5000;
 
-// Models
-require('./models/AlbumArt')
-
 //Importing routes
 const auth = require("./routes/auth");
 const metadata = require("./routes/metadata");
-const streaming = require("./routes/streaming");
 
-// Body parser middleware
+//Body parser middleware
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-// Passport config
+//Passport config
 app.use(passport.initialize());
 //require("./config/passport")(passport);
 
-// Use routes
+//Use routes
 app.use("/auth", auth);
 app.use("/", metadata);
-app.use("/", streaming);
 
-// DB config
+//DB config
 const db = require("./config/keys").mongoURI;
 
-// Connect to MongoDB
+//Connect to MongoDB
 mongoose
   .connect(db)
   .then(() => console.log("MongoDB Connected".green))
   .catch(err => console.log("Could not connect to MongoDB".red));
 
-// Serve static assets if in production
+//Serve static assets if in production
 if (process.env.NODE_ENV === "production") {
   // Set static folder
   app.use(express.static("client/build"));
@@ -48,5 +47,5 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-// Starts server
+//Starts server
 app.listen(port, () => console.log(`Server running on port ${port}`.blue));

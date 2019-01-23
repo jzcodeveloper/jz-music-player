@@ -5,7 +5,7 @@ const validateLogin = require("../validation/login");
 const validateRegister = require("../validation/register");
 
 // Post routes
-router.post("/login", (req, res) => {
+router.post("/login", async(req, res) => {
   const { errors, isValid } = validateLogin(req.body);
   if (!isValid) {
     return res.status(400).json(errors);
@@ -15,7 +15,7 @@ router.post("/login", (req, res) => {
 });
 
 // Post routes
-router.post("/register", (req, res) => {
+router.post("/register", async(req, res) => {
   const { errors, isValid } = validateRegister(req.body);
   if (!isValid) {
     return res.status(400).json(errors);
