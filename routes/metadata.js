@@ -7,166 +7,98 @@ const Album = require("../models/Album");
 const Artist = require("../models/Artist");
 
 //Sends albums/artists/songs metadata with limit
-router.get("/metadata", (req, res) => {
+router.get("/metadata", async (req, res) => {
   const limit = Number(req.query.limit);
 
-  let promises = [];
+  const albumsInfo = await Album.find({})
+    .sort({ count: -1 })
+    .limit(limit)
+    .populate("albumArt");
 
-  let albumsInfo = null;
-  let artistsInfo = null;
-  let songsInfo = null;
+  const artistsInfo = await Artist.find({})
+    .sort({ count: -1 })
+    .limit(limit)
+    .populate("albumArt");
 
-  promises.push(
-    Album.find({})
-      .sort({ count: -1 })
-      .limit(limit)
-      .populate("albumArt")
-      .then(albums => {
-        albumsInfo = albums;
-        //albumsInfo.sort((a, b) => b.count - a.count);
-        //albumsInfo.splice(limit);
-      })
-  );
+  const songsInfo = await Song.find({})
+    .sort({ duration: -1 })
+    .limit(limit)
+    .populate("albumArt");
 
-  promises.push(
-    Artist.find({})
-      .sort({ count: -1 })
-      .limit(limit)
-      .populate("albumArt")
-      .then(artists => {
-        artistsInfo = artists;
-        //artistsInfo.sort((a, b) => b.count - a.count);
-        //artistsInfo.splice(limit);
-      })
-  );
-
-  promises.push(
-    Song.find({})
-      .sort({ duration: -1 })
-      .limit(limit)
-      .populate("albumArt")
-      .then(songs => {
-        songsInfo = songs;
-        //songsInfo.sort((a, b) => b.duration - a.duration);
-        //songsInfo.splice(limit);
-      })
-  );
-
-  Promise.all(promises).then(() => {
-    res.json({
-      albumsInfo,
-      artistsInfo,
-      songsInfo
-    });
+  res.json({
+    albumsInfo,
+    artistsInfo,
+    songsInfo
   });
 });
 
 //Sends albums metadata with from and limit
-router.get("/albums", (req, res) => {
+router.get("/albums", async (req, res) => {
   const from = Number(req.query.from);
   const limit = Number(req.query.limit);
 
-  let promises = [];
-
-  let albumsInfo = null;
-
-  promises.push(
-    Album.find({})
+  const albumsInfo = {
+    count: 26,
+    info: await Album.find({})
       .skip(from)
       .limit(limit)
       .populate("albumArt")
-      .then(info => {
-        albumsInfo = {
-          count: 26,
-          //info: info.slice(from, from + limit)
-          info
-        };
-      })
-  );
+  };
 
-  Promise.all(promises).then(() => {
-    res.json(albumsInfo);
-  });
+  res.json(albumsInfo);
 });
 
 //Sends artists metadata with from and limit
-router.get("/artists", (req, res) => {
+router.get("/artists", async (req, res) => {
   const from = Number(req.query.from);
   const limit = Number(req.query.limit);
 
-  let promises = [];
-
-  let artistsInfo = null;
-
-  promises.push(
-    Artist.find({})
+  const artistsInfo = {
+    count: 1179,
+    info: await Artist.find({})
       .skip(from)
       .limit(limit)
       .populate("albumArt")
-      .then(info => {
-        artistsInfo = {
-          count: 1179,
-          //info: info.slice(from, from + limit)
-          info
-        };
-      })
-  );
+  };
 
-  Promise.all(promises).then(() => {
-    res.json(artistsInfo);
-  });
+  res.json(artistsInfo);
 });
 
 //Sends songs metadata with from and limit
-router.get("/songs", (req, res) => {
+router.get("/songs", async (req, res) => {
   const from = Number(req.query.from);
   const limit = Number(req.query.limit);
 
-  let promises = [];
-
-  let songsInfo = null;
-
-  promises.push(
-    Song.find({})
+  const songsInfo = {
+    count: 3551,
+    info: await Song.find({})
       .skip(from)
       .limit(limit)
       .populate("albumArt")
-      .then(info => {
-        songsInfo = {
-          count: 3551,
-          //info: info.slice(from, from + limit)
-          info
-        };
-      })
-  );
+  };
 
-  Promise.all(promises).then(() => {
-    res.json(songsInfo);
-  });
+  res.json(songsInfo);
 });
 
 //Sends songs metadata for a given album
-router.get("/albums/:album", (req, res) => {
+router.get("/albums/:album", async (req, res) => {
   const album = req.params.album;
-  Song.find({ album }).then(songs => {
-    res.json(songs);
-  });
+  const songs = await Song.find({ album });
+  res.json(songs);
 });
 
 //Sends song metadata for a given song
-router.get("/songs/:title", (req, res) => {
+router.get("/songs/:title", async (req, res) => {
   const title = req.params.title;
-  Song.find({ title }).then(song => {
-    res.json(song);
-  });
+  const song = await Song.find({ title });
+  res.json(song);
 });
 
 //Sends songs metadata for a given artist
-router.get("/artists/:artist", (req, res) => {
+router.get("/artists/:artist", async (req, res) => {
   const artist = req.params.artist;
-  Song.find({ artist }).then(songs => {
-    res.json(songs);
-  });
+  const songs = await Song.find({ artist });
+  res.json(songs);
 });
 
 module.exports = router;
