@@ -5,7 +5,7 @@ import classes from "./Home.css";
 
 class Home extends Component {
   componentDidMount() {
-    if (this.props.auth.isAuthenticated) {
+    if (this.props.isAuthenticated) {
       this.props.history.push("/music");
     }
   }
