@@ -39,7 +39,7 @@ class Music extends Component {
               <figure key={album._id}>
                 <img
                   src={
-                    album.albumArt.albumArt !== ""
+                    album.albumArt
                       ? "data:image/jpeg;base64," + album.albumArt.albumArt
                       : background
                   }
@@ -58,7 +58,7 @@ class Music extends Component {
               <figure key={artist._id}>
                 <img
                   src={
-                    artist.albumArt.albumArt !== ""
+                    artist.albumArt
                       ? "data:image/jpeg;base64," + artist.albumArt.albumArt
                       : background
                   }
@@ -79,7 +79,7 @@ class Music extends Component {
               <figure key={song._id}>
                 <img
                   src={
-                    song.albumArt.albumArt !== ""
+                    song.albumArt
                       ? "data:image/jpeg;base64," + song.albumArt.albumArt
                       : background
                   }
