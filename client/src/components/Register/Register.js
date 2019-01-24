@@ -15,6 +15,7 @@ class Register extends Component {
 
   componentWillMount() {
     this.props.setErrors();
+    if (this.props.isAuthenticated) this.props.history.push("/music");
   }
 
   componentWillReceiveProps(nextProps) {
@@ -35,7 +36,7 @@ class Register extends Component {
       password2: this.state.password2
     };
 
-    this.props.register(registerData);
+    this.props.register(registerData, this.props.history);
   };
 
   render() {
@@ -93,13 +94,14 @@ class Register extends Component {
 
 const mapStateToProps = state => {
   return {
-    errors: state.errors
+    errors: state.errors,
+    isAuthenticated: state.auth.isAuthenticated
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    register: payload => dispatch(register(payload)),
+    register: (payload, history) => dispatch(register(payload, history)),
     setErrors: () => dispatch(setErrors())
   };
 };

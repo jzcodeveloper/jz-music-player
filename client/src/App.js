@@ -1,9 +1,13 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Provider } from "react-redux";
+import { setAuthToken } from "./utils/setAuthToken";
+import { setCurrentUser, logoutUser } from "./actions/authActions";
+import jwt_decode from "jwt-decode";
 import classes from "./App.css";
 import store from "./store";
 
+import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 import Toolbar from "./components/Toolbar/Toolbar";
 import SideDrawer from "./components/SideDrawer/SideDrawer";
 import Backdrop from "./components/Backdrop/Backdrop";
@@ -14,6 +18,27 @@ import Register from "./components/Register/Register";
 import Music from "./components/Music/Music";
 import More from "./components/More/More";
 import Player from "./components/Player/Player";
+
+//Check for token
+if (localStorage.token) {
+  //Set auth token header auth
+  setAuthToken(localStorage.token);
+  //Decode token and get user info and exp
+  const decoded = jwt_decode(localStorage.token);
+  //Set user and isAuthenticated
+  store.dispatch(setCurrentUser(decoded));
+
+  //Check for expired token
+  const currentTime = Date.now() / 1000;
+  if (decoded.exp < currentTime) {
+    //Logout user
+    store.dispatch(logoutUser());
+    //Clear current Profile
+    store.dispatch(setCurrentUser());
+    //Redirect to login
+    window.location.href = "/login";
+  }
+}
 
 class App extends Component {
   state = {
@@ -38,15 +63,18 @@ class App extends Component {
             <SideDrawer show={this.state.openSide} />
             <div className={classes.Main}>
               <Switch>
-                <Route path="/more" component={More} />
+                <PrivateRoute path="/more" component={More} />
               </Switch>
               <Switch>
-                <Route path="/player" component={Player} />
+                <PrivateRoute path="/player" component={Player} />
               </Switch>
+              <Switch>
+                <PrivateRoute path="/music" component={Music} />
+              </Switch>
+
               <Route exact path="/" component={Home} />
               <Route exact path="/login" component={Login} />
               <Route exact path="/register" component={Register} />
-              <Route exact path="/music" component={Music} />
             </div>
             <Footer />
           </div>

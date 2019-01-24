@@ -1,13 +1,19 @@
 import * as types from "../actions/types";
+import { isEmpty } from "../utils/isEmpty";
 
-const initialState = {};
+const initialState = {
+  isAuthenticated: false,
+  user: {}
+};
 
 export default function(state = initialState, action) {
   switch (action.type) {
-    case types.LOGIN:
-      return action.payload;
-    case types.REGISTER:
-      return action.payload;
+    case types.SET_CURRENT_USER:
+      return {
+        ...state,
+        isAuthenticated: !isEmpty(action.payload),
+        user: action.payload
+      };
 
     default:
       return state;

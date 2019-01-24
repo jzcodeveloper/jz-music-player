@@ -13,9 +13,12 @@ class Login extends Component {
 
   componentWillMount() {
     this.props.setErrors();
+    if (this.props.isAuthenticated) this.props.history.push("/music");
   }
 
   componentWillReceiveProps(nextProps) {
+    if (nextProps.isAuthenticated) this.props.history.push("/music");
+
     if (nextProps.errors) this.setState({ errors: nextProps.errors });
   }
 
@@ -71,7 +74,8 @@ class Login extends Component {
 
 const mapStateToProps = state => {
   return {
-    errors: state.errors
+    errors: state.errors,
+    isAuthenticated: state.auth.isAuthenticated
   };
 };
 

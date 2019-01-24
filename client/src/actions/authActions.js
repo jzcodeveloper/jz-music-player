@@ -1,12 +1,23 @@
 import axios from "axios";
 import { setErrors } from "./errorsActions";
+import { setAuthToken } from "../utils/setAuthToken";
+import jwt_decode from "jwt-decode";
 import * as types from "./types";
 
 export const login = payload => dispatch => {
   axios
     .post("/auth/login", payload)
     .then(res => {
-      dispatch(loginSync(res.data));
+      //Get token
+      const { token } = res.data;
+      //Store in ls
+      localStorage.setItem("token", token);
+      //Set axios header
+      setAuthToken(token);
+      //Decode token
+      const decoded = jwt_decode(token);
+      //Set current user
+      dispatch(setCurrentUser(decoded));
       dispatch(setErrors());
     })
     .catch(err => {
@@ -14,18 +25,11 @@ export const login = payload => dispatch => {
     });
 };
 
-export const loginSync = payload => {
-  return {
-    type: types.LOGIN,
-    payload
-  };
-};
-
-export const register = payload => dispatch => {
+export const register = (payload, history) => dispatch => {
   axios
     .post("/auth/register", payload)
     .then(res => {
-      dispatch(registerSync(res.data));
+      history.push("/login");
       dispatch(setErrors());
     })
     .catch(err => {
@@ -33,9 +37,18 @@ export const register = payload => dispatch => {
     });
 };
 
-export const registerSync = payload => {
+export const logoutUser = () => dispatch => {
+  //Remove token from localStorage
+  localStorage.removeItem("token");
+  //Remove auth header for future requests
+  setAuthToken(false);
+  //Set current user to {} which will set isAuthenticated to false
+  dispatch(setCurrentUser());
+};
+
+export const setCurrentUser = (payload = {}) => {
   return {
-    type: types.REGISTER,
+    type: types.SET_CURRENT_USER,
     payload
   };
 };

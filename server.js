@@ -4,7 +4,6 @@ require("./models/AlbumArt");
 //Dependencies
 const express = require("express");
 const path = require("path");
-const fs = require("fs");
 const colors = require("colors");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
