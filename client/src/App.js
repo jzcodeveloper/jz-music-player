@@ -20,11 +20,11 @@ import More from "./components/More/More";
 import Player from "./components/Player/Player";
 
 //Check for token
-if (localStorage.token) {
+if (localStorage.Authorization) {
   //Set auth token header auth
-  setAuthToken(localStorage.token);
+  setAuthToken(localStorage.Authorization);
   //Decode token and get user info and exp
-  const decoded = jwt_decode(localStorage.token);
+  const decoded = jwt_decode(localStorage.Authorization);
   //Set user and isAuthenticated
   store.dispatch(setCurrentUser(decoded));
 

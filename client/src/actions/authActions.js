@@ -11,7 +11,7 @@ export const login = payload => dispatch => {
       //Get token
       const { token } = res.data;
       //Store in ls
-      localStorage.setItem("token", token);
+      localStorage.setItem("Authorization", token);
       //Set axios header
       setAuthToken(token);
       //Decode token
@@ -39,7 +39,7 @@ export const register = (payload, history) => dispatch => {
 
 export const logoutUser = () => dispatch => {
   //Remove token from localStorage
-  localStorage.removeItem("token");
+  localStorage.removeItem("Authorization");
   //Remove auth header for future requests
   setAuthToken(false);
   //Set current user to {} which will set isAuthenticated to false
