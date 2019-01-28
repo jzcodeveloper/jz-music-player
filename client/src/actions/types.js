@@ -17,3 +17,5 @@ export const FETCH_METADATA = "FETCH_METADATA";
 
 export const FETCH_MORE = "FETCH_MORE";
 export const FETCH_LOAD_MORE = "FETCH_LOAD_MORE";
+
+export const UPDATE_FAVORITES = "UPDATE_FAVORITES";

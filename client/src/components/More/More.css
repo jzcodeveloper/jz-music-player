@@ -3,7 +3,7 @@
 }
 
 .More > div {
-  width: 100%;
+  max-width: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   align-items: center;
@@ -13,6 +13,7 @@
 }
 
 .More figure {
+  position: relative;
   width: 200px;
   margin: 15px;
   border: 1px solid #000;
@@ -20,38 +21,55 @@
   padding: 10px;
   border-radius: 10px;
   transition: transform 1s;
-  cursor: pointer;
 }
 
 .More img {
   width: 100%;
   border-radius: 5px;
+  cursor: pointer;
 }
 
-.More a {
+.More p {
   display: block;
+  margin: 2.5px;
   color: brown;
-  font-size: 1em;
-  text-decoration: none;
   text-align: center;
-  padding: 2px;
+  font-size: 0.8em;
   z-index: 10;
+}
+
+.More p:first-of-type {
+  font-size: 1em;
+  font-weight: bold;
 }
 
 .More figure:hover,
 .More figure:active {
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
 
-.More > div:nth-child(2) {
-  width: 100%;
-  display: flex;
-  justify-content: center;
+.More i {
+  color: yellow;
 }
 
-.More button {
+.Favorite {
+  position: absolute;
+  padding: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  color: yellow;
+  background-color: #fff;
+  top: 15px;
+  right: 15px;
+  font-size: 1em;
+  outline: none;
+  border: 0px solid transparent;
+  color: white;
+}
+
+.LoadMore {
   display: block;
-  margin: 0 auto;
+  margin: 40px auto 0 auto;
   outline: none;
   background-color: rgb(51, 178, 224);
   font-weight: bold;
@@ -64,12 +82,12 @@
   transition: transform 0.1s;
 }
 
-.More button:hover,
-.More button:active {
+.LoadMore:hover,
+.LoadMore:active {
   background-color: rgb(73, 195, 240);
 }
 
-.More button:active {
+.LoadMore:active {
   transform: scale(1.1);
 }
 

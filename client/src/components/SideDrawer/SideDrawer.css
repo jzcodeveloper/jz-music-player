@@ -9,6 +9,7 @@
   height: 100%;
   padding: 15px;
   transition: transform 1s ease-out;
+  box-sizing: border-box;
   z-index: 100;
 }
 

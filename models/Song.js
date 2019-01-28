@@ -7,7 +7,7 @@ const Song = new Schema({
   },
   albumArt: {
     type: Schema.Types.ObjectId,
-    ref:'AlbumArt'
+    ref: "AlbumArt"
   },
   albumArtist: {
     type: String
@@ -28,7 +28,13 @@ const Song = new Schema({
   },
   year: {
     type: Number
-  }
+  },
+  favorites: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "User"
+    }
+  ]
 });
 
 module.exports = mongoose.model("Song", Song);

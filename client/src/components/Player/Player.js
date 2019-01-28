@@ -58,7 +58,6 @@ class Player extends Component {
       } else {
         artists = song.artists.join(" / ");
       }
-      //let url = song.url.split("/");
 
       player = (
         <div className={classes.Player}>
@@ -83,7 +82,6 @@ class Player extends Component {
             <audio
               autoPlay
               controls
-              /*src={url ? `/${url[3]}/${url[4]}/${url[5]}` : null}*/
               src={song.url ? song.url : null}
               onDurationChange={this.onDurationChange}
               onEnded={this.onEnded}

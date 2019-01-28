@@ -5,8 +5,10 @@ import classes from "./Music.css";
 import background from "../../assets/background.jpg";
 
 import { fetchMetadata } from "../../actions/musicActions";
+import { updateFavorites } from "../../actions/favoriteActions";
 
 import Spinner from "../Spinner/Spinner";
+import secondsToHms from "../../utils/secondsToHours";
 
 class Music extends Component {
   componentDidMount() {
@@ -27,6 +29,14 @@ class Music extends Component {
     }
   };
 
+  onFavoriteClick = (route, id) => {
+    this.props.updateFavorites(route, id);
+  };
+
+  onAlbumArtClick=(pathname,id)=>{
+    this.props.history.push(`/player/${pathname}/${id}`)
+  }
+
   render() {
     let music = <Spinner />;
 
@@ -35,7 +45,7 @@ class Music extends Component {
         <div className={classes.Music}>
           <span>TOP ALBUMS</span>
           <div>
-            {this.props.albums.map(album => (
+            {this.props.albums.map((album) => (
               <figure key={album._id}>
                 <img
                   src={
@@ -44,8 +54,24 @@ class Music extends Component {
                       : background
                   }
                   alt="Album Art"
+                  onClick={()=>this.onAlbumArtClick('albums',album.album)}
                 />
-                <Link to={`/player/albums/${album.album}`}>{album.album}</Link>
+                <p>{album.album}</p>
+                <p>{album.albumArtist}</p>
+                <p>Songs: {album.count}</p>
+                <p>Duration: {secondsToHms(album.duration)}</p>
+                <button
+                  className={classes.Favorite}
+                  onClick={() => this.onFavoriteClick("albums", album._id)}
+                >
+                  <i
+                    className={
+                      album.favorites.indexOf(this.props.user.id) >= 0
+                        ? "fas fa-star"
+                        : "far fa-star"
+                    }
+                  />
+                </button>
               </figure>
             ))}
             <figure>
@@ -54,7 +80,7 @@ class Music extends Component {
           </div>
           <span>TOP ARTISTS</span>
           <div>
-            {this.props.artists.map(artist => (
+            {this.props.artists.map((artist) => (
               <figure key={artist._id}>
                 <img
                   src={
@@ -63,10 +89,24 @@ class Music extends Component {
                       : background
                   }
                   alt="Album Art"
+                  onClick={()=>this.onAlbumArtClick('artists',artist.artist)}
                 />
-                <Link to={`/player/artists/${artist.artist}`}>
-                  {artist.artist}
-                </Link>
+                <p>{artist.artist}</p>
+                <p>{artist.albumArtist}</p>
+                <p>Songs: {artist.count}</p>
+                <p>Duration: {secondsToHms(artist.duration)}</p>
+                <button
+                  className={classes.Favorite}
+                  onClick={() => this.onFavoriteClick("artists", artist._id)}
+                >
+                  <i
+                    className={
+                      artist.favorites.indexOf(this.props.user.id) >= 0
+                        ? "fas fa-star"
+                        : "far fa-star"
+                    }
+                  />
+                </button>
               </figure>
             ))}
             <figure>
@@ -75,7 +115,7 @@ class Music extends Component {
           </div>
           <span>TOP SONGS</span>
           <div>
-            {this.props.songs.map(song => (
+            {this.props.songs.map((song) => (
               <figure key={song._id}>
                 <img
                   src={
@@ -84,16 +124,32 @@ class Music extends Component {
                       : background
                   }
                   alt="Album Art"
+                  onClick={()=>this.onAlbumArtClick('songs',song.title)}
                 />
-                <Link to={`/player/songs/${song.title}`}>{song.title}</Link>
+                <p>{song.title}</p>
+                <p>{song.artist}</p>
+                <p>Genre: {song.genre.join(" /")}</p>
+                <p>Duration: {secondsToHms(song.duration)}</p>
+                <button
+                  className={classes.Favorite}
+                  onClick={() => this.onFavoriteClick("songs", song._id)}
+                >
+                  <i
+                    className={
+                      song.favorites.indexOf(this.props.user.id) >= 0
+                        ? "fas fa-star"
+                        : "far fa-star"
+                    }
+                  />
+                </button>
               </figure>
             ))}
             <figure>
               <Link to="/more/songs">More songs...</Link>
             </figure>
-            <button onClick={this.scrollRight}>{"<"}</button>
-            <button onClick={this.scrollLeft}>></button>
           </div>
+          <button onClick={this.scrollRight}>{"<"}</button>
+          <button onClick={this.scrollLeft}>></button>
         </div>
       );
     }
@@ -107,13 +163,15 @@ const mapStateToProps = state => {
     loading: state.loading.loading,
     albums: state.music.metadata.albumsInfo,
     artists: state.music.metadata.artistsInfo,
-    songs: state.music.metadata.songsInfo
+    songs: state.music.metadata.songsInfo,
+    user: state.auth.user
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchMetadata: () => dispatch(fetchMetadata())
+    fetchMetadata: () => dispatch(fetchMetadata()),
+    updateFavorites: (route, id) => dispatch(updateFavorites(route, id))
   };
 };
 

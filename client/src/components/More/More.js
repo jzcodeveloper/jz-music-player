@@ -1,12 +1,16 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+//import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import classes from "./More.css";
+
 import background from "../../assets/background.jpg";
 
 import { fetchMore, fetchLoadMore } from "../../actions/moreActions";
+import { updateFavorites } from "../../actions/favoriteActions";
 
 import Spinner from "../Spinner/Spinner";
+import getQueryParams from "../../utils/getQueryParams";
+import secondsToHms from "../../utils/secondsToHours";
 
 class More extends Component {
   state = {
@@ -16,21 +20,32 @@ class More extends Component {
 
   componentDidMount() {
     const pathname = this.props.location.pathname.split("/");
-    this.props.fetchMore(pathname[2], this.state.from, this.state.limit);
+    const query = getQueryParams(this.props.location.search).query;
+    this.props.fetchMore(pathname[2], this.state.from, this.state.limit, query);
   }
 
   onClick = () => {
     this.setState(prevState => {
       const pathname = this.props.location.pathname.split("/");
+      const query = getQueryParams(this.props.location.search).query;
       this.props.fetchLoadMore(
         pathname[2],
         this.state.from + this.state.limit,
-        this.state.limit
+        this.state.limit,
+        query
       );
       return {
         from: prevState.from + prevState.limit
       };
     });
+  };
+
+  onFavoriteClick = (route, id) => {
+    this.props.updateFavorites(route, id);
+  };
+
+  onAlbumArtClick = (pathname, id) => {
+    this.props.history.push(`/player/${pathname}/${id}`);
   };
 
   render() {
@@ -51,19 +66,42 @@ class More extends Component {
                       : background
                   }
                   alt="Album Art"
+                  onClick={() =>
+                    this.onAlbumArtClick(
+                      pathname[2],
+                      info.title || info.artist || info.album
+                    )
+                  }
                 />
-                <Link
-                  to={`/player/${pathname[2]}/${info.title ||
-                    info.artist ||
-                    info.album}`}
+                <p>{info.title || info.artist || info.album}</p>
+                <p>
+                  {pathname[2] === "songs" ? info.artist : info.albumArtist}
+                </p>
+                <p>
+                  {info.count
+                    ? `Songs: ${info.count}`
+                    : `Genre: ${info.genre.join(" /")}`}
+                </p>
+                <p>Duration: {secondsToHms(info.duration)}</p>
+                <button
+                  className={classes.Favorite}
+                  onClick={() => this.onFavoriteClick(pathname[2], info._id)}
                 >
-                  {info.title || info.artist || info.album}
-                </Link>
+                  <i
+                    className={
+                      info.favorites.indexOf(this.props.user.id) >= 0
+                        ? "fas fa-star"
+                        : "far fa-star"
+                    }
+                  />
+                </button>
               </figure>
             ))}
           </div>
           {this.state.from + this.state.limit < this.props.more.count ? (
-            <button onClick={this.onClick}>Load more...</button>
+            <button className={classes.LoadMore} onClick={this.onClick}>
+              Load more...
+            </button>
           ) : null}
         </div>
       );
@@ -76,16 +114,18 @@ class More extends Component {
 const mapStateToProps = state => {
   return {
     more: state.more.more,
-    loading: state.loading.loading
+    loading: state.loading.loading,
+    user: state.auth.user
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchMore: (payload, from, limit) =>
-      dispatch(fetchMore(payload, from, limit)),
-    fetchLoadMore: (payload, from, limit) =>
-      dispatch(fetchLoadMore(payload, from, limit))
+    fetchMore: (payload, from, limit, query) =>
+      dispatch(fetchMore(payload, from, limit, query)),
+    fetchLoadMore: (payload, from, limit, query) =>
+      dispatch(fetchLoadMore(payload, from, limit, query)),
+    updateFavorites: (route, id) => dispatch(updateFavorites(route, id))
   };
 };
 
