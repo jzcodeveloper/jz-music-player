@@ -29,9 +29,8 @@ if (localStorage.Authorization) {
   store.dispatch(setCurrentUser(decoded));
 
   //Check for expired token
-  const currentTime = Date.now();
-  alert('currentTime: '+currentTime)
-  alert('decoded.exp: '+decoded.exp)
+  const currentTime = Date.now()/1000;
+  alert(decoded.exp-currentTime)
   if (decoded.exp < currentTime) {
     //Logout user
     store.dispatch(logoutUser());
