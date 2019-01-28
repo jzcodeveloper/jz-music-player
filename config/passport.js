@@ -10,8 +10,9 @@ opts.secretOrKey = keys.secretOrKey;
 
 module.exports = passport => {
   passport.use(
-    new JwtStrategy(opts, async (payload, done) => {
-      const user = await User.findById(payload.id);
+    new JwtStrategy(opts, async (jwt_payload, done) => {
+      const user = await User.findById(jwt_payload.id);
+      console.log(user)
       if (user) {
         return done(null, user);
       }
