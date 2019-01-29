@@ -1,14 +1,12 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 import classes from "./Music.css";
-import background from "../../assets/background.jpg";
 
 import { fetchMetadata } from "../../actions/musicActions";
-import { updateFavorites } from "../../actions/favoriteActions";
 
 import Spinner from "../Spinner/Spinner";
-import secondsToHms from "../../utils/secondsToHours";
+import GridElement from "../GridElement/GridElement";
 
 class Music extends Component {
   componentDidMount() {
@@ -29,14 +27,6 @@ class Music extends Component {
     }
   };
 
-  onFavoriteClick = (route, id) => {
-    this.props.updateFavorites(route, id);
-  };
-
-  onAlbumArtClick=(pathname,id)=>{
-    this.props.history.push(`/player/${pathname}/${id}`)
-  }
-
   render() {
     let music = <Spinner />;
 
@@ -45,34 +35,13 @@ class Music extends Component {
         <div className={classes.Music}>
           <span>TOP ALBUMS</span>
           <div>
-            {this.props.albums.map((album) => (
-              <figure key={album._id}>
-                <img
-                  src={
-                    album.albumArt
-                      ? "data:image/jpeg;base64," + album.albumArt.albumArt
-                      : background
-                  }
-                  alt="Album Art"
-                  onClick={()=>this.onAlbumArtClick('albums',album.album)}
-                />
-                <p>{album.album}</p>
-                <p>{album.albumArtist}</p>
-                <p>Songs: {album.count}</p>
-                <p>Duration: {secondsToHms(album.duration)}</p>
-                <button
-                  className={classes.Favorite}
-                  onClick={() => this.onFavoriteClick("albums", album._id)}
-                >
-                  <i
-                    className={
-                      album.favorites.indexOf(this.props.user.id) >= 0
-                        ? "fas fa-star"
-                        : "far fa-star"
-                    }
-                  />
-                </button>
-              </figure>
+            {this.props.albums.map(album => (
+              <GridElement
+                key={album._id}
+                info={album}
+                pathname="albums"
+                history={this.props.history}
+              />
             ))}
             <figure>
               <Link to="/more/albums">More albums...</Link>
@@ -80,34 +49,13 @@ class Music extends Component {
           </div>
           <span>TOP ARTISTS</span>
           <div>
-            {this.props.artists.map((artist) => (
-              <figure key={artist._id}>
-                <img
-                  src={
-                    artist.albumArt
-                      ? "data:image/jpeg;base64," + artist.albumArt.albumArt
-                      : background
-                  }
-                  alt="Album Art"
-                  onClick={()=>this.onAlbumArtClick('artists',artist.artist)}
-                />
-                <p>{artist.artist}</p>
-                <p>{artist.albumArtist}</p>
-                <p>Songs: {artist.count}</p>
-                <p>Duration: {secondsToHms(artist.duration)}</p>
-                <button
-                  className={classes.Favorite}
-                  onClick={() => this.onFavoriteClick("artists", artist._id)}
-                >
-                  <i
-                    className={
-                      artist.favorites.indexOf(this.props.user.id) >= 0
-                        ? "fas fa-star"
-                        : "far fa-star"
-                    }
-                  />
-                </button>
-              </figure>
+            {this.props.artists.map(artist => (
+              <GridElement
+                key={artist._id}
+                info={artist}
+                pathname="artists"
+                history={this.props.history}
+              />
             ))}
             <figure>
               <Link to="/more/artists">More artists...</Link>
@@ -115,34 +63,13 @@ class Music extends Component {
           </div>
           <span>TOP SONGS</span>
           <div>
-            {this.props.songs.map((song) => (
-              <figure key={song._id}>
-                <img
-                  src={
-                    song.albumArt
-                      ? "data:image/jpeg;base64," + song.albumArt.albumArt
-                      : background
-                  }
-                  alt="Album Art"
-                  onClick={()=>this.onAlbumArtClick('songs',song.title)}
-                />
-                <p>{song.title}</p>
-                <p>{song.artist}</p>
-                <p>Genre: {song.genre.join(" /")}</p>
-                <p>Duration: {secondsToHms(song.duration)}</p>
-                <button
-                  className={classes.Favorite}
-                  onClick={() => this.onFavoriteClick("songs", song._id)}
-                >
-                  <i
-                    className={
-                      song.favorites.indexOf(this.props.user.id) >= 0
-                        ? "fas fa-star"
-                        : "far fa-star"
-                    }
-                  />
-                </button>
-              </figure>
+            {this.props.songs.map(song => (
+              <GridElement
+                key={song._id}
+                info={song}
+                pathname="songs"
+                history={this.props.history}
+              />
             ))}
             <figure>
               <Link to="/more/songs">More songs...</Link>
@@ -163,15 +90,13 @@ const mapStateToProps = state => {
     loading: state.loading.loading,
     albums: state.music.metadata.albumsInfo,
     artists: state.music.metadata.artistsInfo,
-    songs: state.music.metadata.songsInfo,
-    user: state.auth.user
+    songs: state.music.metadata.songsInfo
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchMetadata: () => dispatch(fetchMetadata()),
-    updateFavorites: (route, id) => dispatch(updateFavorites(route, id))
+    fetchMetadata: () => dispatch(fetchMetadata())
   };
 };
 
