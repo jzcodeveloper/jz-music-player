@@ -13,11 +13,11 @@ class Login extends Component {
 
   componentWillMount() {
     this.props.setErrors();
-    if (this.props.isAuthenticated) this.props.history.push("/music");
+    if (this.props.isAuthenticated) this.props.history.push("/dashboard");
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.isAuthenticated) this.props.history.push("/music");
+    if (nextProps.isAuthenticated) this.props.history.push("/dashboard");
 
     if (nextProps.errors) this.setState({ errors: nextProps.errors });
   }

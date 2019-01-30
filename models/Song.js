@@ -34,7 +34,10 @@ const Song = new Schema({
       type: Schema.Types.ObjectId,
       ref: "User"
     }
-  ]
+  ],
+  favoritesLength: {
+    type: Number
+  }
 });
 
 module.exports = mongoose.model("Song", Song);

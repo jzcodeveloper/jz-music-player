@@ -23,7 +23,10 @@ const Album = new Schema({
       type: Schema.Types.ObjectId,
       ref: "User"
     }
-  ]
+  ],
+  favoritesLength: {
+    type: Number
+  }
 });
 
 module.exports = mongoose.model("Album", Album);

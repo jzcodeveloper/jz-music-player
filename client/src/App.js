@@ -18,6 +18,7 @@ import Register from "./components/Register/Register";
 import Music from "./components/Music/Music";
 import More from "./components/More/More";
 import Player from "./components/Player/Player";
+import Dashboard from "./components/Dashboard/Dashboard";
 
 //Check for token
 if (localStorage.Authorization) {
@@ -29,7 +30,7 @@ if (localStorage.Authorization) {
   store.dispatch(setCurrentUser(decoded));
 
   //Check for expired token
-  const currentTime = Date.now()/1000;
+  const currentTime = Date.now() / 1000;
   if (decoded.exp < currentTime) {
     //Logout user
     store.dispatch(logoutUser());
@@ -70,6 +71,9 @@ class App extends Component {
               </Switch>
               <Switch>
                 <PrivateRoute path="/music" component={Music} />
+              </Switch>
+              <Switch>
+                <PrivateRoute path="/dashboard" component={Dashboard} />
               </Switch>
 
               <Route exact path="/" component={Home} />

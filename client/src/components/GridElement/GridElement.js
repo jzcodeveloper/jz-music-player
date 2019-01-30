@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {connect} from 'react-redux'
+import { connect } from "react-redux";
 import classes from "./GridElement.css";
 
 import { updateFavorites } from "../../actions/favoriteActions";
@@ -17,11 +17,7 @@ class GridElement extends Component {
   };
 
   render() {
-    const {
-      info,
-      pathname,
-      user
-    } = this.props;
+    const { info, pathname, user } = this.props;
     return (
       <div className={classes.GridElement}>
         <figure key={info._id}>
@@ -33,7 +29,10 @@ class GridElement extends Component {
             }
             alt="Album Art"
             onClick={() =>
-              this.onAlbumArtClick(pathname, info.title || info.artist || info.album)
+              this.onAlbumArtClick(
+                pathname,
+                info.title || info.artist || info.album
+              )
             }
           />
           <p>{info.title || info.artist || info.album}</p>
@@ -74,4 +73,7 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(mapStateToProps,mapDispatchToProps)(GridElement);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(GridElement);

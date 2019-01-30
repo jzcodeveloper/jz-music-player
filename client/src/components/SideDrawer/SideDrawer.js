@@ -20,9 +20,11 @@ class SideDrawer extends Component {
 
     const authLinks = (
       <div className={asignedClasses.join(" ")}>
-        <Link to="/">Home</Link>
+        <Link to="/dashboard">Dashboard</Link>
         <Link to="/music">Music</Link>
-        <Link to='' onClick={this.onLogoutClick}>Logout</Link>
+        <Link to="/" onClick={this.onLogoutClick}>
+          Logout
+        </Link>
       </div>
     );
 

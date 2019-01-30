@@ -14,8 +14,8 @@ class Toolbar extends Component {
     const authLinks = (
       <ul>
         <li>
-          <NavLink activeClassName={classes.active} to="/">
-            Home
+          <NavLink activeClassName={classes.active} to="/dashboard">
+            Dashboard
           </NavLink>
         </li>
         <li>
@@ -24,7 +24,7 @@ class Toolbar extends Component {
           </NavLink>
         </li>
         <li>
-          <NavLink to="" onClick={this.onLogoutClick}>
+          <NavLink to="/" onClick={this.onLogoutClick}>
             Logout
           </NavLink>
         </li>

@@ -6,6 +6,12 @@ const Song = require("../models/Song");
 const Album = require("../models/Album");
 const Artist = require("../models/Artist");
 
+//Sends the amount of songs stored in the DB
+router.get("/count/songs", async (req, res) => {
+  const count = await Song.find({}).countDocuments();
+  res.json(count);
+});
+
 //Sends albums/artists/songs metadata with limit
 router.get(
   "/metadata",
@@ -14,17 +20,17 @@ router.get(
     const limit = Number(req.query.limit);
 
     const albumsInfo = await Album.find({})
-      .sort({ count: -1 })
+      .sort({ favoritesLength: -1 })
       .limit(limit)
       .populate("albumArt");
 
     const artistsInfo = await Artist.find({})
-      .sort({ count: -1 })
+      .sort({ favoritesLength: -1 })
       .limit(limit)
       .populate("albumArt");
 
     const songsInfo = await Song.find({})
-      .sort({ duration: -1 })
+      .sort({ favoritesLength: -1 })
       .limit(limit)
       .populate("albumArt");
 

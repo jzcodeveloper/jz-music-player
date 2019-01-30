@@ -6,6 +6,7 @@ const Song = require("../models/Song");
 const Album = require("../models/Album");
 const Artist = require("../models/Artist");
 
+//Updates the favorites array in the Album model
 router.get(
   "/albums/:id",
   passport.authenticate("jwt", { session: false }),
@@ -20,13 +21,14 @@ router.get(
     }
     const updatedAlbum = await Album.findOneAndUpdate(
       { _id },
-      { favorites: album.favorites },
+      { favorites: album.favorites, favoritesLength: album.favorites.length },
       { new: true }
     ).populate("albumArt");
     res.json(updatedAlbum);
   }
 );
 
+//Updates the favorites array in the Artist model
 router.get(
   "/artists/:id",
   passport.authenticate("jwt", { session: false }),
@@ -41,13 +43,14 @@ router.get(
     }
     const updatedArtist = await Artist.findOneAndUpdate(
       { _id },
-      { favorites: artist.favorites },
+      { favorites: artist.favorites, favoritesLength: artist.favorites.length },
       { new: true }
     ).populate("albumArt");
     res.json(updatedArtist);
   }
 );
 
+//Updates the favorites array in the Song model
 router.get(
   "/songs/:id",
   passport.authenticate("jwt", { session: false }),
@@ -62,10 +65,32 @@ router.get(
     }
     const updatedSong = await Song.findOneAndUpdate(
       { _id },
-      { favorites: song.favorites },
+      { favorites: song.favorites, favoritesLength: song.favorites.length },
       { new: true }
     ).populate("albumArt");
     res.json(updatedSong);
+  }
+);
+
+//Sends user favorite albums/artists/songs metadata
+router.get(
+  "/all",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    const favoriteAlbums = await Album.find({
+      favorites: { $in: [req.user._id] }
+    }).populate("albumArt");
+    const favoriteArtists = await Artist.find({
+      favorites: { $in: [req.user._id] }
+    }).populate("albumArt");
+    const favoriteSongs = await Song.find({
+      favorites: { $in: [req.user._id] }
+    }).populate("albumArt");
+    res.json({
+      favoriteAlbums,
+      favoriteArtists,
+      favoriteSongs
+    });
   }
 );
 

@@ -5,6 +5,7 @@ import authReducer from "./authReducer";
 import playerReducer from "./playerReducer";
 import musicReducer from "./musicReducer";
 import moreReducer from "./moreReducer";
+import favoriteReducer from "./favoriteReducer";
 
 export default combineReducers({
   errors: errorsReducer,
@@ -12,5 +13,6 @@ export default combineReducers({
   auth: authReducer,
   player: playerReducer,
   music: musicReducer,
-  more: moreReducer
+  more: moreReducer,
+  favorite: favoriteReducer
 });

@@ -18,12 +18,15 @@ const Artist = new Schema({
   duration: {
     type: Number
   },
-  favorites:[
+  favorites: [
     {
-      type:Schema.Types.ObjectId,
-      ref:'User'
+      type: Schema.Types.ObjectId,
+      ref: "User"
     }
-  ]
+  ],
+  favoritesLength: {
+    type: Number
+  }
 });
 
 module.exports = mongoose.model("Artist", Artist);
