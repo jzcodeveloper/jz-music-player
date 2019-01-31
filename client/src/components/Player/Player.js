@@ -82,6 +82,7 @@ class Player extends Component {
             <audio
               autoPlay
               controls
+              controlsList="nodownload"
               src={song.url ? song.url : null}
               onDurationChange={this.onDurationChange}
               onEnded={this.onEnded}
