@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { logoutUser } from "../../actions/authActions";
 import { NavLink } from "react-router-dom";
 import classes from "./Toolbar.css";
+import icon from '../../assets/13510.png'
 
 class Toolbar extends Component {
   onLogoutClick = e => {
@@ -54,9 +55,7 @@ class Toolbar extends Component {
     return (
       <nav className={classes.Toolbar}>
         <div onClick={this.props.click}>
-          <div />
-          <div />
-          <div />
+        <img src={icon} alt="Menu Icon"/>
         </div>
         {this.props.isAuthenticated ? authLinks : guestsLinks}
       </nav>
