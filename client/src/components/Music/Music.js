@@ -75,8 +75,8 @@ class Music extends Component {
               <Link to="/more/songs">More songs...</Link>
             </figure>
           </div>
-          <button onClick={this.scrollRight}>{"<"}</button>
-          <button onClick={this.scrollLeft}>></button>
+          <button onClick={this.scrollRight}>{">"}</button>
+          <button onClick={this.scrollLeft}>{"<"}</button>
         </div>
       );
     }
