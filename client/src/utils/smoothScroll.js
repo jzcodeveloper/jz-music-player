@@ -2,40 +2,40 @@ export const smoothScroll = function(element, target, duration) {
   target = Math.round(target);
   duration = Math.round(duration);
 
-  var startTime = Date.now();
-  var endTime = startTime + duration;
+  const startTime = Date.now();
+  const endTime = startTime + duration;
 
-  var startLeft = element.scrollLeft;
-  var distance = target - startLeft;
+  const startLeft = element.scrollLeft;
+  const distance = target - startLeft;
 
   // based on http://en.wikipedia.org/wiki/Smoothstep
-  var smoothStep = function(start, end, point) {
+  const smoothStep = function(start, end, point) {
     if (point <= start) {
       return 0;
     }
     if (point >= end) {
       return 1;
     }
-    var x = (point - start) / (end - start); // interpolation
+    const x = (point - start) / (end - start); // interpolation
     return x * x * (3 - 2 * x);
   };
 
   return new Promise(function(resolve, reject) {
     // This is to keep track of where the element's scrollLeft is
     // supposed to be, based on what we're doing
-    var previousLeft = element.scrollLeft;
+    let previousLeft = element.scrollLeft;
 
     // This is like a think function from a game loop
-    var scrollFrame = function() {
+    const scrollFrame = function() {
       if (element.scrollLeft != previousLeft) {
         reject("interrupted");
         return;
       }
 
       // set the scrollLeft for this frame
-      var now = Date.now();
-      var point = smoothStep(startTime, endTime, now);
-      var frameTop = Math.round(startLeft + distance * point);
+      const now = Date.now();
+      const point = smoothStep(startTime, endTime, now);
+      const frameTop = Math.round(startLeft + distance * point);
       element.scrollLeft = frameTop;
 
       // check if we're done!
