@@ -6,39 +6,19 @@ const Song = require("../models/Song");
 const Album = require("../models/Album");
 const Artist = require("../models/Artist");
 
+const Metadata = require("../controllers/MetadataController");
+
 //Sends the amount of songs stored in the DB
-router.get("/count/songs", async (req, res) => {
-  const count = await Song.find({}).countDocuments();
-  res.json(count);
+router.get("/count/songs", (req, res) => {
+  Metadata.countDocuments(req, res, Song);
 });
 
 //Sends albums/artists/songs metadata with limit
 router.get(
   "/metadata",
   passport.authenticate("jwt", { session: false }),
-  async (req, res) => {
-    const limit = Number(req.query.limit);
-
-    const albumsInfo = await Album.find({})
-      .sort({ favoritesLength: -1 })
-      .limit(limit)
-      .populate("albumArt");
-
-    const artistsInfo = await Artist.find({})
-      .sort({ favoritesLength: -1 })
-      .limit(limit)
-      .populate("albumArt");
-
-    const songsInfo = await Song.find({})
-      .sort({ favoritesLength: -1 })
-      .limit(limit)
-      .populate("albumArt");
-
-    res.json({
-      albumsInfo,
-      artistsInfo,
-      songsInfo
-    });
+  (req, res) => {
+    Metadata.sendTopMetadata(req, res, Album, Artist, Song);
   }
 );
 
@@ -46,20 +26,8 @@ router.get(
 router.get(
   "/albums",
   passport.authenticate("jwt", { session: false }),
-  async (req, res) => {
-    const query = new RegExp(req.query.query, "i");
-    const from = Number(req.query.from);
-    const limit = Number(req.query.limit);
-
-    const albumsInfo = {
-      count: await Album.find({ album: query }).countDocuments(),
-      info: await Album.find({ album: query })
-        .skip(from)
-        .limit(limit)
-        .populate("albumArt")
-    };
-
-    res.json(albumsInfo);
+  (req, res) => {
+    Metadata.sendMetadata(req, res, Album, "album");
   }
 );
 
@@ -67,20 +35,8 @@ router.get(
 router.get(
   "/artists",
   passport.authenticate("jwt", { session: false }),
-  async (req, res) => {
-    const query = new RegExp(req.query.query, "i");
-    const from = Number(req.query.from);
-    const limit = Number(req.query.limit);
-
-    const artistsInfo = {
-      count: await Artist.find({ artist: query }).countDocuments(),
-      info: await Artist.find({ artist: query })
-        .skip(from)
-        .limit(limit)
-        .populate("albumArt")
-    };
-
-    res.json(artistsInfo);
+  (req, res) => {
+    Metadata.sendMetadata(req, res, Artist, "artist");
   }
 );
 
@@ -88,20 +44,8 @@ router.get(
 router.get(
   "/songs",
   passport.authenticate("jwt", { session: false }),
-  async (req, res) => {
-    const query = new RegExp(req.query.query, "i");
-    const from = Number(req.query.from);
-    const limit = Number(req.query.limit);
-
-    const songsInfo = {
-      count: await Song.find({ title: query }).countDocuments(),
-      info: await Song.find({ title: query })
-        .skip(from)
-        .limit(limit)
-        .populate("albumArt")
-    };
-
-    res.json(songsInfo);
+  (req, res) => {
+    Metadata.sendMetadata(req, res, Song, "title");
   }
 );
 
@@ -109,10 +53,8 @@ router.get(
 router.get(
   "/albums/:album",
   passport.authenticate("jwt", { session: false }),
-  async (req, res) => {
-    const album = req.params.album;
-    const songs = await Song.find({ album });
-    res.json(songs);
+  (req, res) => {
+    Metadata.sendAllMetadata(req, res, Song, "album");
   }
 );
 
@@ -120,10 +62,8 @@ router.get(
 router.get(
   "/songs/:title",
   passport.authenticate("jwt", { session: false }),
-  async (req, res) => {
-    const title = req.params.title;
-    const song = await Song.find({ title });
-    res.json(song);
+  (req, res) => {
+    Metadata.sendAllMetadata(req, res, Song, "title");
   }
 );
 
@@ -131,10 +71,8 @@ router.get(
 router.get(
   "/artists/:artist",
   passport.authenticate("jwt", { session: false }),
-  async (req, res) => {
-    const artist = req.params.artist;
-    const songs = await Song.find({ artist });
-    res.json(songs);
+  (req, res) => {
+    Metadata.sendAllMetadata(req, res, Song, "artist");
   }
 );
 

@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import classes from "./Music.css";
 
 import { fetchMetadata } from "../../actions/musicActions";
+import { smoothScroll } from "../../utils/smoothScroll";
 
 import Spinner from "../Spinner/Spinner";
 import GridElement from "../GridElement/GridElement";
@@ -16,18 +17,43 @@ class Music extends Component {
     }
   }
 
-  scrollLeft = () => {
-    let buttons = document.querySelectorAll("span + div");
-    for (let i = 0; i < buttons.length; i++) {
-      buttons[i].scrollLeft -= 75;
+  toggleButtons = divs => {
+    const left = document.querySelector("span + div + button");
+    const right = document.querySelector("span + div + button + button");
+    for (let i = 0; i < divs.length; i++) {
+      if (divs[i].scrollLeft === 0) {
+        left.style.display = "none";
+      } else {
+        left.style.display = "block";
+      }
+
+      if (divs[i].scrollLeft + divs[i].clientWidth >= divs[i].scrollWidth) {
+        right.style.display = "none";
+      } else {
+        right.style.display = "block";
+      }
     }
   };
 
+  scrollLeft = () => {
+    const divs = document.querySelectorAll("span + div");
+    let targetScroll = divs[0].scrollLeft - 250;
+    if (targetScroll < 0) targetScroll = 0;
+
+    smoothScroll(divs[0], targetScroll, 251).then(()=>this.toggleButtons(divs));
+    smoothScroll(divs[1], targetScroll, 251);
+    smoothScroll(divs[2], targetScroll, 251);
+  };
+
   scrollRight = () => {
-    let buttons = document.querySelectorAll("span + div");
-    for (let i = 0; i < buttons.length; i++) {
-      buttons[i].scrollLeft += 75;
-    }
+    const divs = document.querySelectorAll("span + div");
+    const maxScroll = divs[0].scrollWidth - divs[0].clientWidth;
+    let targetScroll = divs[0].scrollLeft + 250;
+    if (targetScroll > maxScroll) targetScroll = maxScroll;
+
+    smoothScroll(divs[0], targetScroll, 251).then(()=>this.toggleButtons(divs));
+    smoothScroll(divs[1], targetScroll, 251);
+    smoothScroll(divs[2], targetScroll, 251);
   };
 
   render() {
@@ -80,8 +106,8 @@ class Music extends Component {
               <Link to="/more/songs">More songs...</Link>
             </figure>
           </div>
-          <button onClick={this.scrollRight}>{">"}</button>
           <button onClick={this.scrollLeft}>{"<"}</button>
+          <button onClick={this.scrollRight}>{">"}</button>
         </div>
       );
     }
