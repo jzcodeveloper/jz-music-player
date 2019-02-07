@@ -22,9 +22,9 @@ export default function(state = initialState, action) {
       const albumIndex = albumsInfo.findIndex(el => el._id === payload._id);
       const artistIndex = artistsInfo.findIndex(el => el._id === payload._id);
       const songIndex = songsInfo.findIndex(el => el._id === payload._id);
-      if (albumIndex >= 0) albumsInfo[albumIndex] = payload;
-      if (artistIndex >= 0) artistsInfo[artistIndex] = payload;
-      if (songIndex >= 0) songsInfo[songIndex] = payload;
+      if (albumIndex > -1) albumsInfo[albumIndex] = payload;
+      if (artistIndex > -1) artistsInfo[artistIndex] = payload;
+      if (songIndex > -1) songsInfo[songIndex] = payload;
 
       return {
         metadata: {

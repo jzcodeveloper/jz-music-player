@@ -42,9 +42,9 @@ export default function(state = initialState, action) {
 
       return {
         more: {
-          albums,
-          artists,
-          songs
+          albums: { count: state.more.albums.count, info: albums },
+          artists: { count: state.more.artists.count, info: artists },
+          songs: { count: state.more.songs.count, info: songs }
         }
       };
 
