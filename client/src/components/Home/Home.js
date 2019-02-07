@@ -1,19 +1,18 @@
 import React, { Component } from "react";
-import axios from 'axios'
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import classes from "./Home.css";
 
-class Home extends Component {
-  state={
-    count:0
-  }
+import { countSongs } from "../../actions/countActions";
 
+class Home extends Component {
   componentDidMount() {
     if (this.props.isAuthenticated) {
       this.props.history.push("/music");
     } else {
-      axios.get('/count/songs').then(res=>this.setState({count:res.data}))
+      if (this.props.count === 0) {
+        this.props.countSongs();
+      }
     }
   }
   render() {
@@ -26,7 +25,7 @@ class Home extends Component {
               <br />
               Listen to your favorite songs for free...
               <br />
-              {this.state.count} songs currently available.
+              {this.props.count} songs currently available.
             </p>
             <div>
               <Link to="/register" className={classes.Register}>
@@ -45,8 +44,18 @@ class Home extends Component {
 
 const mapStateToProps = state => {
   return {
-    isAuthenticated: state.auth.isAuthenticated
+    isAuthenticated: state.auth.isAuthenticated,
+    count: state.count.count
   };
 };
 
-export default connect(mapStateToProps)(Home);
+const mapDispatchToProps = dispatch => {
+  return {
+    countSongs: () => dispatch(countSongs())
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Home);

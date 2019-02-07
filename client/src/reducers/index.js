@@ -6,6 +6,7 @@ import playerReducer from "./playerReducer";
 import musicReducer from "./musicReducer";
 import moreReducer from "./moreReducer";
 import favoriteReducer from "./favoriteReducer";
+import countReducer from "./countReducer";
 
 export default combineReducers({
   errors: errorsReducer,
@@ -14,5 +15,6 @@ export default combineReducers({
   player: playerReducer,
   music: musicReducer,
   more: moreReducer,
-  favorite: favoriteReducer
+  favorite: favoriteReducer,
+  count: countReducer
 });

@@ -4,6 +4,8 @@ export const CLEAR_ERRORS = "CLEAR_ERRORS";
 export const START_LOADING = "START_LOADING";
 export const END_LOADING = "END_LOADING";
 
+export const COUNT_SONGS = "COUNT_SONGS";
+
 export const LOGIN = "LOGIN";
 export const REGISTER = "REGISTER";
 export const SET_CURRENT_USER = "SET_CURRENT_USER";

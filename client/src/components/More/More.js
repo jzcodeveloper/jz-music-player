@@ -15,17 +15,21 @@ class More extends Component {
   };
 
   componentDidMount() {
-    const pathname = this.props.location.pathname.split("/")[2];
-    const query = getQueryParams(this.props.location.search).query;
-    this.props.fetchMore(pathname, this.state.from, this.state.limit, query);
+      const { pathname, search } = this.props.location;
+      const path = pathname.split("/")[2];
+      if(this.props.more[path].info.length===0){
+        const query = getQueryParams(search).query;
+        this.props.fetchMore(path, this.state.from, this.state.limit, query);
+      }
   }
 
   onClick = () => {
     this.setState(prevState => {
-      const pathname = this.props.location.pathname.split("/")[2];
-      const query = getQueryParams(this.props.location.search).query;
+      const { pathname, search } = this.props.location;
+      const path = pathname.split("/")[2];
+      const query = getQueryParams(search).query;
       this.props.fetchLoadMore(
-        pathname,
+        path,
         this.state.from + this.state.limit,
         this.state.limit,
         query
@@ -39,22 +43,30 @@ class More extends Component {
   render() {
     let more = <Spinner />;
 
-    if (!this.props.loading && this.props.more.info.length > 0) {
-      const pathname = this.props.location.pathname.split("/")[2];
+    const { history, loading, location } = this.props;
+    const { albums, artists, songs } = this.props.more;
+    if (
+      !loading &&
+      (albums.info.length > 0 ||
+        artists.info.length > 0 ||
+        songs.info.length > 0)
+    ) {
+      const pathname = location.pathname.split("/")[2];
 
       more = (
         <div className={classes.More}>
           <div>
-            {this.props.more.info.map(info => (
+            {this.props.more[pathname].info.map(info => (
               <GridElement
                 key={info._id}
                 info={info}
                 pathname={pathname}
-                history={this.props.history}
+                history={history}
               />
             ))}
           </div>
-          {this.state.from + this.state.limit < this.props.more.count ? (
+          {this.state.from + this.state.limit <
+          this.props.more[pathname].count ? (
             <button className={classes.LoadMore} onClick={this.onClick}>
               Load more...
             </button>
