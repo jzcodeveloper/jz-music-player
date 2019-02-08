@@ -4,7 +4,7 @@ import classes from "./ListElement.css";
 
 import { updateFavorites } from "../../actions/favoriteActions";
 
-import secondsToHms from "../../utils/secondsToHours";
+import { secondsToHms } from "../../utils/secondsToHms";
 import background from "../../assets/background.jpg";
 
 class ListElement extends Component {

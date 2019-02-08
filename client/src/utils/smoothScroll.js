@@ -1,4 +1,4 @@
-export const smoothScroll = function(element, target, duration) {
+export const smoothScroll = (element, target, duration) =>{
   target = Math.round(target);
   duration = Math.round(duration);
 
@@ -27,7 +27,7 @@ export const smoothScroll = function(element, target, duration) {
 
     // This is like a think function from a game loop
     const scrollFrame = function() {
-      if (element.scrollLeft != previousLeft) {
+      if (element.scrollLeft !== previousLeft) {
         reject("interrupted");
         return;
       }

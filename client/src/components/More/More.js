@@ -6,7 +6,7 @@ import { fetchMore, fetchLoadMore } from "../../actions/moreActions";
 
 import Spinner from "../Spinner/Spinner";
 import GridElement from "../GridElement/GridElement";
-import getQueryParams from "../../utils/getQueryParams";
+import {getQueryParams} from "../../utils/getQueryParams";
 
 class More extends Component {
   state = {

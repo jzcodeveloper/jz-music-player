@@ -4,7 +4,7 @@ import classes from "./GridElement.css";
 
 import { updateFavorites } from "../../actions/favoriteActions";
 
-import secondsToHms from "../../utils/secondsToHours";
+import {secondsToHms} from "../../utils/secondsToHms";
 import background from "../../assets/background.jpg";
 
 class GridElement extends Component {
