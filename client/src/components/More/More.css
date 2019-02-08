@@ -12,6 +12,33 @@
   box-sizing: border-box;
 }
 
+.Search {
+  position: fixed;
+  top: 12px;
+  left: 25px;
+  z-index: 50;
+  display: block;
+  outline: none;
+  padding: 8px;
+  border: 2px solid lightgray;
+  border-radius: 5px;
+  color: dimgray;
+  font-size: 0.9em;
+  box-sizing: border-box;
+  width: calc(100% - 265px);
+  transition: box-shadow 0.3s;
+}
+
+.Search:focus {
+  border: 2px solid lightblue;
+  box-shadow: 0 0 5px lightblue;
+}
+
+.NotFound {
+  text-align: center;
+  margin: 120px auto 400px auto;
+}
+
 .LoadMore {
   display: block;
   margin: 40px auto 0 auto;
@@ -57,5 +84,12 @@
 @media (max-width: 525px) {
   .More > div {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .Search {
+    margin-left: 55px;
+    width: calc(100% - 90px);
   }
 }

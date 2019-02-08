@@ -75,7 +75,7 @@ class Music extends Component {
               />
             ))}
             <figure>
-              <Link to="/more/albums">More albums...</Link>
+              <Link to="/more/albums/">More albums...</Link>
             </figure>
           </div>
           <span>TOP ARTISTS</span>
@@ -89,7 +89,7 @@ class Music extends Component {
               />
             ))}
             <figure>
-              <Link to="/more/artists">More artists...</Link>
+              <Link to="/more/artists/">More artists...</Link>
             </figure>
           </div>
           <span>TOP SONGS</span>
@@ -103,7 +103,7 @@ class Music extends Component {
               />
             ))}
             <figure>
-              <Link to="/more/songs">More songs...</Link>
+              <Link to="/more/songs/">More songs...</Link>
             </figure>
           </div>
           <button onClick={this.scrollLeft}>{"<"}</button>
