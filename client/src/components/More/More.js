@@ -17,11 +17,9 @@ class More extends Component {
   componentDidMount() {
     const { pathname } = this.props.location;
     const path = pathname.split("/")[2];
-    if (this.props.more[path].info.length === 0) {
       const query = pathname.split("/")[3];
       this.props.fetchMore(path, this.state.from, this.state.limit, query);
       this.setState({ query });
-    }
   }
 
   componentWillReceiveProps(newProps) {
