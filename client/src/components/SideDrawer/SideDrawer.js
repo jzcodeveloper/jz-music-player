@@ -8,6 +8,11 @@ class SideDrawer extends Component {
   onLogoutClick = e => {
     e.preventDefault();
     this.props.logoutUser();
+    this.props.itemClick();
+  };
+
+  onClick = () => {
+    this.props.itemClick();
   };
 
   render() {
@@ -20,8 +25,12 @@ class SideDrawer extends Component {
 
     const authLinks = (
       <div className={asignedClasses.join(" ")}>
-        <Link to="/dashboard">Dashboard</Link>
-        <Link to="/music">Music</Link>
+        <Link to="/dashboard" onClick={this.onClick}>
+          Dashboard
+        </Link>
+        <Link to="/music" onClick={this.onClick}>
+          Music
+        </Link>
         <Link to="/" onClick={this.onLogoutClick}>
           Logout
         </Link>
@@ -30,9 +39,15 @@ class SideDrawer extends Component {
 
     const guestsLinks = (
       <div className={asignedClasses.join(" ")}>
-        <Link to="/">Home</Link>
-        <Link to="/login">Login</Link>
-        <Link to="/register">Register</Link>
+        <Link to="/" onClick={this.onClick}>
+          Home
+        </Link>
+        <Link to="/login" onClick={this.onClick}>
+          Login
+        </Link>
+        <Link to="/register" onClick={this.onClick}>
+          Register
+        </Link>
       </div>
     );
 

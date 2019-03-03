@@ -54,6 +54,10 @@ class App extends Component {
     });
   };
 
+  onSideDrawerClick = () => {
+    this.setState({ openSide: false });
+  };
+
   render() {
     return (
       <Provider store={store}>
@@ -61,7 +65,10 @@ class App extends Component {
           <div className={classes.App}>
             <Toolbar click={this.onMenuClick} />
             <Backdrop show={this.state.openSide} click={this.onMenuClick} />
-            <SideDrawer show={this.state.openSide} />
+            <SideDrawer
+              show={this.state.openSide}
+              itemClick={this.onSideDrawerClick}
+            />
             <div className={classes.Main}>
               <Switch>
                 <PrivateRoute path="/more" component={More} />

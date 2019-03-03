@@ -58,6 +58,16 @@ class MetadataController {
     const count = await Model.find({}).countDocuments();
     res.json(count);
   }
+
+  //Deletes a song from the database using Artist + Song Title
+  async deleteDocument(req, res, Model) {
+    const params = req.params.id.split(" - ");
+    const deletedSong = await Model.findOneAndRemove({
+      artist: params[0],
+      title: params[1]
+    });
+    res.json(deletedSong);
+  }
 }
 
 const metadataController = new MetadataController();

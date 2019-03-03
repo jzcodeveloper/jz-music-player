@@ -76,4 +76,9 @@ router.get(
   }
 );
 
+//Deletes a song using Artist + Song Title
+router.get("/deleteSong/:id", async (req, res) => {
+  Metadata.deleteDocument(req, res, Song);
+});
+
 module.exports = router;
