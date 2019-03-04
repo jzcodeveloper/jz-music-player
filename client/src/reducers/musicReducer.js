@@ -10,11 +10,12 @@ const initialState = {
 
 export default function(state = initialState, action) {
   switch (action.type) {
-    case types.FETCH_METADATA:
+    case types.FETCH_METADATA: {
       return {
         metadata: action.payload
       };
-    case types.UPDATE_FAVORITES:
+    }
+    case types.UPDATE_FAVORITES: {
       const payload = action.payload;
       const albumsInfo = state.metadata.albumsInfo.slice();
       const artistsInfo = state.metadata.artistsInfo.slice();
@@ -33,6 +34,28 @@ export default function(state = initialState, action) {
           songsInfo
         }
       };
+    }
+    case types.DELETE_SONG: {
+      const albumsInfo = state.metadata.albumsInfo.slice();
+      const artistsInfo = state.metadata.artistsInfo.slice();
+      const songsInfo = state.metadata.songsInfo.slice();
+      const albumIndex = albumsInfo.findIndex(el => el._id === action.payload);
+      const artistIndex = artistsInfo.findIndex(
+        el => el._id === action.payload
+      );
+      const songIndex = songsInfo.findIndex(el => el._id === action.payload);
+      if (albumIndex >= 0) albumsInfo.splice(albumIndex, 1);
+      if (artistIndex >= 0) artistsInfo.splice(artistIndex, 1);
+      if (songIndex >= 0) songsInfo.splice(songIndex, 1);
+
+      return {
+        metadata: {
+          albumsInfo,
+          artistsInfo,
+          songsInfo
+        }
+      };
+    }
 
     default:
       return state;

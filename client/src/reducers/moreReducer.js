@@ -11,14 +11,15 @@ const initialState = {
 export default function(state = initialState, action) {
   let more;
   switch (action.type) {
-    case types.FETCH_MORE:
+    case types.FETCH_MORE: {
       more = JSON.parse(JSON.stringify(state.more));
       more[action.pathname].info = action.payload.info;
       more[action.pathname].count = action.payload.count;
       return {
         more
       };
-    case types.FETCH_LOAD_MORE:
+    }
+    case types.FETCH_LOAD_MORE: {
       more = JSON.parse(JSON.stringify(state.more));
       more[action.pathname].info = [
         ...state.more[action.pathname].info,
@@ -28,7 +29,8 @@ export default function(state = initialState, action) {
       return {
         more
       };
-    case types.UPDATE_FAVORITES:
+    }
+    case types.UPDATE_FAVORITES: {
       const payload = action.payload;
       const albums = state.more.albums.info.slice();
       const artists = state.more.artists.info.slice();
@@ -47,6 +49,26 @@ export default function(state = initialState, action) {
           songs: { count: state.more.songs.count, info: songs }
         }
       };
+    }
+    case types.DELETE_SONG: {
+      const albums = state.more.albums.info.slice();
+      const artists = state.more.artists.info.slice();
+      const songs = state.more.songs.info.slice();
+      const albumIndex = albums.findIndex(el => el._id === action.payload);
+      const artistIndex = artists.findIndex(el => el._id === action.payload);
+      const songIndex = songs.findIndex(el => el._id === action.payload);
+      if (albumIndex >= 0) albums.splice(albumIndex, 1);
+      if (artistIndex >= 0) artists.splice(artistIndex, 1);
+      if (songIndex >= 0) songs.splice(songIndex, 1);
+
+      return {
+        more: {
+          albums: { count: state.more.albums.count, info: albums },
+          artists: { count: state.more.artists.count, info: artists },
+          songs: { count: state.more.songs.count, info: songs }
+        }
+      };
+    }
 
     default:
       return state;

@@ -34,21 +34,26 @@
   transform: scale(1.05);
 }
 
-.GridElement i {
-  color: yellow;
-}
-
-.Favorite {
+.Icon {
   position: absolute;
   padding: 5px;
   border-radius: 5px;
   cursor: pointer;
-  color: yellow;
   background-color: #fff;
+  outline: none;
+  border: 0px solid transparent;
+}
+
+.Delete {
+  color: red;
+  top: 15px;
+  left: 15px;
+  font-size: 1em;
+}
+
+.Favorite {
+  color: yellow;
   top: 15px;
   right: 15px;
   font-size: 1em;
-  outline: none;
-  border: 0px solid transparent;
-  color: white;
 }

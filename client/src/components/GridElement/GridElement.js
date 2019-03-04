@@ -3,13 +3,18 @@ import { connect } from "react-redux";
 import classes from "./GridElement.css";
 
 import { updateFavorites } from "../../actions/favoriteActions";
+import { deleteSong } from "../../actions/songActions";
 
-import {secondsToHms} from "../../utils/secondsToHms";
+import { secondsToHms } from "../../utils/secondsToHms";
 import background from "../../assets/background.jpg";
 
 class GridElement extends Component {
   onFavoriteClick = (route, id) => {
     this.props.updateFavorites(route, id);
+  };
+
+  onDeleteClick = (route, id) => {
+    this.props.deleteSong(route, id);
   };
 
   onAlbumArtClick = (pathname, id) => {
@@ -43,8 +48,17 @@ class GridElement extends Component {
               : `Genre: ${info.genre.join(" /")}`}
           </p>
           <p>Duration: {secondsToHms(info.duration)}</p>
+          {user.email === "javier_bislip@hotmail.com" &&
+          pathname === "songs" ? (
+            <button
+              className={`${classes.Icon} ${classes.Delete}`}
+              onClick={() => this.onDeleteClick(pathname, info._id)}
+            >
+              <i className="fas fa-minus-circle" />
+            </button>
+          ) : null}
           <button
-            className={classes.Favorite}
+            className={`${classes.Icon} ${classes.Favorite}`}
             onClick={() => this.onFavoriteClick(pathname, info._id)}
           >
             <i
@@ -69,7 +83,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    updateFavorites: (route, id) => dispatch(updateFavorites(route, id))
+    updateFavorites: (route, id) => dispatch(updateFavorites(route, id)),
+    deleteSong: (route, id) => dispatch(deleteSong(route, id))
   };
 };
 
