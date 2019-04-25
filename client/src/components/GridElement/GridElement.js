@@ -17,8 +17,13 @@ class GridElement extends Component {
     this.props.deleteSong(route, id);
   };
 
-  onAlbumArtClick = (pathname, id) => {
-    this.props.history.push(`/player/${pathname}/${id}`);
+  onAlbumArtClick = () => {
+    const {pathname,info}=this.props
+    if(pathname==='songs'){
+      this.props.history.push(`/player/${pathname}/${info.artist} - ${info.title}`);
+    } else {
+      this.props.history.push(`/player/${pathname}/${info.artist||info.album}`);
+    }
   };
 
   render() {
@@ -57,6 +62,12 @@ class GridElement extends Component {
               <i className="fas fa-minus-circle" />
             </button>
           ) : null}
+          <button
+            className={`${classes.Icon} ${classes.AddToPlaylist}`}
+            onClick={() => this.props.showPlaylists(pathname, info._id)}
+          >
+            <i className="fas fa-list-ul" />
+          </button>
           <button
             className={`${classes.Icon} ${classes.Favorite}`}
             onClick={() => this.onFavoriteClick(pathname, info._id)}

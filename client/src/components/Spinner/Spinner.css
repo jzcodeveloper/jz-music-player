@@ -1,5 +1,5 @@
 .Loader {
-  color: brown;
+  color: var(--interfaceColor);
   font-size: 20px;
   margin-top: 300px;
   margin-bottom: 250px;

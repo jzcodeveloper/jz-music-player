@@ -18,7 +18,7 @@
 .GridElement p {
   display: block;
   margin: 2.5px;
-  color: brown;
+  color: var(--interfaceColor);
   text-align: center;
   font-size: 0.8em;
   z-index: 10;
@@ -55,5 +55,12 @@
   color: yellow;
   top: 15px;
   right: 15px;
+  font-size: 1em;
+}
+
+.AddToPlaylist{
+  color:dimgray;
+  top: 15px;
+  right: 48px;
   font-size: 1em;
 }

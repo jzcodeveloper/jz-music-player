@@ -5,14 +5,28 @@ const initialState = {
     albumsInfo: [],
     artistsInfo: [],
     songsInfo: []
-  }
+  },
+  loading: false
 };
 
 export default function(state = initialState, action) {
   switch (action.type) {
     case types.FETCH_METADATA: {
       return {
-        metadata: action.payload
+        ...state,
+        metadata: action.payload,
+      };
+    }
+    case types.FETCH_METADATA_START: {
+      return {
+        ...state,
+        loading: true
+      };
+    }
+    case types.FETCH_METADATA_END: {
+      return {
+        ...state,
+        loading: false
       };
     }
     case types.UPDATE_FAVORITES: {
@@ -28,6 +42,7 @@ export default function(state = initialState, action) {
       if (songIndex > -1) songsInfo[songIndex] = payload;
 
       return {
+        ...state,
         metadata: {
           albumsInfo,
           artistsInfo,
@@ -49,6 +64,7 @@ export default function(state = initialState, action) {
       if (songIndex >= 0) songsInfo.splice(songIndex, 1);
 
       return {
+        ...state,
         metadata: {
           albumsInfo,
           artistsInfo,

@@ -1,15 +1,15 @@
 //Updates the favorites array in the Model passed as argument to the function
 exports.updateFavorites = async (req, res, Model) => {
   const _id = req.params.id;
-  const info = await Model.findOne({ _id });
+  const info = await Model.findById(_id);
   const index = info.favorites.indexOf(req.user._id);
   if (index >= 0) {
     info.favorites.splice(index, 1);
   } else {
     info.favorites.push(req.user._id);
   }
-  const updatedModel = await Model.findOneAndUpdate(
-    { _id },
+  const updatedModel = await Model.findByIdAndUpdate(
+    _id,
     { favorites: info.favorites, favoritesLength: info.favorites.length },
     { new: true }
   ).populate("albumArt");

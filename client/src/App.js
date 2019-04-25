@@ -19,6 +19,8 @@ import Music from "./components/Music/Music";
 import More from "./components/More/More";
 import Player from "./components/Player/Player";
 import Dashboard from "./components/Dashboard/Dashboard";
+import Favorites from "./components/Favorites/Favorites";
+import Playlists from "./components/Playlists/Playlists";
 
 //Check for token
 if (localStorage.Authorization) {
@@ -81,6 +83,12 @@ class App extends Component {
               </Switch>
               <Switch>
                 <PrivateRoute path="/dashboard" component={Dashboard} />
+              </Switch>
+              <Switch>
+                <PrivateRoute path="/favorites" component={Favorites} />
+              </Switch>
+              <Switch>
+                <PrivateRoute path="/playlists" component={Playlists} />
               </Switch>
 
               <Route exact path="/" component={Home} />

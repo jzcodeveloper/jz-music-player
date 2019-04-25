@@ -6,7 +6,7 @@
   left: 0;
   display: flex;
   align-items: center;
-  background-color: brown;
+  background-color: var(--interfaceColor);
   z-index: 25;
 }
 
@@ -40,8 +40,9 @@
 
 .Toolbar a:hover,
 .Toolbar a:active .Toolbar a.active {
-  background-color: rgb(167, 73, 73);
+  background-color: var(--interfaceColor);
   border-bottom: 4px solid rgb(73, 195, 240);
+  filter: brightness(1.1);
 }
 
 .Toolbar div {
@@ -61,7 +62,7 @@
   border-bottom: 1px solid rgba(0, 0, 0, 0.5);
 }
 
-@media (max-width: 600px) {
+@media (max-width: 800px) {
   .Toolbar ul {
     display: none;
   }

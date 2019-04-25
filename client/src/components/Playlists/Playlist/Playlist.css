@@ -1,0 +1,70 @@
+.Playlist {
+  display: flex;
+  margin: 2.5px;
+  padding: 2.5px;
+  justify-content: center;
+  align-items: center;
+}
+
+.Playlist > div {
+  flex: 1;
+  display: flex;
+  flex-flow: column;
+  margin: 15px 0;
+}
+
+.Playlist span {
+  padding: 0;
+  font-size: 1.5em;
+  font-weight: bold;
+  text-align: center;
+}
+
+.Playlist p {
+  flex: 1;
+  display: flex;
+  flex-flow: column;
+  text-align: center;
+  margin: 0;
+}
+
+.Playlist button {
+  flex: 0.2;
+  margin: 1px;
+  background-color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  outline: none;
+}
+
+.Play {
+  color: rgb(73, 195, 240);
+}
+
+.Edit {
+  color: green;
+}
+
+.Remove {
+  color: red;
+}
+
+.Expand {
+  color: orange;
+}
+
+@media (max-width: 600px) {
+  .Playlist p:nth-of-type(1) {
+    display: none;
+  }
+  .Playlist p:nth-of-type(2) {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .Playlist span {
+    font-size: 1.2em;
+  }
+}

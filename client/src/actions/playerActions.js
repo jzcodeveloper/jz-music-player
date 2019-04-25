@@ -1,19 +1,18 @@
 import axios from "axios";
-import { startLoading, endLoading } from "./loadingActions";
 import { setErrors } from "./errorsActions";
 import * as types from "./types";
 
 export const fetchPlaylist = payload => dispatch => {
-  dispatch(startLoading());
+  dispatch(fetchPlaylistStart());
   axios
     .get(`/${payload[2]}/${payload[3]}`)
     .then(res => {
       dispatch(fetchPlaylistSync(res.data));
-      dispatch(endLoading());
+      dispatch(fetchPlaylistEnd());
     })
     .catch(err => {
       dispatch(setErrors({ err }));
-      dispatch(endLoading());
+      dispatch(fetchPlaylistEnd());
     });
 };
 
@@ -40,5 +39,17 @@ export const setSongIndex = payload => {
 export const setNextIndex = () => {
   return {
     type: types.SET_NEXT_INDEX
+  };
+};
+
+export const fetchPlaylistStart = () => {
+  return {
+    type: types.FETCH_PLAYLIST_START
+  };
+};
+
+export const fetchPlaylistEnd = () => {
+  return {
+    type: types.FETCH_PLAYLIST_END
   };
 };

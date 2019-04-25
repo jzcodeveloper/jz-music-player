@@ -59,7 +59,8 @@ exports.registerUser = async (req, res) => {
     const newUser = new User({
       name,
       email,
-      password: bcryptjs.hashSync(password, 10)
+      password: bcryptjs.hashSync(password, 10),
+      playlists:[]
     });
     res.json(await newUser.save());
   }

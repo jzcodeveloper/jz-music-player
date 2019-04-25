@@ -1,5 +1,6 @@
 //Models
 require("./models/AlbumArt");
+require("./models/User");
 
 //Dependencies
 const express = require("express");
@@ -15,6 +16,7 @@ const port = process.env.PORT || 5001;
 const metadata = require("./routes/metadata");
 const auth = require("./routes/auth");
 const favorites = require("./routes/favorites");
+const playlists = require("./routes/playlists");
 
 //Body parser middleware
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -28,16 +30,14 @@ require("./config/passport")(passport);
 app.use("/", metadata);
 app.use("/auth", auth);
 app.use("/favorites", favorites);
+app.use("/playlists", playlists);
 
 //DB config
 const db = require("./config/keys").mongoURI;
 
 //Connect to MongoDB
 mongoose
-  .connect(
-    db,
-    { useNewUrlParser: true }
-  )
+  .connect(db, { useNewUrlParser: true })
   .then(() => console.log("MongoDB Connected".green))
   .catch(err => console.log("Could not connect to MongoDB".red));
 

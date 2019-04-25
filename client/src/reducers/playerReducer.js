@@ -2,7 +2,8 @@ import * as types from "../actions/types";
 
 const initialState = {
   playlist: [],
-  currentSongIndex: 0
+  currentSongIndex: 0,
+  loading: false
 };
 
 export default function(state = initialState, action) {
@@ -12,8 +13,21 @@ export default function(state = initialState, action) {
         ...state,
         playlist: action.payload
       };
+    case types.FETCH_PLAYLIST_START: {
+      return {
+        ...state,
+        loading: true
+      };
+    }
+    case types.FETCH_PLAYLIST_END: {
+      return {
+        ...state,
+        loading: false
+      };
+    }
     case types.RESET_PLAYLIST:
       return {
+        ...state,
         playlist: [],
         currentSongIndex: 0
       };
@@ -25,7 +39,6 @@ export default function(state = initialState, action) {
     case types.SET_NEXT_INDEX:
       return {
         ...state,
-        loading: false,
         currentSongIndex: state.currentSongIndex + 1
       };
 

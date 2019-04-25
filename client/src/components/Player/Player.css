@@ -41,7 +41,7 @@
 .Player span:hover,
 .Player span:active,
 .Player span.active {
-  color: brown;
+  color: var(--interfaceColor);
 }
 
 .Player span.active {
@@ -54,7 +54,7 @@
     background-color: transparent;
   }
   50% {
-    background-color: brown;
+    background-color: var(--interfaceColor);
     color: white;
   }
   100% {
@@ -94,5 +94,11 @@
   .Player ul {
     height: 450px;
     width: 300px;
+  }
+  .Player span{
+    font-size: 0.8em;
+  }
+  .Player p{
+    font-size: 1em;
   }
 }

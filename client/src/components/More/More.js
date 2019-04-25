@@ -3,23 +3,31 @@ import { connect } from "react-redux";
 import classes from "./More.css";
 
 import { fetchMore, fetchLoadMore } from "../../actions/moreActions";
+import { addToPlaylist } from "../../actions/playlistsActions";
 
 import Spinner from "../Spinner/Spinner";
 import GridElement from "../GridElement/GridElement";
+import AddToPlaylist from "../AddToPlaylist/AddToPlaylist";
+import Backdrop from "../Backdrop/Backdrop";
 
 class More extends Component {
   state = {
     from: 0,
     limit: 10,
-    query: ""
+    query: "",
+    //Modal
+    showPlaylists: false,
+    pathname: "",
+    itemId: {}
   };
 
   componentDidMount() {
+    document.title=`JZ Music Player - More`
     const { pathname } = this.props.location;
     const path = pathname.split("/")[2];
-      const query = pathname.split("/")[3];
-      this.props.fetchMore(path, this.state.from, this.state.limit, query);
-      this.setState({ query });
+    const query = pathname.split("/")[3];
+    this.props.fetchMore(path, this.state.from, this.state.limit, query);
+    this.setState({ query });
   }
 
   componentWillReceiveProps(newProps) {
@@ -31,6 +39,18 @@ class More extends Component {
       this.setState({ query: newQuery });
     }
   }
+
+  showPlaylists = (pathname, itemId) => {
+    this.setState({ showPlaylists: true, pathname, itemId });
+  };
+
+  closePlaylists = () => {
+    this.setState({ showPlaylists: false, pathname: "", itemId: {} });
+  };
+
+  addToPlaylist = (route, playlistId, itemId) => {
+    this.props.addToPlaylist(route, playlistId, itemId);
+  };
 
   onClick = () => {
     this.setState(prevState => {
@@ -90,6 +110,7 @@ class More extends Component {
                   info={info}
                   pathname={pathname}
                   history={history}
+                  showPlaylists={this.showPlaylists}
                 />
               ))}
             </div>
@@ -99,6 +120,16 @@ class More extends Component {
                 Load more...
               </button>
             ) : null}
+
+            {this.state.showPlaylists ? (
+              <AddToPlaylist
+                pathname={this.state.pathname}
+                itemId={this.state.itemId}
+                addToPlaylist={this.addToPlaylist}
+                closePlaylists={this.closePlaylists}
+              />
+            ) : null}
+            {this.state.showPlaylists ? <Backdrop show /> : null}
           </div>
         );
       } else {
@@ -130,7 +161,7 @@ class More extends Component {
 const mapStateToProps = state => {
   return {
     more: state.more.more,
-    loading: state.loading.loading
+    loading: state.more.loading
   };
 };
 
@@ -139,7 +170,9 @@ const mapDispatchToProps = dispatch => {
     fetchMore: (payload, from, limit, query) =>
       dispatch(fetchMore(payload, from, limit, query)),
     fetchLoadMore: (payload, from, limit, query) =>
-      dispatch(fetchLoadMore(payload, from, limit, query))
+      dispatch(fetchLoadMore(payload, from, limit, query)),
+    addToPlaylist: (route, playlistId, itemId) =>
+      dispatch(addToPlaylist(route, playlistId, itemId))
   };
 };
 

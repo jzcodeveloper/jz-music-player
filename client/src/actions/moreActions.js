@@ -1,19 +1,18 @@
 import axios from "axios";
-import { startLoading, endLoading } from "./loadingActions";
 import { setErrors } from "./errorsActions";
 import * as types from "./types";
 
 export const fetchMore = (payload, from, limit, query = "") => dispatch => {
-  dispatch(startLoading());
+  dispatch(fetchMoreStart());
   axios
     .get(`/${payload}?from=${from}&limit=${limit}&query=${query}`)
     .then(res => {
       dispatch(fetchMoreSync(res.data, payload));
-      dispatch(endLoading());
+      dispatch(fetchMoreEnd());
     })
     .catch(err => {
       dispatch(setErrors(err));
-      dispatch(endLoading());
+      dispatch(fetchMoreEnd());
     });
 };
 
@@ -41,5 +40,17 @@ export const fetchLoadMoreSync = (payload, pathname) => {
     type: types.FETCH_LOAD_MORE,
     payload,
     pathname
+  };
+};
+
+export const fetchMoreStart = () => {
+  return {
+    type: types.FETCH_MORE_START
+  };
+};
+
+export const fetchMoreEnd = () => {
+  return {
+    type: types.FETCH_MORE_END
   };
 };

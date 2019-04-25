@@ -21,8 +21,18 @@ class Toolbar extends Component {
           </NavLink>
         </li>
         <li>
+          <NavLink activeClassName={classes.active} to="/favorites">
+            My Favorites
+          </NavLink>
+        </li>
+        <li>
+          <NavLink activeClassName={classes.active} to="/playlists">
+            My Playlists
+          </NavLink>
+        </li>
+        <li>
           <NavLink activeClassName={classes.active} to="/music">
-            Music
+            Browse Music
           </NavLink>
         </li>
         <li>

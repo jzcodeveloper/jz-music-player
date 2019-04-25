@@ -28,8 +28,14 @@ class SideDrawer extends Component {
         <Link to="/dashboard" onClick={this.onClick}>
           Dashboard
         </Link>
+        <Link to="/favorites" onClick={this.onClick}>
+          My Favorites
+        </Link>
+        <Link to="/playlists" onClick={this.onClick}>
+          My Playlists
+        </Link>
         <Link to="/music" onClick={this.onClick}>
-          Music
+          Browse Music
         </Link>
         <Link to="/" onClick={this.onLogoutClick}>
           Logout

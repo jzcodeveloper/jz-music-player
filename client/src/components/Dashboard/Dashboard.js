@@ -1,96 +1,53 @@
-import React, { Component } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import classes from "./Dashboard.css";
 
-import { fetchFavorites } from "../../actions/favoriteActions";
+import Action from "./Action/Action";
 
-import Spinner from "../Spinner/Spinner";
-import ListElement from "../ListElement/ListElement";
+const Dashboard = props => {
+  document.title=`JZ Music Player - Dashboard`
+  const { user } = props;
 
-class Dashboard extends Component {
-  componentDidMount() {
-    this.props.fetchFavorites();
-  }
+  return (
+    <div className={classes.Dashboard}>
+      <h1>Welcome, {user.name}</h1>
+      <Action
+        iconStyle={classes.Music}
+        iconClass="fas fa-music"
+        description="Browse through the entire collection of music by going to
+              the Music page, add songs to your Favorites or add them to
+              your custom Playlist!"
+        linkPath="/music"
+        linkCaption="Browse Music..."
+      />
 
-  render() {
-    const { favoriteAlbums, favoriteArtists, favoriteSongs } = this.props;
+      <Action
+        iconStyle={classes.Favorites}
+        iconClass="fas fa-star"
+        description="Add songs to your favorites by going to My Favorites page,
+              here you'll see all the songs, albums, and artists that you
+              previously added, so that you can listen to them!"
+        linkPath="/favorites"
+        linkCaption="My Favorites..."
+      />
 
-    let dashboard = <Spinner />;
-
-    if (!this.props.loading) {
-      dashboard = (
-        <div className={classes.Dashboard}>
-          <h1>Welcome, {this.props.user.name}</h1>
-          <span>Favorite Albums</span>
-          {favoriteAlbums.length > 0 ? (
-            favoriteAlbums.map(album => (
-              <ListElement
-                key={album._id}
-                pathname="albums"
-                info={album}
-                history={this.props.history}
-              />
-            ))
-          ) : (
-            <div>
-              <p>You have no favorite albums</p>
-            </div>
-          )}
-          <span>Favorite Artists</span>
-          {favoriteArtists.length > 0 ? (
-            favoriteArtists.map(artist => (
-              <ListElement
-                key={artist._id}
-                pathname="artists"
-                info={artist}
-                history={this.props.history}
-              />
-            ))
-          ) : (
-            <div>
-              <p>You have no favorite artists</p>
-            </div>
-          )}
-          <span>Favorite Songs</span>
-          {favoriteSongs.length > 0 ? (
-            favoriteSongs.map(song => (
-              <ListElement
-                key={song._id}
-                pathname="songs"
-                info={song}
-                history={this.props.history}
-              />
-            ))
-          ) : (
-            <div>
-              <p>You have no favorite songs</p>
-            </div>
-          )}
-        </div>
-      );
-    }
-
-    return dashboard;
-  }
-}
+      <Action
+        iconStyle={classes.Playlists}
+        iconClass="fas fa-list-ul"
+        description="Manage your custom playlists by going to My Playlists page,
+              you'll be able to create, edit and remove a playlist; Add as
+              many songs as you want and enjoy listening to them!"
+        linkPath="/playlists"
+        linkCaption="My Playlists..."
+      />
+    </div>
+  );
+};
 
 const mapStateToProps = state => {
   return {
-    user: state.auth.user,
-    loading: state.loading.loading,
-    favoriteAlbums: state.favorite.favorite.favoriteAlbums,
-    favoriteArtists: state.favorite.favorite.favoriteArtists,
-    favoriteSongs: state.favorite.favorite.favoriteSongs
+    user: state.auth.user
   };
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    fetchFavorites: () => dispatch(fetchFavorites())
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Dashboard);
+export default connect(mapStateToProps)(Dashboard);

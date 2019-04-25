@@ -5,7 +5,8 @@ const initialState = {
     albums: { count: 0, info: [] },
     artists: { count: 0, info: [] },
     songs: { count: 0, info: [] }
-  }
+  },
+  loading:false
 };
 
 export default function(state = initialState, action) {
@@ -16,7 +17,20 @@ export default function(state = initialState, action) {
       more[action.pathname].info = action.payload.info;
       more[action.pathname].count = action.payload.count;
       return {
+        ...state,
         more
+      };
+    }
+    case types.FETCH_MORE_START: {
+      return {
+        ...state,
+        loading: true
+      };
+    }
+    case types.FETCH_MORE_END: {
+      return {
+        ...state,
+        loading: false
       };
     }
     case types.FETCH_LOAD_MORE: {
@@ -27,6 +41,7 @@ export default function(state = initialState, action) {
       ];
       more[action.pathname].count = action.payload.count;
       return {
+        ...state,
         more
       };
     }
@@ -43,6 +58,7 @@ export default function(state = initialState, action) {
       if (songIndex >= 0) songs[songIndex] = payload;
 
       return {
+        ...state,
         more: {
           albums: { count: state.more.albums.count, info: albums },
           artists: { count: state.more.artists.count, info: artists },
@@ -62,6 +78,7 @@ export default function(state = initialState, action) {
       if (songIndex >= 0) songs.splice(songIndex, 1);
 
       return {
+        ...state,
         more: {
           albums: { count: state.more.albums.count, info: albums },
           artists: { count: state.more.artists.count, info: artists },

@@ -1,7 +1,6 @@
 //Sends albums/artists/songs metadata with limit
 exports.sendTopMetadata = async (req, res, Album, Artist, Song) => {
   const limit = Number(req.query.limit);
-
   const albumsInfo = await Album.find({})
     .sort({ favoritesLength: -1 })
     .limit(limit)
@@ -43,13 +42,26 @@ exports.sendMetadata = async (req, res, Model, findByProperty = "") => {
   res.json(info);
 };
 
-//Sends metadata for a given album/artist/song
-exports.sendAllMetadata = async (req, res, Model, findByProperty) => {
-  const param = req.params.album || req.params.artist || req.params.title;
+//Sends metadata for a given album/artist/song/playlist
+exports.sendAllMetadata = async (req, res, Model, findByProperty = "") => {
+  const param =
+    req.params.album ||
+    req.params.artist ||
+    req.params.title ||
+    req.params.name;
   const fields = {};
-  fields[findByProperty] = param;
-  const info = await Model.find(fields);
-  res.json(info);
+
+  if (findByProperty === "title") {
+    const [artist, title] = param.split(" - ");
+    fields["artist"] = artist;
+    fields["title"] = title;
+    const info = await Model.find(fields);
+    res.json(info);
+  } else {
+    fields[findByProperty] = param;
+    const info = await Model.findOne(fields).populate("songs");
+    res.json(info.songs);
+  }
 };
 
 //Count documents for a given Model
@@ -61,82 +73,34 @@ exports.countDocuments = async (req, res, Model) => {
 //Deletes a song from the database using Artist + Song Title
 exports.deleteSong = async (req, res, Song, Album, Artist) => {
   const _id = req.params.id;
-  const deletedSong = await Song.findOneAndRemove({_id});
+  const deletedSong = await Song.findByIdAndRemove(_id);
 
-  //Fills the Album model
-  const albums = await Song.aggregate([
-    {
-      $group: {
-        _id: "$album",
-        duration: { $sum: "$duration" },
-        count: { $sum: 1 },
-        albumArt: { $first: "$albumArt" },
-        albumArtist: { $first: "$albumArtist" }
-      }
-    }
-  ]);
-  //Loop through the albums array
-  for (const item of albums) {
-    const albumFields = {
-      album: item._id,
-      duration: item.duration,
-      count: item.count,
-      albumArt: item.albumArt,
-      albumArtist: item.albumArtist,
-      favorites: [],
-      favoritesLength: 0
+  //Updates duration, count and the songs array of the Album model
+  const album = await Album.findOne({ album: deletedSong.album });
+  if (album) {
+    const updatedFields = {
+      duration: album.duration - deletedSong.duration,
+      count: album.count - 1,
+      songs: album.songs.filter(song => song !== deletedSong._id)
     };
-
-    const album = await Album.findOne({ album: albumFields.album });
-
-    if (album) {
-      //console.log("Album already stored in DB");
-      await Album.findOneAndUpdate(
-        { album: albumFields.album },
-        { $set: albumFields }
-      );
-    } else {
-      const newAlbum = new Album(albumFields);
-      await newAlbum.save();
-    }
+    await Album.findOneAndUpdate(
+      { album: deletedSong.album },
+      { $set: updatedFields }
+    );
   }
 
-  //Fills the Artist model
-  const artists = await Song.aggregate([
-    {
-      $group: {
-        _id: "$artist",
-        duration: { $sum: "$duration" },
-        count: { $sum: 1 },
-        albumArt: { $first: "$albumArt" },
-        albumArtist: { $first: "$albumArtist" }
-      }
-    }
-  ]);
-  //Loop through the artists array
-  for (const item of artists) {
-    const artistFields = {
-      artist: item._id,
-      duration: item.duration,
-      count: item.count,
-      albumArt: item.albumArt,
-      albumArtist: item.albumArtist,
-      favorites: [],
-      favoritesLength: 0
+  //Updates duration, count and the songs array of the Artist model
+  const artist = await Artist.findOne({ artist: deletedSong.artist });
+  if (artist) {
+    const updatedFields = {
+      duration: artist.duration - deletedSong.duration,
+      count: artist.count - 1,
+      songs: artist.songs.filter(song => song !== deletedSong._id)
     };
-
-    const artist = await Artist.findOne({ artist: artistFields.artist });
-
-    if (artist) {
-      //console.log("Artist already stored in DB");
-      await Artist.findOneAndUpdate(
-        { artist: artistFields.artist },
-        { $set: artistFields }
-      );
-    } else {
-      const newArtist = new Artist(artistFields);
-      await newArtist.save();
-    }
+    await Artist.findOneAndUpdate(
+      { artist: deletedSong.artist },
+      { $set: updatedFields }
+    );
   }
 
   res.json(deletedSong);

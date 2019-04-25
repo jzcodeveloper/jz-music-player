@@ -18,6 +18,12 @@ const Artist = new Schema({
   duration: {
     type: Number
   },
+  songs: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Song"
+    }
+  ],
   favorites: [
     {
       type: Schema.Types.ObjectId,

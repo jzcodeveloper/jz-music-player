@@ -7,6 +7,7 @@ import { countSongs } from "../../actions/countActions";
 
 class Home extends Component {
   componentDidMount() {
+    document.title=`JZ Music Player - Home`
     if (this.props.isAuthenticated) {
       this.props.history.push("/music");
     } else {

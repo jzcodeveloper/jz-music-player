@@ -5,15 +5,29 @@ const initialState = {
     favoriteAlbums: [],
     favoriteArtists: [],
     favoriteSongs: []
-  }
+  },
+  loading: false
 };
 
 export default function(state = initialState, action) {
   switch (action.type) {
     case types.FETCH_FAVORITES:
       return {
+        ...state,
         favorite: action.payload
       };
+    case types.FETCH_FAVORITES_START: {
+      return {
+        ...state,
+        loading: true
+      };
+    }
+    case types.FETCH_FAVORITES_END: {
+      return {
+        ...state,
+        loading: false
+      };
+    }
     case types.UPDATE_FAVORITES:
       const payload = action.payload;
       const favoriteAlbums = state.favorite.favoriteAlbums.slice();
@@ -27,6 +41,7 @@ export default function(state = initialState, action) {
       if (songIndex >= 0) favoriteSongs.splice(songIndex, 1);
 
       return {
+        ...state,
         favorite: {
           favoriteAlbums,
           favoriteArtists,

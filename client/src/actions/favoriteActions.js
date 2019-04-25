@@ -1,5 +1,4 @@
 import axios from "axios";
-import { startLoading, endLoading } from "./loadingActions";
 import * as types from "./types";
 
 export const updateFavorites = (route, id) => dispatch => {
@@ -17,19 +16,31 @@ export const updateFavoritesSync = payload => {
 };
 
 export const fetchFavorites = () => dispatch => {
-  dispatch(startLoading);
+  dispatch(fetchFavoritesStart());
   axios
     .get("/favorites/all")
     .then(res => {
       dispatch(fetchFavoritesSync(res.data));
-      dispatch(endLoading());
+      dispatch(fetchFavoritesEnd());
     })
-    .catch(err => dispatch(endLoading()));
+    .catch(err => dispatch(fetchFavoritesEnd()));
 };
 
 export const fetchFavoritesSync = payload => {
   return {
     type: types.FETCH_FAVORITES,
     payload
+  };
+};
+
+export const fetchFavoritesStart = () => {
+  return {
+    type: types.FETCH_FAVORITES_START
+  };
+};
+
+export const fetchFavoritesEnd = () => {
+  return {
+    type: types.FETCH_FAVORITES_END
   };
 };

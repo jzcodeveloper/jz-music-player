@@ -1,0 +1,32 @@
+.Favorites {
+  width: 90%;
+  margin: 0 auto;
+}
+
+.Favorites> h1 {
+  margin-top: 80px;
+  padding: 10px;
+}
+
+.Favorites >span {
+  padding: 10px;
+  font-size: 2em;
+  font-weight: bold;
+}
+
+.Favorites > div {
+  display: flex;
+  margin: 22px 10px;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  border: 1px solid #000;
+  border-radius: 5px;
+}
+
+@media (max-width: 1100px) {
+  .Favorites {
+    width: 100%;
+  }
+}

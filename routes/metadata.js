@@ -5,6 +5,7 @@ const passport = require("passport");
 const Song = require("../models/Song");
 const Album = require("../models/Album");
 const Artist = require("../models/Artist");
+const Playlist = require("../models/Playlist");
 
 const Metadata = require("../controllers/MetadataController");
 
@@ -54,7 +55,16 @@ router.get(
   "/albums/:album",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    Metadata.sendAllMetadata(req, res, Song, "album");
+    Metadata.sendAllMetadata(req, res, Album, "album");
+  }
+);
+
+//Sends songs metadata for a given artist
+router.get(
+  "/artists/:artist",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Metadata.sendAllMetadata(req, res, Artist, "artist");
   }
 );
 
@@ -67,18 +77,18 @@ router.get(
   }
 );
 
-//Sends songs metadata for a given artist
+//Sends song metadata for a given song
 router.get(
-  "/artists/:artist",
+  "/playlists/:name",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    Metadata.sendAllMetadata(req, res, Song, "artist");
+    Metadata.sendAllMetadata(req, res, Playlist, "name");
   }
 );
 
 //Deletes a song by id
-router.delete("/songs/:id", async (req, res) => {
-  Metadata.deleteSong(req, res, Song,Album,Artist);
+router.delete("/songs/:id",passport.authenticate("jwt", { session: false }), (req, res) => {
+  Metadata.deleteSong(req, res, Song, Album, Artist);
 });
 
 module.exports = router;

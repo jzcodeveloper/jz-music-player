@@ -12,6 +12,10 @@ import {
 } from "../../actions/playerActions";
 
 class Player extends Component {
+  componentDidMount(){
+    document.title=`JZ Music Player - Player`
+  }
+
   componentWillMount() {
     const pathname = this.props.location.pathname.split("/");
     this.props.fetchPlaylist(pathname);
@@ -101,7 +105,7 @@ const mapStateToProps = state => {
   return {
     playlist: state.player.playlist,
     currentSongIndex: state.player.currentSongIndex,
-    loading: state.loading.loading
+    loading: state.player.loading
   };
 };
 

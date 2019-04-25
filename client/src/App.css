@@ -1,5 +1,10 @@
-html{
+:root {
+  --interfaceColor: brown;
+}
+
+html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 .App {
@@ -16,11 +21,11 @@ html{
 }
 
 ::-webkit-scrollbar-track {
-  background-color: brown;
+  background-color: var(--interfaceColor);
 }
 
 ::-webkit-scrollbar-thumb {
   border-radius: 5px;
-  border: 2px solid brown;
+  border: 2px solid var(--interfaceColor);
   background-color: white;
 }

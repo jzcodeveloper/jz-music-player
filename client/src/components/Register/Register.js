@@ -13,6 +13,10 @@ class Register extends Component {
     errors: {}
   };
 
+  componentDidMount(){
+    document.title=`JZ Music Player - Register`
+  }
+
   componentWillMount() {
     this.props.setErrors();
     if (this.props.isAuthenticated) this.props.history.push("/music");
