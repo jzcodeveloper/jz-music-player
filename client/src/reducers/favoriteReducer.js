@@ -30,6 +30,7 @@ export default function(state = initialState, action) {
     }
     case types.UPDATE_FAVORITES:
       const payload = action.payload;
+      console.log(payload)
       const favoriteAlbums = state.favorite.favoriteAlbums.slice();
       const favoriteArtists = state.favorite.favoriteArtists.slice();
       const favoriteSongs = state.favorite.favoriteSongs.slice();
