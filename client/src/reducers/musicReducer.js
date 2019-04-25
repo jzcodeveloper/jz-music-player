@@ -14,7 +14,7 @@ export default function(state = initialState, action) {
     case types.FETCH_METADATA: {
       return {
         ...state,
-        metadata: action.payload,
+        metadata: action.payload
       };
     }
     case types.FETCH_METADATA_START: {
@@ -31,6 +31,7 @@ export default function(state = initialState, action) {
     }
     case types.UPDATE_FAVORITES: {
       const payload = action.payload;
+      console.log(payload);
       const albumsInfo = state.metadata.albumsInfo.slice();
       const artistsInfo = state.metadata.artistsInfo.slice();
       const songsInfo = state.metadata.songsInfo.slice();
