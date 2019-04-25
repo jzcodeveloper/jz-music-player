@@ -31,7 +31,7 @@ export default function(state = initialState, action) {
     }
     case types.UPDATE_FAVORITES: {
       const payload = action.payload;
-      console.log(payload);
+      console.log(action.payload);
       const albumsInfo = state.metadata.albumsInfo.slice();
       const artistsInfo = state.metadata.artistsInfo.slice();
       const songsInfo = state.metadata.songsInfo.slice();
