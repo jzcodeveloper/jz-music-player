@@ -2,6 +2,7 @@
   width: 100%;
   display: flex;
   flex-flow: column;
+  position: relative;
 }
 
 .Music > span {
@@ -42,40 +43,38 @@
 
 .Music > div > button {
   position: absolute;
-  width: 100px;
+  width: 50px;
   height: 100px;
-  border-radius: 50%;
+  padding: 0;
   color: white;
   font-size: 5em;
   outline: none;
   border: none;
   cursor: pointer;
-  transform: translateX(50%);
   background-color: rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+
+.Music > div > button:nth-of-type(2) > p {
+  margin: 0 0 0 20px;
+}
+
+.Music > div > button:nth-of-type(1) > p {
+  margin: 0 0 0 -40px;
 }
 
 .Music > div:nth-of-type(1) > button:nth-of-type(2),
 .Music > div:nth-of-type(2) > button:nth-of-type(2),
 .Music > div:nth-of-type(3) > button:nth-of-type(2) {
   right: 5px;
-  transform: translateX(50%);
+  transform: translateX(10%);
+  border-radius: 50px 0 0 50px;
 }
 
 .Music > div:nth-of-type(1) > button:nth-of-type(1),
 .Music > div:nth-of-type(2) > button:nth-of-type(1),
 .Music > div:nth-of-type(3) > button:nth-of-type(1) {
   left: 5px;
-  transform: translateX(-50%);
-}
-
-.Music > div:nth-of-type(1) > button:nth-of-type(2):active,
-.Music > div:nth-of-type(2) > button:nth-of-type(2):active,
-.Music > div:nth-of-type(3) > button:nth-of-type(2):active {
-  transform: translateX(45%);
-}
-
-.Music > div:nth-of-type(1) > button:nth-of-type(1):active,
-.Music > div:nth-of-type(2) > button:nth-of-type(1):active,
-.Music > div:nth-of-type(3) > button:nth-of-type(1):active {
-  transform: translateX(-45%);
+  transform: translateX(-10%);
+  border-radius: 0 50px 50px 0;
 }

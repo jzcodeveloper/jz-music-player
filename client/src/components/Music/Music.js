@@ -32,7 +32,7 @@ class Music extends Component {
   };
 
   componentDidMount() {
-    document.title=`JZ Music Player - Music`
+    document.title = `JZ Music Player - Music`;
     const { albums, artists, songs } = this.props;
     if (albums.length === 0 || artists.length === 0 || songs.length === 0) {
       this.props.fetchMetadata();
@@ -104,8 +104,9 @@ class Music extends Component {
             <figure>
               <Link to="/more/albums/">More albums...</Link>
             </figure>
-            <button onClick={() => this.scrollLeft(0)}>{"<"}</button>
-            <button onClick={() => this.scrollRight(0)}>{">"}</button>
+
+            <button onClick={() => this.scrollLeft(0)}><p>{"<"}</p></button>
+            <button onClick={() => this.scrollRight(0)}><p>{">"}</p></button>
           </div>
           <span>TOP ARTISTS</span>
           <div>
@@ -121,8 +122,8 @@ class Music extends Component {
             <figure>
               <Link to="/more/artists/">More artists...</Link>
             </figure>
-            <button onClick={() => this.scrollLeft(1)}>{"<"}</button>
-            <button onClick={() => this.scrollRight(1)}>{">"}</button>
+            <button onClick={() => this.scrollLeft(1)}><p>{"<"}</p></button>
+            <button onClick={() => this.scrollRight(1)}><p>{">"}</p></button>
           </div>
           <span>TOP SONGS</span>
           <div>
@@ -138,8 +139,8 @@ class Music extends Component {
             <figure>
               <Link to="/more/songs/">More songs...</Link>
             </figure>
-            <button onClick={() => this.scrollLeft(2)}>{"<"}</button>
-            <button onClick={() => this.scrollRight(2)}>{">"}</button>
+            <button onClick={() => this.scrollLeft(2)}><p>{"<"}</p></button>
+            <button onClick={() => this.scrollRight(2)}><p>{">"}</p></button>
           </div>
 
           {this.state.showPlaylists ? (
