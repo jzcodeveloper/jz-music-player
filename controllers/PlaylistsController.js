@@ -148,7 +148,6 @@ exports.removeSong = async (req, res, Playlist, Song) => {
       duration: playlist.duration - song.duration,
       songs: [...playlist.songs]
     };
-    //Check whether it's necessary to compare types or not...
     const index = updatedFields.songs.findIndex(el => el.toString() === songId);
     if (index > -1) {
       updatedFields.songs.splice(index, 1);
