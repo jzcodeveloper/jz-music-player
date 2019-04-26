@@ -159,7 +159,7 @@ exports.removeSong = async (req, res, Playlist, Song) => {
       ).populate({ path: "songs", populate: { path: "albumArt" } });
       res.json(updatedPlaylist);
     } else {
-      res.status(404).json({ message: "Song not found in this Playlist" });
+      res.status(404).json({ message: "Song not found in the Playlist" });
     }
   } else {
     res.status(404).json({ message: "Playlist not found" });
