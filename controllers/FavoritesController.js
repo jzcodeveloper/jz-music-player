@@ -12,7 +12,7 @@ exports.updateFavorites = async (req, res, Model) => {
     _id,
     { favorites: info.favorites, favoritesLength: info.favorites.length },
     { new: true }
-  ).populate({ path: "albumArt", select: "_id", model: "AlbumArt" });
+  ).populate("albumArt");
   console.log(updatedModel);
   res.json(updatedModel);
 };

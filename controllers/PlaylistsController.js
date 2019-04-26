@@ -78,7 +78,7 @@ exports.editPlaylist = async (req, res, Playlist) => {
       playlistId,
       updatedFields,
       { new: true }
-    ).populate({ path: "songs", model: "Song", populate: { path: "albumArt", model: "AlbumArt" } });
+    ).populate({ path: "songs", populate: { path: "albumArt" } });
     res.json(updatedPlaylist);
   } else {
     res.status(404).json({ message: "Playlist not found" });
@@ -126,7 +126,7 @@ exports.addToPlaylist = async (req, res, Playlist, Model, type = "") => {
         playlistId,
         updatedFields,
         { new: true }
-      ).populate({ path: "songs", model: "Song", populate: { path: "albumArt", model: "AlbumArt" } });
+      ).populate({ path: "songs", populate: { path: "albumArt" } });
       res.json(updatedPlaylist);
     } else {
       res.status(404).json({ message: "Info not found" });
@@ -156,7 +156,7 @@ exports.removeSong = async (req, res, Playlist, Song) => {
         playlistId,
         updatedFields,
         { new: true }
-      ).populate({ path: "songs", model: "Song", populate: { path: "albumArt", model: "AlbumArt" } });
+      ).populate({ path: "songs", populate: { path: "albumArt" } });
       res.json(updatedPlaylist);
     } else {
       res.status(404).json({ message: "Song not found in this Playlist" });
