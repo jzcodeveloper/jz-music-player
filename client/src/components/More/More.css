@@ -12,6 +12,19 @@
   box-sizing: border-box;
 }
 
+.More figure {
+  width: 200px;
+  margin: 15px;
+}
+
+.More p {
+  font-size: 0.8em;
+}
+
+.More p:first-of-type {
+  font-size: 1em;
+}
+
 .Search {
   position: fixed;
   top: 12px;
@@ -75,13 +88,13 @@
   }
 }
 
-@media (max-width: 1600px){
+@media (max-width: 1600px) {
   .More > div {
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   }
 }
 
-@media (max-width: 1300px){
+@media (max-width: 1300px) {
   .More > div {
     grid-template-columns: 1fr 1fr 1fr 1fr;
   }

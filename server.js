@@ -12,14 +12,8 @@ const passport = require("passport");
 const app = express();
 const port = process.env.PORT || 5001;
 
-//Importing routes
-const metadata = require("./routes/metadata");
-const auth = require("./routes/auth");
-const favorites = require("./routes/favorites");
-const playlists = require("./routes/playlists");
-
 //Body parser middleware
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 //Passport config
@@ -27,10 +21,7 @@ app.use(passport.initialize());
 require("./config/passport")(passport);
 
 //Use routes
-app.use("/", metadata);
-app.use("/auth", auth);
-app.use("/favorites", favorites);
-app.use("/playlists", playlists);
+app.use(require("./routes/index"));
 
 //DB config
 const db = require("./config/keys").mongoURI;

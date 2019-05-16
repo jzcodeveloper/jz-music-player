@@ -105,8 +105,12 @@ class Music extends Component {
               <Link to="/more/albums/">More albums...</Link>
             </figure>
 
-            <button onClick={() => this.scrollLeft(0)}><p>{"<"}</p></button>
-            <button onClick={() => this.scrollRight(0)}><p>{">"}</p></button>
+            <button onClick={() => this.scrollLeft(0)}>
+              <p>{"<"}</p>
+            </button>
+            <button onClick={() => this.scrollRight(0)}>
+              <p>{">"}</p>
+            </button>
           </div>
           <span>TOP ARTISTS</span>
           <div>
@@ -122,8 +126,12 @@ class Music extends Component {
             <figure>
               <Link to="/more/artists/">More artists...</Link>
             </figure>
-            <button onClick={() => this.scrollLeft(1)}><p>{"<"}</p></button>
-            <button onClick={() => this.scrollRight(1)}><p>{">"}</p></button>
+            <button onClick={() => this.scrollLeft(1)}>
+              <p>{"<"}</p>
+            </button>
+            <button onClick={() => this.scrollRight(1)}>
+              <p>{">"}</p>
+            </button>
           </div>
           <span>TOP SONGS</span>
           <div>
@@ -139,8 +147,12 @@ class Music extends Component {
             <figure>
               <Link to="/more/songs/">More songs...</Link>
             </figure>
-            <button onClick={() => this.scrollLeft(2)}><p>{"<"}</p></button>
-            <button onClick={() => this.scrollRight(2)}><p>{">"}</p></button>
+            <button onClick={() => this.scrollLeft(2)}>
+              <p>{"<"}</p>
+            </button>
+            <button onClick={() => this.scrollRight(2)}>
+              <p>{">"}</p>
+            </button>
           </div>
 
           {this.state.showPlaylists ? (
