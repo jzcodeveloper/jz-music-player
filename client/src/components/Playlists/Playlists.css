@@ -77,6 +77,9 @@
   .Playlists > div p:nth-of-type(2) {
     display: none;
   }
+  .Playlists p {
+    font-size: 0.8em;
+  }
 }
 
 @media (max-width: 380px) {

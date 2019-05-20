@@ -11,19 +11,17 @@ class Login extends Component {
     errors: {}
   };
 
-  componentDidMount(){
-    document.title=`JZ Music Player - Login`
-  }
-
-  componentWillMount() {
+  componentDidMount() {
+    document.title = `JZ Music Player - Login`;
     this.props.setErrors();
     if (this.props.isAuthenticated) this.props.history.push("/dashboard");
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.isAuthenticated) this.props.history.push("/dashboard");
-
-    if (nextProps.errors) this.setState({ errors: nextProps.errors });
+  componentDidUpdate(prevProps) {
+    if (prevProps.isAuthenticated !== this.props.isAuthenticated)
+      this.props.history.push("/dashboard");
+    if (prevProps.errors !== this.props.errors)
+      this.setState({ errors: this.props.errors });
   }
 
   onChange = e => {

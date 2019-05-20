@@ -36,6 +36,11 @@ export default function(state = initialState, action) {
         ...state,
         currentSongIndex: action.payload
       };
+    case types.SET_PREVIOUS_INDEX:
+      return {
+        ...state,
+        currentSongIndex: state.currentSongIndex - 1
+      };
     case types.SET_NEXT_INDEX:
       return {
         ...state,

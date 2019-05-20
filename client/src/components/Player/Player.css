@@ -1,45 +1,27 @@
 .Player {
+  margin-bottom: -40px;
+}
+
+.Player > section {
   margin: 0;
   padding: 0;
   width: 100%;
   display: flex;
-  margin-bottom: -40px;
   background-image: url("../../assets//background.jpg");
   background-position: 50%;
 }
 
-.Player ul {
-  margin: 0;
-  padding: 0;
-  height: 550px;
-  overflow-y: scroll;
-  overflow-x: hidden;
-  width: 50%;
-  list-style: none;
+.Player > section > div {
+  width: 100%;
   display: flex;
   flex-flow: column;
+  justify-content: flex-end;
 }
 
-.Player li {
-  border: 1px solid white;
-  border-radius: 10px;
-  padding: 10px 10px 10px 10px;
-  text-align: center;
-  margin: 10px;
+.Player > section > div:first-child {
+  width: 50%;
 }
 
-.Player span {
-  display: block;
-  padding: 5px;
-  border-radius: 5px;
-  color: white;
-  font-size: 1em;
-  cursor: pointer;
-  word-break: break-word;
-}
-
-.Player span:hover,
-.Player span:active,
 .Player span.active {
   color: var(--interfaceColor);
 }
@@ -47,6 +29,52 @@
 .Player span.active {
   animation: anim 4s ease;
   animation-iteration-count: infinite;
+}
+
+.TopSection {
+  display: none;
+  align-items: center;
+  position: fixed;
+  top: 60px;
+  padding: 10px;
+  width: 100%;
+  height: 60px;
+  box-sizing: border-box;
+  background-color: whitesmoke;
+}
+
+.TopSection img {
+  width: 40px;
+}
+
+.TopSection > div {
+  display: flex;
+  flex-flow: column;
+  max-width: calc(100% - 90px);
+}
+
+.TopSection span {
+  margin-left: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.TopSection span:nth-child(1) {
+  border-bottom: 1px solid #000;
+}
+
+.TopSection span:nth-child(2) {
+  font-size: 0.6em;
+}
+
+.PlaylistIcon {
+  position: fixed;
+  top: 72.5px;
+  right: 10px;
+  cursor: pointer;
+  font-size: 2.2em;
+  padding-right: 5px;
 }
 
 @keyframes anim {
@@ -62,43 +90,20 @@
   }
 }
 
-.Player > div {
-  width: 100%;
-  margin: 10px;
-  position: relative;
-  display: flex;
-  flex-flow: column;
-  justify-content: flex-end;
-}
-
-.Player > div > div:first-child {
-  display: flex;
-  flex-flow: column;
-  justify-content: center;
-  height: 100%;
-  width: 100%;
-}
-
-.Player p {
-  margin: 10px;
-  color: white;
-  text-align: center;
-  font-size: 1.2em;
-}
-
-.Player audio {
-  width: 100%;
-}
-
-@media (max-width: 600px) {
-  .Player ul {
-    height: 450px;
-    width: 300px;
+@media (max-width: 450px) {
+  .Player > section {
+    flex-flow: column;
   }
-  .Player span{
+  .Player > section > div:first-child {
+    display: none;
+  }
+  .Player > section > div {
+    height: 375px;
+  }
+  .Player span {
     font-size: 0.8em;
   }
-  .Player p{
-    font-size: 1em;
+  .TopSection {
+    display: flex;
   }
 }

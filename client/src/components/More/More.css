@@ -118,9 +118,25 @@
   }
 }
 
-@media (max-width: 800px) {
+@media (max-width: 450px) {
+  .More > div {
+    grid-template-columns: 1fr 1fr;
+  }
+  .More figure {
+    width: 120px;
+    margin: 13px;
+  }
+  .More p {
+    font-size: 0.7em;
+  }
+  .More p:first-of-type {
+    font-size: 0.8em;
+  }
+}
+
+@media (max-width: 1000px) {
   .Search {
-    margin-left: 55px;
-    width: calc(100% - 90px);
+    margin-left: 70px;
+    width: calc(100% - 105px);
   }
 }

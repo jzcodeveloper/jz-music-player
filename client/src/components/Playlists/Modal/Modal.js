@@ -10,7 +10,7 @@ class Modal extends Component {
     errors: {}
   };
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.setErrors();
     if (this.props.action === "edit") {
       const playlist = this.props.playlists[this.props.playlistIndex];
@@ -18,9 +18,10 @@ class Modal extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.errors) this.setState({ errors: nextProps.errors });
-    if (this.props.playlists !== nextProps.playlists) {
+  componentDidUpdate(prevProps) {
+    if (prevProps.errors !== this.props.errors)
+      this.setState({ errors: this.props.errors });
+    if (prevProps.playlists !== this.props.playlists) {
       this.closeModal();
     }
   }
@@ -46,11 +47,11 @@ class Modal extends Component {
     }
   };
 
-  closeModal=()=>{
-    const el=document.querySelector(`.${classes.OpenModal}`)
-    el.className=classes.CloseModal;
+  closeModal = () => {
+    const el = document.querySelector(`.${classes.OpenModal}`);
+    el.className = classes.CloseModal;
     setTimeout(() => this.props.closeModal(), 700);
-  }
+  };
 
   render() {
     const { errors } = this.state;
@@ -83,7 +84,9 @@ class Modal extends Component {
           />
           {errors.description ? <p>{errors.description}</p> : null}
           <div>
-            <button className={classes.Button} onClick={this.onSubmit}>{caption}</button>
+            <button className={classes.Button} onClick={this.onSubmit}>
+              {caption}
+            </button>
             <button className={classes.Cancel} onClick={this.closeModal}>
               Cancel
             </button>

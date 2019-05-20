@@ -1,0 +1,41 @@
+.Playlist {
+  margin: 0;
+  padding: 0;
+  height: 470px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  width: 100%;
+  list-style: none;
+  display: flex;
+  flex-flow: column;
+}
+
+.Playlist > li {
+  border: 1px solid white;
+  border-radius: 10px;
+  padding: 10px 10px 10px 10px;
+  text-align: center;
+  margin: 10px;
+}
+
+.Playlist span {
+  display: block;
+  padding: 5px;
+  border-radius: 5px;
+  color: white;
+  font-size: 1em;
+  cursor: pointer;
+  word-break: break-word;
+}
+
+.Playlist span:hover,
+.Playlist span:active {
+  color: var(--interfaceColor);
+}
+
+@media (max-width: 450px) {
+  .Playlist {
+    overflow-y: auto;
+    margin-top: 60px;
+  }
+}

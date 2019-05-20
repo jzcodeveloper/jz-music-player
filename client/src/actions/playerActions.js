@@ -36,6 +36,12 @@ export const setSongIndex = payload => {
   };
 };
 
+export const setPreviousIndex = () => {
+  return {
+    type: types.SET_PREVIOUS_INDEX
+  };
+};
+
 export const setNextIndex = () => {
   return {
     type: types.SET_NEXT_INDEX

@@ -6,7 +6,7 @@
 }
 
 .Music > span {
-  padding: 30px;
+  padding: 20px 30px;
   font-size: 2em;
   font-weight: bold;
 }
@@ -79,7 +79,14 @@
   border-radius: 0 50px 50px 0;
 }
 
-@media (max-width: 400px) {
+@media (min-width: 450px) {
+  .Music figure {
+    width: 200px;
+    margin: 15px;
+  }
+}
+
+@media (max-width: 450px) {
   .Music figure {
     width: 120px;
     margin: 13px;
@@ -87,15 +94,7 @@
   .Music p {
     font-size: 0.7em;
   }
-
   .Music p:first-of-type {
     font-size: 0.8em;
-  }
-}
-
-@media (min-width: 400px) {
-  .Music figure {
-    width: 200px;
-    margin: 15px;
   }
 }

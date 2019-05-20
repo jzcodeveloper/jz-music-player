@@ -3,12 +3,12 @@
   margin: 0 auto;
 }
 
-.Favorites> h1 {
+.Favorites > h1 {
   margin-top: 80px;
   padding: 10px;
 }
 
-.Favorites >span {
+.Favorites > span {
   padding: 10px;
   font-size: 2em;
   font-weight: bold;
@@ -28,5 +28,11 @@
 @media (max-width: 1100px) {
   .Favorites {
     width: 100%;
+  }
+}
+
+@media (max-width: 450px) {
+  .Favorites p {
+    font-size: 0.8em;
   }
 }

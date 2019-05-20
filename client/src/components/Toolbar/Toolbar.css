@@ -62,7 +62,7 @@
   border-bottom: 1px solid rgba(0, 0, 0, 0.5);
 }
 
-@media (max-width: 800px) {
+@media (max-width: 1000px) {
   .Toolbar ul {
     display: none;
   }

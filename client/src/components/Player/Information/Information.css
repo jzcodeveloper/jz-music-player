@@ -1,0 +1,21 @@
+.Information {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  margin-top: 60px;
+}
+
+.Information p {
+  margin: 10px;
+  color: white;
+  text-align: center;
+  font-size: 1.2em;
+}
+
+@media (max-width: 450px) {
+  .Information p {
+    font-size: 1em;
+  }
+}

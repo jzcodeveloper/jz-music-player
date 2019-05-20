@@ -85,6 +85,15 @@
   }
 }
 
+@media (max-width: 450px) {
+  .Notification h1 {
+    font-size: 1.8em;
+  }
+  .Notification span {
+    font-size: 1em;
+  }
+}
+
 @keyframes openNotification {
   0% {
     height: 0;

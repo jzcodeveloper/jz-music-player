@@ -27,7 +27,7 @@ class Playlists extends Component {
   };
 
   componentDidMount() {
-      document.title=`JZ Music Player - My Playlists`
+    document.title = `JZ Music Player - My Playlists`;
     this.props.fetchPlaylists(this.props.user.id);
   }
 

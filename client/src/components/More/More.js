@@ -22,7 +22,7 @@ class More extends Component {
   };
 
   componentDidMount() {
-    document.title=`JZ Music Player - More`
+    document.title = `JZ Music Player - More`;
     const { pathname } = this.props.location;
     const path = pathname.split("/")[2];
     const query = pathname.split("/")[3];
@@ -30,10 +30,10 @@ class More extends Component {
     this.setState({ query });
   }
 
-  componentWillReceiveProps(newProps) {
-    const newQuery = newProps.location.pathname.split("/")[3];
-    const currentQuery = this.props.location.pathname.split("/")[3];
-    const path = this.props.location.pathname.split("/")[2];
+  componentDidUpdate(prevProps) {
+    const newQuery = this.props.location.pathname.split("/")[3];
+    const currentQuery = prevProps.location.pathname.split("/")[3];
+    const path = prevProps.location.pathname.split("/")[2];
     if (newQuery !== currentQuery) {
       this.props.fetchMore(path, this.state.from, this.state.limit, newQuery);
       this.setState({ query: newQuery });

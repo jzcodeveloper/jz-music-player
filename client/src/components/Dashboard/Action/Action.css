@@ -1,4 +1,4 @@
-.Image{
+.Image {
   position: relative;
   width: calc(100% - 20px);
   height: 220px;
@@ -9,21 +9,21 @@
 }
 
 .Image:nth-of-type(1) {
-background: url("../../../assets/background.jpg");
-background-size: cover;
-background-position: center 0px;
+  background: url("../../../assets/background.jpg");
+  background-size: cover;
+  background-position: center 0px;
 }
 
 .Image:nth-of-type(2) {
-background: url("../../../assets/background.jpg");
-background-size: cover;
-background-position: center 0px;
+  background: url("../../../assets/background.jpg");
+  background-size: cover;
+  background-position: center 0px;
 }
 
 .Image:nth-of-type(3) {
-background: url("../../../assets/background.jpg");
-background-size: cover;
-background-position: center 0px;
+  background: url("../../../assets/background.jpg");
+  background-size: cover;
+  background-position: center 0px;
 }
 
 .Overlay {
@@ -37,13 +37,13 @@ background-position: center 0px;
   display: flex;
 }
 
-.Content{
+.Content {
   display: flex;
   justify-content: center;
   width: 100%;
 }
 
-.Content >div{
+.Content > div {
   display: flex;
   justify-content: center;
   align-content: center;
@@ -54,11 +54,11 @@ background-position: center 0px;
   box-sizing: border-box;
 }
 
-.Content p{
+.Content p {
   margin-top: 0;
   text-align: center;
   font-size: 1em;
-  color: rgb(230, 230, 230)
+  color: rgb(230, 230, 230);
 }
 
 .Content a {
@@ -78,7 +78,7 @@ background-position: center 0px;
   transform: scale(1.1);
 }
 
-.Icon{
+.Icon {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -88,17 +88,17 @@ background-position: center 0px;
   box-sizing: border-box;
 }
 
-@media(max-width:600px){
-  .Image{
-    height: 450px;
+@media (max-width: 600px) {
+  .Image {
+    height: 400px;
   }
-  .Content{
+  .Content {
     flex-flow: column;
   }
-  .Content >div{
+  .Content > div {
     padding-top: 0;
   }
-  .Content p{
+  .Content p {
     margin-top: 0;
   }
 }

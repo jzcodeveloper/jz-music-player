@@ -55,11 +55,14 @@ exports.sendAllMetadata = async (req, res, Model, findByProperty = "") => {
     const [artist, title] = param.split(" - ");
     fields["artist"] = artist;
     fields["title"] = title;
-    const info = await Model.find(fields);
+    const info = await Model.find(fields).populate("albumArt");
     res.json(info);
   } else {
     fields[findByProperty] = param;
-    const info = await Model.findOne(fields).populate("songs");
+    const info = await Model.findOne(fields).populate({
+      path: "songs",
+      populate: { path: "albumArt" }
+    });
     res.json(info.songs);
   }
 };

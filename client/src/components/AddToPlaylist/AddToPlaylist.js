@@ -1,13 +1,14 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import classes from "./AddToPlaylist.css";
-import { fetchPlaylists } from "../../actions/playlistsActions";
+import { fetchPlaylists, createPlaylist } from "../../actions/playlistsActions";
 
-import Notification from "../Notification/Notification";
+import Modal from "../Playlists/Modal/Modal";
 
 class AddToPlaylist extends Component {
   state = {
-    selectedPlaylistIndex: null
+    selectedPlaylistIndex: null,
+    showModal: false
   };
 
   componentDidMount() {
@@ -37,16 +38,21 @@ class AddToPlaylist extends Component {
     setTimeout(() => this.props.closePlaylists(), 700);
   };
 
-  render() {
-    let addToPlaylist = (
-      <Notification
-        title="Cannot add to playlist"
-        message="There must be at least one playlist created"
-        closeNotification={this.closePlaylists}
-      />
-    );
+  showModal = () => {
+    this.setState({ showModal: true });
+  };
 
-    if (this.props.playlists.length > 0) {
+  closeModal = () => {
+    this.setState({ showModal: false });
+  };
+
+  createPlaylist = payload => {
+    this.props.createPlaylist(payload);
+  };
+
+  render() {
+    let addToPlaylist = null;
+    if (!this.props.loading) {
       addToPlaylist = (
         <section className={classes.AddToPlaylist}>
           <div className={classes.OpenModal}>
@@ -66,18 +72,35 @@ class AddToPlaylist extends Component {
             <div className={classes.Buttons}>
               <button
                 className={classes.Button}
-                onClick={this.onClick}
+                onClick={
+                  this.props.playlists.length > 0
+                    ? this.onClick
+                    : this.showModal
+                }
                 disabled={
-                  this.state.selectedPlaylistIndex !== null ? false : true
+                  this.props.playlists.length > 0
+                    ? this.state.selectedPlaylistIndex !== null
+                      ? false
+                      : true
+                    : false
                 }
               >
-                Add
+                {this.props.playlists.length > 0 ? "Add" : "Create"}
               </button>
               <button className={classes.Cancel} onClick={this.closePlaylists}>
                 Cancel
               </button>
             </div>
           </div>
+
+          {this.state.showModal ? (
+            <Modal
+              closeModal={this.closeModal}
+              action="create"
+              playlistIndex={this.state.playlistIndex}
+              createPlaylist={this.createPlaylist}
+            />
+          ) : null}
         </section>
       );
     }
@@ -89,13 +112,15 @@ class AddToPlaylist extends Component {
 const mapStateToProps = state => {
   return {
     user: state.auth.user,
-    playlists: state.playlists.playlists
+    playlists: state.playlists.playlists,
+    loading: state.playlists.loading
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchPlaylists: userId => dispatch(fetchPlaylists(userId))
+    fetchPlaylists: userId => dispatch(fetchPlaylists(userId)),
+    createPlaylist: payload => dispatch(createPlaylist(payload))
   };
 };
 

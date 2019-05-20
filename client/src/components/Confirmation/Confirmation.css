@@ -92,6 +92,15 @@
   }
 }
 
+@media (max-width: 450px) {
+  .Confirmation h1 {
+    font-size: 1.8em;
+  }
+  .Confirmation span {
+    font-size: 1em;
+  }
+}
+
 @keyframes openConfirmation {
   0% {
     height: 0;
