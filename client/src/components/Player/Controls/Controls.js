@@ -60,10 +60,6 @@ class Controls extends Component {
     this.player.currentTime = currentTime;
   };
 
-  onProgress = e => {
-    console.log(e.target.buffered.end(e.target.buffered.length - 1));
-  };
-
   toggleLoop = e => {
     if (this.state.loop) {
       this.player.loop = false;
@@ -130,7 +126,6 @@ class Controls extends Component {
           controlsList="nodownload"
           ref={ref => (this.player = ref)}
           src={this.props.src ? this.props.src : null}
-          onProgress={this.onProgress}
           onEnded={this.props.setNextIndex}
           onPlay={this.props.toggleActiveClass}
         />

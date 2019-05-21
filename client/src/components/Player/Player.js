@@ -32,12 +32,14 @@ class Player extends Component {
 
   toggleActiveClass = () => {
     const index = this.props.currentSongIndex + 1;
-    const links = document.querySelectorAll("li > span");
-    const link = document.querySelector(`li:nth-child(${index}) > span`);
-    for (let i = 0; i < links.length; i++) {
-      links[i].classList.remove(classes.active);
-    }
-    if (link) link.classList.add(classes.active);
+    const prevElement = document.querySelector(`.${classes.active}`);
+    const nextElement = document.querySelector(`li:nth-child(${index}) > span`);
+    if (prevElement) prevElement.classList.remove(classes.active);
+    if (nextElement) nextElement.classList.add(classes.active);
+    const playlist = document.querySelector(`.${classes.Player} ul`);
+    playlist.scrollTop = nextElement.offsetTop - 142;
+    console.log(playlist.scrollTop);
+    console.log(playlist.scrollHeight);
   };
 
   onClick = index => {
