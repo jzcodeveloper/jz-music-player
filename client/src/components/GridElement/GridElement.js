@@ -18,11 +18,15 @@ class GridElement extends Component {
   };
 
   onAlbumArtClick = () => {
-    const {pathname,info}=this.props
-    if(pathname==='songs'){
-      this.props.history.push(`/player/${pathname}/${info.artist} - ${info.title}`);
+    const { pathname, info } = this.props;
+    if (pathname === "songs") {
+      this.props.history.push(
+        `/player/${pathname}/${info.artist} - ${info.title}`
+      );
     } else {
-      this.props.history.push(`/player/${pathname}/${info.artist||info.album}`);
+      this.props.history.push(
+        `/player/${pathname}/${info.artist || info.album}`
+      );
     }
   };
 
@@ -53,15 +57,6 @@ class GridElement extends Component {
               : `Genre: ${info.genre.join(" /")}`}
           </p>
           <p>Duration: {secondsToHms(info.duration)}</p>
-          {user.email === "javier_bislip@hotmail.com" &&
-          pathname === "songs" ? (
-            <button
-              className={`${classes.Icon} ${classes.Delete}`}
-              onClick={() => this.onDeleteClick(pathname, info._id)}
-            >
-              <i className="fas fa-minus-circle" />
-            </button>
-          ) : null}
           <button
             className={`${classes.Icon} ${classes.AddToPlaylist}`}
             onClick={() => this.props.showPlaylists(pathname, info._id)}
