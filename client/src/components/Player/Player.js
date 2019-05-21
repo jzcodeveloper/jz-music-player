@@ -37,9 +37,11 @@ class Player extends Component {
     if (prevElement) prevElement.classList.remove(classes.active);
     if (nextElement) nextElement.classList.add(classes.active);
     const playlist = document.querySelector(`.${classes.Player} ul`);
-    playlist.scrollTop = nextElement.offsetTop - 142;
-    console.log(playlist.scrollTop);
-    console.log(playlist.scrollHeight);
+    if (this.state.showPlaylist) {
+      playlist.scrollTop = nextElement.offsetTop - 142;
+    } else {
+      playlist.scrollTop = nextElement.offsetTop - 82;
+    }
   };
 
   onClick = index => {
@@ -49,12 +51,14 @@ class Player extends Component {
   setPreviousIndex = () => {
     if (this.props.currentSongIndex > 0) {
       this.props.setPreviousIndex();
+      this.toggleActiveClass();
     }
   };
 
   setNextIndex = () => {
     if (this.props.playlist.length - 1 > this.props.currentSongIndex) {
       this.props.setNextIndex();
+      this.toggleActiveClass();
     }
   };
 
