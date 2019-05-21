@@ -37,6 +37,7 @@
   font-size: 1.2em;
   text-align: center;
   margin: 15px auto 5px auto;
+  word-break: break-all;
 }
 
 .Confirmation > div > div {

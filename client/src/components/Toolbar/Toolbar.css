@@ -39,7 +39,7 @@
 }
 
 .Toolbar a:hover,
-.Toolbar a:active .Toolbar a.active {
+.Toolbar a:active {
   background-color: var(--interfaceColor);
   border-bottom: 4px solid rgb(73, 195, 240);
   filter: brightness(1.1);

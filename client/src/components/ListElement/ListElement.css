@@ -67,4 +67,8 @@
   .ListElement p {
     font-size: 0.8em;
   }
+  .ListElement img {
+    flex: 0.5;
+    width: 70px;
+  }
 }

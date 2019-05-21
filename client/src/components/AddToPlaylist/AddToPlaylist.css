@@ -120,6 +120,10 @@
   flex: 1;
   font-size: 1.4em;
   font-weight: bold;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .OpenModal {

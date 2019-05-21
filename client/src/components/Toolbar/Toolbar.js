@@ -6,7 +6,6 @@ import classes from "./Toolbar.css";
 import icon from "../../assets/13510.png";
 
 class Toolbar extends Component {
-
   onLogoutClick = e => {
     e.preventDefault();
     this.props.logoutUser();
@@ -16,24 +15,16 @@ class Toolbar extends Component {
     const authLinks = (
       <ul>
         <li>
-          <NavLink activeClassName={classes.active} to="/dashboard">
-            Dashboard
-          </NavLink>
+          <NavLink to="/dashboard">Dashboard</NavLink>
         </li>
         <li>
-          <NavLink activeClassName={classes.active} to="/music">
-            Browse Music
-          </NavLink>
+          <NavLink to="/music">Browse Music</NavLink>
         </li>
         <li>
-          <NavLink activeClassName={classes.active} to="/favorites">
-            My Favorites
-          </NavLink>
+          <NavLink to="/favorites">My Favorites</NavLink>
         </li>
         <li>
-          <NavLink activeClassName={classes.active} to="/playlists">
-            My Playlists
-          </NavLink>
+          <NavLink to="/playlists">My Playlists</NavLink>
         </li>
         <li>
           <NavLink to="/" onClick={this.onLogoutClick}>
@@ -46,19 +37,13 @@ class Toolbar extends Component {
     const guestsLinks = (
       <ul>
         <li>
-          <NavLink activeClassName={classes.active} to="/">
-            Home
-          </NavLink>
+          <NavLink to="/">Home</NavLink>
         </li>
         <li>
-          <NavLink activeClassName={classes.active} to="/login">
-            Login
-          </NavLink>
+          <NavLink to="/login">Login</NavLink>
         </li>
         <li>
-          <NavLink activeClassName={classes.active} to="/register">
-            Sign Up
-          </NavLink>
+          <NavLink to="/register">Sign Up</NavLink>
         </li>
       </ul>
     );

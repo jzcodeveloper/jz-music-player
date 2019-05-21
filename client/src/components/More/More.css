@@ -118,6 +118,7 @@
 @media (max-width: 450px) {
   .More > div {
     grid-template-columns: repeat(2, 1fr);
+    padding: 4px;
   }
   .More figure {
     width: 146px;
