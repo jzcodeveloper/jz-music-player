@@ -3,9 +3,9 @@ require("./models/AlbumArt");
 require("./models/User");
 
 //Dependencies
+require("colors");
 const express = require("express");
 const path = require("path");
-const colors = require("colors");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const passport = require("passport");
