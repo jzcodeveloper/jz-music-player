@@ -46,6 +46,14 @@ export default function(state = initialState, action) {
         ...state,
         currentSongIndex: state.currentSongIndex + 1
       };
+    case types.SET_RANDOM_INDEX: {
+      const length = state.playlist.length;
+      const index = Math.floor(Math.random() * Math.floor(length));
+      return {
+        ...state,
+        currentSongIndex: index
+      };
+    }
 
     default:
       return state;

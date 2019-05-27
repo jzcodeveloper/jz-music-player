@@ -8,6 +8,7 @@ import classes from "./App.css";
 import store from "./store";
 
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
+import Loading from "./components/Loading/Loading";
 import Toolbar from "./components/Toolbar/Toolbar";
 import SideDrawer from "./components/SideDrawer/SideDrawer";
 import Backdrop from "./components/Backdrop/Backdrop";
@@ -65,6 +66,7 @@ class App extends Component {
       <Provider store={store}>
         <Router>
           <div className={classes.App}>
+          <Loading></Loading>
             <Toolbar click={this.onMenuClick} />
             <Backdrop show={this.state.openSide} click={this.onMenuClick} />
             <SideDrawer

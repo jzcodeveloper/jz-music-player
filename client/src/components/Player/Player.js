@@ -12,7 +12,8 @@ import {
   resetPlaylist,
   setSongIndex,
   setPreviousIndex,
-  setNextIndex
+  setNextIndex,
+  setRandomIndex
 } from "../../actions/playerActions";
 
 class Player extends Component {
@@ -37,11 +38,7 @@ class Player extends Component {
     if (prevElement) prevElement.classList.remove(classes.active);
     if (nextElement) nextElement.classList.add(classes.active);
     const playlist = document.querySelector(`.${classes.Player} ul`);
-    if (this.state.showPlaylist) {
-      playlist.scrollTop = nextElement.offsetTop - 142;
-    } else {
-      playlist.scrollTop = nextElement.offsetTop - 82;
-    }
+    playlist.scrollTop = nextElement.offsetTop - 20;
   };
 
   onClick = index => {
@@ -98,8 +95,8 @@ class Player extends Component {
               <span>{song.title}</span>
             </div>
             <i
-              className={`fas ${
-                !this.state.showPlaylist ? "fa-list-ul" : "fa-arrow-left"
+              className={`fas fa-list-ul ${
+                this.state.showPlaylist ? `${classes.Brown}` : ""
               } ${classes.PlaylistIcon}`}
               onClick={this.togglePlaylist}
             />
@@ -116,15 +113,14 @@ class Player extends Component {
               ) : null}
             </div>
             <div>
+              <Information artists={artists} song={song} />
               {this.state.showPlaylist ? (
                 <Playlist
                   playlist={this.props.playlist}
                   onClick={this.onClick}
                   toggleActiveClass={this.toggleActiveClass}
                 />
-              ) : (
-                <Information artists={artists} song={song} />
-              )}
+              ) : null}
             </div>
           </section>
 
@@ -133,6 +129,7 @@ class Player extends Component {
             toggleActiveClass={this.toggleActiveClass}
             setPreviousIndex={this.setPreviousIndex}
             setNextIndex={this.setNextIndex}
+            setRandomIndex={this.props.setRandomIndex}
           />
         </div>
       );
@@ -156,7 +153,8 @@ const mapDispatchToProps = dispatch => {
     resetPlaylist: () => dispatch(resetPlaylist()),
     setSongIndex: payload => dispatch(setSongIndex(payload)),
     setPreviousIndex: () => dispatch(setPreviousIndex()),
-    setNextIndex: () => dispatch(setNextIndex())
+    setNextIndex: () => dispatch(setNextIndex()),
+    setRandomIndex: () => dispatch(setRandomIndex())
   };
 };
 

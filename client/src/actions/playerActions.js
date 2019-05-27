@@ -48,6 +48,12 @@ export const setNextIndex = () => {
   };
 };
 
+export const setRandomIndex = () => {
+  return {
+    type: types.SET_RANDOM_INDEX
+  };
+};
+
 export const fetchPlaylistStart = () => {
   return {
     type: types.FETCH_PLAYLIST_START

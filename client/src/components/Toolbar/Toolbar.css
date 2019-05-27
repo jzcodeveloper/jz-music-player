@@ -69,5 +69,6 @@
   .Toolbar div {
     display: flex;
     flex-flow: column;
+    width: 55px;
   }
 }

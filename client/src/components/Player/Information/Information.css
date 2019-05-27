@@ -4,7 +4,6 @@
   justify-content: center;
   height: 100%;
   width: 100%;
-  margin-top: 60px;
 }
 
 .Information p {
@@ -15,6 +14,11 @@
 }
 
 @media (max-width: 450px) {
+  .Information {
+    background-image: url("../../../assets//background.jpg");
+    background-position: 50%;
+    background-size: cover;
+  }
   .Information p {
     font-size: 1em;
   }

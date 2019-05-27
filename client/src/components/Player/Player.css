@@ -9,9 +9,11 @@
   display: flex;
   background-image: url("../../assets//background.jpg");
   background-position: 50%;
+  height: 80vh;
 }
 
 .Player > section > div {
+  position: relative;
   width: 100%;
   display: flex;
   flex-flow: column;
@@ -62,10 +64,12 @@
 
 .TopSection span:nth-child(1) {
   border-bottom: 1px solid #000;
+  padding-bottom: 2.5px;
 }
 
 .TopSection span:nth-child(2) {
   font-size: 0.7em;
+  padding-top: 2.5px;
 }
 
 .PlaylistIcon {
@@ -75,6 +79,10 @@
   cursor: pointer;
   font-size: 2.2em;
   padding-right: 5px;
+}
+
+.Brown {
+  color: var(--interfaceColor);
 }
 
 @keyframes anim {
@@ -93,12 +101,14 @@
 @media (max-width: 450px) {
   .Player > section {
     flex-flow: column;
+    height: 64vh;
   }
   .Player > section > div:first-child {
     display: none;
   }
   .Player > section > div {
-    height: 375px;
+    margin-top: 60px;
+    height: calc(100% - 60px);
   }
   .Player span {
     font-size: 0.9em;

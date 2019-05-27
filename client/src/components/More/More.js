@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import classes from "./More.css";
+import NotFoundImage from "../../assets/NotFoundImage.jpg";
 
 import { fetchMore, fetchLoadMore } from "../../actions/moreActions";
 import { addToPlaylist } from "../../actions/playlistsActions";
@@ -133,10 +134,12 @@ class More extends Component {
           </div>
         );
       } else {
+        const msg = "Nothing here, try another search";
         more = (
-          <h1 className={classes.NotFound}>
-            Nothing here, please try another search
-          </h1>
+          <div className={classes.NotFound}>
+            <img src={NotFoundImage} alt="Not Found" />
+            <h1>{msg}</h1>
+          </div>
         );
       }
     }
