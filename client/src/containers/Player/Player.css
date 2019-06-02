@@ -1,0 +1,119 @@
+.Player {
+  margin-bottom: -40px;
+}
+
+.Player > section {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  display: flex;
+  background-image: url("../../assets//background.jpg");
+  background-position: 50%;
+  height: 80vh;
+}
+
+.Player > section > div {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-flow: column;
+  justify-content: flex-end;
+}
+
+.Player > section > div:first-child {
+  width: 50%;
+}
+
+.Player span.active {
+  color: var(--interfaceColor);
+}
+
+.Player span.active {
+  animation: anim 4s ease;
+  animation-iteration-count: infinite;
+}
+
+.TopSection {
+  display: none;
+  align-items: center;
+  position: fixed;
+  top: 60px;
+  padding: 10px;
+  width: 100%;
+  height: 60px;
+  box-sizing: border-box;
+  background-color: whitesmoke;
+}
+
+.TopSection img {
+  width: 40px;
+}
+
+.TopSection > div {
+  display: flex;
+  flex-flow: column;
+  max-width: calc(100% - 90px);
+}
+
+.TopSection span {
+  margin-left: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.TopSection span:nth-child(1) {
+  border-bottom: 1px solid #000;
+  padding-bottom: 2.5px;
+}
+
+.TopSection span:nth-child(2) {
+  font-size: 0.7em;
+  padding-top: 2.5px;
+}
+
+.PlaylistIcon {
+  position: fixed;
+  top: 72.5px;
+  right: 10px;
+  cursor: pointer;
+  font-size: 2.2em;
+  padding-right: 5px;
+}
+
+.Brown {
+  color: var(--interfaceColor);
+}
+
+@keyframes anim {
+  0% {
+    background-color: transparent;
+  }
+  50% {
+    background-color: var(--interfaceColor);
+    color: white;
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+@media (max-width: 450px) {
+  .Player > section {
+    flex-flow: column;
+    height: 64vh;
+  }
+  .Player > section > div:first-child {
+    display: none;
+  }
+  .Player > section > div {
+    margin-top: 60px;
+    height: calc(100% - 60px);
+  }
+  .Player span {
+    font-size: 0.9em;
+  }
+  .TopSection {
+    display: flex;
+  }
+}

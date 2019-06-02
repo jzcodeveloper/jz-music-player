@@ -1,0 +1,74 @@
+.ListElement {
+  display: flex;
+  margin: 38px 10px;
+  justify-items: center;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #000;
+  border-radius: 5px;
+}
+
+.ListElement img {
+  flex: 0.5;
+  width: 100px;
+}
+
+.ListElement p {
+  text-align: center;
+  flex: 1;
+  margin: 2.5px;
+  font-size: 1em;
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.ListElement > button {
+  flex: 0.2;
+  margin: 1px;
+  background-color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  outline: none;
+}
+
+.Play {
+  color: rgb(73, 195, 240);
+}
+
+.Favorites {
+  color: yellow;
+}
+
+.Remove {
+  color: red;
+}
+
+.Hidden {
+  display: none;
+  overflow: hidden;
+}
+
+@media (max-width: 700px) {
+  .ListElement p:nth-of-type(3) {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .ListElement p:nth-of-type(4) {
+    display: none;
+  }
+}
+
+@media (max-width: 450px) {
+  .ListElement p:nth-of-type(2) {
+    display: none;
+  }
+  .ListElement p {
+    font-size: 0.8em;
+  }
+  .ListElement img {
+    flex: 0.5;
+    width: 70px;
+  }
+}
