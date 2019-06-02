@@ -10,10 +10,6 @@ html {
   text-align: left;
 }
 
-.Main {
-  margin-top: 60px;
-}
-
 ::-webkit-scrollbar {
   z-index: 20;
   width: 15px;

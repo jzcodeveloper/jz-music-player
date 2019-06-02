@@ -1,4 +1,4 @@
-export const smoothScroll = (element, target, duration) =>{
+export const smoothScroll = (element, target, duration) => {
   target = Math.round(target);
   duration = Math.round(duration);
 
@@ -9,7 +9,7 @@ export const smoothScroll = (element, target, duration) =>{
   const distance = target - startLeft;
 
   // based on http://en.wikipedia.org/wiki/Smoothstep
-  const smoothStep = function(start, end, point) {
+  const smoothStep = (start, end, point) => {
     if (point <= start) {
       return 0;
     }
@@ -20,13 +20,13 @@ export const smoothScroll = (element, target, duration) =>{
     return x * x * (3 - 2 * x);
   };
 
-  return new Promise(function(resolve, reject) {
+  return new Promise((resolve, reject) => {
     // This is to keep track of where the element's scrollLeft is
     // supposed to be, based on what we're doing
     let previousLeft = element.scrollLeft;
 
     // This is like a think function from a game loop
-    const scrollFrame = function() {
+    const scrollFrame = () => {
       if (element.scrollLeft !== previousLeft) {
         reject("interrupted");
         return;

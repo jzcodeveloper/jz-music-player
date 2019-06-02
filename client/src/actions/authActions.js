@@ -4,21 +4,17 @@ import { setAuthToken } from "../utils/setAuthToken";
 import jwt_decode from "jwt-decode";
 import * as types from "./types";
 
-export const login = payload => dispatch => {
+export const login = (payload, history) => dispatch => {
   axios
     .post("/auth/login", payload)
     .then(res => {
-      //Get token
       const { token } = res.data;
-      //Store in ls
-      localStorage.setItem("Authorization", token);
-      //Set axios header
-      setAuthToken(token);
-      //Decode token
       const decoded = jwt_decode(token);
-      //Set current user
+      localStorage.setItem("Authorization", token);
+      setAuthToken(token);
       dispatch(setCurrentUser(decoded));
       dispatch(setErrors());
+      history.push("/dashboard");
     })
     .catch(err => {
       dispatch(setErrors(err.response.data));
@@ -37,13 +33,25 @@ export const register = (payload, history) => dispatch => {
     });
 };
 
-export const logoutUser = () => dispatch => {
-  //Remove token from localStorage
+export const logoutUser = history => dispatch => {
   localStorage.removeItem("Authorization");
-  //Remove auth header for future requests
   setAuthToken(false);
-  //Set current user to {} which will set isAuthenticated to false
   dispatch(setCurrentUser());
+};
+
+export const checkAuthState = history => dispatch => {
+  if (localStorage.Authorization) {
+    const decoded = jwt_decode(localStorage.Authorization);
+    const currentTime = Date.now() / 1000;
+    if (decoded.exp <= currentTime) {
+      dispatch(logoutUser(history));
+    } else {
+      setAuthToken(localStorage.Authorization);
+      dispatch(setCurrentUser(decoded));
+    }
+  } else {
+    dispatch(logoutUser(history));
+  }
 };
 
 export const setCurrentUser = (payload = {}) => {

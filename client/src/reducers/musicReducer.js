@@ -1,4 +1,5 @@
 import * as types from "../actions/types";
+import { updateObject } from "../utils/utility";
 
 const initialState = {
   metadata: {
@@ -9,69 +10,52 @@ const initialState = {
   loading: false
 };
 
+const fetchMetadata = (state, action) => {
+  return updateObject(state, { metadata: action.payload });
+};
+
+const fetchMetadataStart = (state, action) => {
+  return updateObject(state, { loading: true });
+};
+
+const fetchMetadataEnd = (state, action) => {
+  return updateObject(state, { loading: false });
+};
+
+const updateFavorites = (state, action) => {
+  const payload = action.payload;
+  const albumsInfo = [...state.metadata.albumsInfo];
+  const artistsInfo = [...state.metadata.artistsInfo];
+  const songsInfo = [...state.metadata.songsInfo];
+  const albumIndex = albumsInfo.findIndex(el => el._id === payload._id);
+  const artistIndex = artistsInfo.findIndex(el => el._id === payload._id);
+  const songIndex = songsInfo.findIndex(el => el._id === payload._id);
+  if (albumIndex >= 0) albumsInfo[albumIndex] = payload;
+  if (artistIndex >= 0) artistsInfo[artistIndex] = payload;
+  if (songIndex >= 0) songsInfo[songIndex] = payload;
+
+  return updateObject(state, {
+    metadata: {
+      albumsInfo,
+      artistsInfo,
+      songsInfo
+    }
+  });
+};
+
 export default function(state = initialState, action) {
   switch (action.type) {
-    case types.FETCH_METADATA: {
-      return {
-        ...state,
-        metadata: action.payload
-      };
-    }
-    case types.FETCH_METADATA_START: {
-      return {
-        ...state,
-        loading: true
-      };
-    }
-    case types.FETCH_METADATA_END: {
-      return {
-        ...state,
-        loading: false
-      };
-    }
-    case types.UPDATE_FAVORITES: {
-      const payload = action.payload;
-      const albumsInfo = state.metadata.albumsInfo.slice();
-      const artistsInfo = state.metadata.artistsInfo.slice();
-      const songsInfo = state.metadata.songsInfo.slice();
-      const albumIndex = albumsInfo.findIndex(el => el._id === payload._id);
-      const artistIndex = artistsInfo.findIndex(el => el._id === payload._id);
-      const songIndex = songsInfo.findIndex(el => el._id === payload._id);
-      if (albumIndex > -1) albumsInfo[albumIndex] = payload;
-      if (artistIndex > -1) artistsInfo[artistIndex] = payload;
-      if (songIndex > -1) songsInfo[songIndex] = payload;
+    case types.FETCH_METADATA:
+      return fetchMetadata(state, action);
 
-      return {
-        ...state,
-        metadata: {
-          albumsInfo,
-          artistsInfo,
-          songsInfo
-        }
-      };
-    }
-    case types.DELETE_SONG: {
-      const albumsInfo = state.metadata.albumsInfo.slice();
-      const artistsInfo = state.metadata.artistsInfo.slice();
-      const songsInfo = state.metadata.songsInfo.slice();
-      const albumIndex = albumsInfo.findIndex(el => el._id === action.payload);
-      const artistIndex = artistsInfo.findIndex(
-        el => el._id === action.payload
-      );
-      const songIndex = songsInfo.findIndex(el => el._id === action.payload);
-      if (albumIndex >= 0) albumsInfo.splice(albumIndex, 1);
-      if (artistIndex >= 0) artistsInfo.splice(artistIndex, 1);
-      if (songIndex >= 0) songsInfo.splice(songIndex, 1);
+    case types.FETCH_METADATA_START:
+      return fetchMetadataStart(state, action);
 
-      return {
-        ...state,
-        metadata: {
-          albumsInfo,
-          artistsInfo,
-          songsInfo
-        }
-      };
-    }
+    case types.FETCH_METADATA_END:
+      return fetchMetadataEnd(state, action);
+
+    case types.UPDATE_FAVORITES:
+      return updateFavorites(state, action);
 
     default:
       return state;

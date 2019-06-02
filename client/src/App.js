@@ -1,108 +1,73 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { Provider } from "react-redux";
-import { setAuthToken } from "./utils/setAuthToken";
-import { setCurrentUser, logoutUser } from "./actions/authActions";
-import jwt_decode from "jwt-decode";
-import classes from "./App.css";
+import { withRouter, Route, Switch } from "react-router-dom";
+
 import store from "./store";
+import { checkAuthState } from "./actions/authActions";
+import classes from "./App.css";
 
-import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
-import Loading from "./components/Loading/Loading";
-import Toolbar from "./components/Toolbar/Toolbar";
-import SideDrawer from "./components/SideDrawer/SideDrawer";
-import Backdrop from "./components/Backdrop/Backdrop";
-import Footer from "./components/Footer/Footer";
-import Home from "./components/Home/Home";
-import Login from "./components/Login/Login";
-import Register from "./components/Register/Register";
-import Music from "./components/Music/Music";
-import More from "./components/More/More";
-import Player from "./components/Player/Player";
-import Dashboard from "./components/Dashboard/Dashboard";
-import Favorites from "./components/Favorites/Favorites";
-import Playlists from "./components/Playlists/Playlists";
+import PrivateRoute from "./hoc/PrivateRoute/PrivateRoute";
+import asyncComponent from "./hoc/asyncComponent/asyncComponent";
+import Aux from "./hoc/Auxiliary/Auxiliary";
+import Layout from "./hoc/Layout/Layout";
+import Logout from "./components/App/Logout/Logout";
 
-//Check for token
-if (localStorage.Authorization) {
-  //Set auth token header auth
-  setAuthToken(localStorage.Authorization);
-  //Decode token and get user info and exp
-  const decoded = jwt_decode(localStorage.Authorization);
-  //Set user and isAuthenticated
-  store.dispatch(setCurrentUser(decoded));
+const asyncHome = asyncComponent(() => {
+  return import("./containers/Home/Home");
+});
+const asyncLogin = asyncComponent(() => {
+  return import("./containers/Login/Login");
+});
+const asyncRegister = asyncComponent(() => {
+  return import("./containers/Register/Register");
+});
+const asyncMusic = asyncComponent(() => {
+  return import("./containers/Music/Music");
+});
+const asyncMore = asyncComponent(() => {
+  return import("./containers/More/More");
+});
+const asyncPlayer = asyncComponent(() => {
+  return import("./containers/Player/Player");
+});
+const asyncDashboard = asyncComponent(() => {
+  return import("./containers/Dashboard/Dashboard");
+});
+const asyncFavorites = asyncComponent(() => {
+  return import("./containers/Favorites/Favorites");
+});
+const asyncPlaylists = asyncComponent(() => {
+  return import("./containers/Playlists/Playlists");
+});
 
-  //Check for expired token
-  const currentTime = Date.now() / 1000;
-  if (decoded.exp < currentTime) {
-    //Logout user
-    store.dispatch(logoutUser());
-    //Clear current Profile
-    store.dispatch(setCurrentUser());
-    //Redirect to login
-    window.location.href = "/login";
-  }
-}
+//Check authentication state
+store.dispatch(checkAuthState());
 
 class App extends Component {
-  state = {
-    openSide: false
-  };
-
-  onMenuClick = () => {
-    this.setState(prevState => {
-      return {
-        openSide: !prevState.openSide
-      };
-    });
-  };
-
-  onSideDrawerClick = () => {
-    this.setState({ openSide: false });
-  };
-
   render() {
-    return (
-      <Provider store={store}>
-        <Router>
-          <div className={classes.App}>
-          <Loading></Loading>
-            <Toolbar click={this.onMenuClick} />
-            <Backdrop show={this.state.openSide} click={this.onMenuClick} />
-            <SideDrawer
-              show={this.state.openSide}
-              itemClick={this.onSideDrawerClick}
-            />
-            <div className={classes.Main}>
-              <Switch>
-                <PrivateRoute path="/more" component={More} />
-              </Switch>
-              <Switch>
-                <PrivateRoute path="/player" component={Player} />
-              </Switch>
-              <Switch>
-                <PrivateRoute path="/music" component={Music} />
-              </Switch>
-              <Switch>
-                <PrivateRoute path="/dashboard" component={Dashboard} />
-              </Switch>
-              <Switch>
-                <PrivateRoute path="/favorites" component={Favorites} />
-              </Switch>
-              <Switch>
-                <PrivateRoute path="/playlists" component={Playlists} />
-              </Switch>
+    let routes = (
+      <Aux>
+        <Route exact path="/" component={asyncHome} />
+        <Route exact path="/login" component={asyncLogin} />
+        <Route exact path="/logout" component={Logout} />
+        <Route exact path="/register" component={asyncRegister} />
 
-              <Route exact path="/" component={Home} />
-              <Route exact path="/login" component={Login} />
-              <Route exact path="/register" component={Register} />
-            </div>
-            <Footer />
-          </div>
-        </Router>
-      </Provider>
+        <Switch>
+          <PrivateRoute path="/more" component={asyncMore} />
+          <PrivateRoute path="/music" component={asyncMusic} />
+          <PrivateRoute path="/player" component={asyncPlayer} />
+          <PrivateRoute path="/dashboard" component={asyncDashboard} />
+          <PrivateRoute path="/favorites" component={asyncFavorites} />
+          <PrivateRoute path="/playlists" component={asyncPlaylists} />
+        </Switch>
+      </Aux>
+    );
+
+    return (
+      <div className={classes.App}>
+        <Layout>{routes}</Layout>
+      </div>
     );
   }
 }
 
-export default App;
+export default withRouter(App);

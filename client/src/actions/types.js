@@ -39,5 +39,3 @@ export const REMOVE_PLAYLIST = "REMOVE_PLAYLIST";
 export const EDIT_PLAYLIST = "EDIT_PLAYLIST";
 export const ADD_TO_PLAYLIST = "ADD_TO_PLAYLIST";
 export const REMOVE_FROM_PLAYLIST = "REMOVE_FROM_PLAYLIST";
-//Delete song action
-export const DELETE_SONG = "DELETE_SONG";
