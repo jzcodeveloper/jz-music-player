@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { withRouter, Route, Switch } from "react-router-dom";
 
+import classes from "./App.css";
 import store from "./store";
 import { checkAuthState } from "./actions/authActions";
-import classes from "./App.css";
 
 import PrivateRoute from "./hoc/PrivateRoute/PrivateRoute";
 import asyncComponent from "./hoc/asyncComponent/asyncComponent";
@@ -44,7 +44,7 @@ store.dispatch(checkAuthState());
 
 class App extends Component {
   render() {
-    let routes = (
+    const routes = (
       <Aux>
         <Route exact path="/" component={asyncHome} />
         <Route exact path="/login" component={asyncLogin} />
