@@ -19,12 +19,6 @@ class AddToPlaylist extends Component {
   }
 
   selectPlaylist = index => {
-    const resetIcon = document.querySelectorAll(`.${classes.Icon}.fas`);
-    for (let i = 0; i < resetIcon.length; i++) {
-      resetIcon[i].classList.replace(`fas`, `far`);
-    }
-    const replaceIcon = document.querySelectorAll(`.${classes.Icon}`);
-    replaceIcon[index].classList.replace(`far`, `fas`);
     this.setState({ selectedPlaylistIndex: index });
   };
 
@@ -66,7 +60,11 @@ class AddToPlaylist extends Component {
                 <div key={playlist._id} className={classes.Playlist}>
                   <span>{playlist.name}</span>
                   <i
-                    className={`${classes.Icon} far fa-check-circle`}
+                    className={`${classes.Icon} ${
+                      this.state.selectedPlaylistIndex === index
+                        ? "fas fa-check-circle"
+                        : "far fa-circle"
+                    }`}
                     onClick={() => this.selectPlaylist(index)}
                   />
                 </div>
