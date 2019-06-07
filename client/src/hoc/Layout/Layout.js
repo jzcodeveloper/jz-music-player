@@ -10,8 +10,13 @@ import Footer from "../../components/UI/Footer/Footer";
 
 class Layout extends Component {
   state = {
-    showSideDrawer: false
+    showSideDrawer: false,
+    loading: true
   };
+
+  componentDidMount() {
+    setTimeout(() => this.setState({ loading: false }), 700);
+  }
 
   closeSideDrawer = () => {
     this.setState({ showSideDrawer: false });
@@ -24,9 +29,10 @@ class Layout extends Component {
   };
 
   render() {
-    return (
+    const layout = this.state.loading ? (
+      <Loading />
+    ) : (
       <Aux>
-        <Loading />
         <Toolbar
           isAuth={this.props.isAuthenticated}
           toggleSide={this.toggleSideDrawer}
@@ -40,6 +46,8 @@ class Layout extends Component {
         <Footer />
       </Aux>
     );
+
+    return layout;
   }
 }
 

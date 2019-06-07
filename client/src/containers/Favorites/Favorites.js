@@ -24,48 +24,45 @@ class Favorites extends Component {
           <h1>My Favorites</h1>
           <span>Favorite Albums</span>
           {favoriteAlbums.length > 0 ? (
-            favoriteAlbums.map(album => (
+            favoriteAlbums.map((album, index) => (
               <ListElement
                 key={album._id}
+                index={index}
                 pathname="albums"
                 info={album}
                 history={this.props.history}
               />
             ))
           ) : (
-            <div>
-              <p>You have no favorite albums</p>
-            </div>
+            <p>You have no favorite albums</p>
           )}
           <span>Favorite Artists</span>
           {favoriteArtists.length > 0 ? (
-            favoriteArtists.map(artist => (
+            favoriteArtists.map((artist, index) => (
               <ListElement
                 key={artist._id}
+                index={index}
                 pathname="artists"
                 info={artist}
                 history={this.props.history}
               />
             ))
           ) : (
-            <div>
-              <p>You have no favorite artists</p>
-            </div>
+            <p>You have no favorite artists</p>
           )}
           <span>Favorite Songs</span>
           {favoriteSongs.length > 0 ? (
-            favoriteSongs.map(song => (
+            favoriteSongs.map((song, index) => (
               <ListElement
                 key={song._id}
+                index={index}
                 pathname="songs"
                 info={song}
                 history={this.props.history}
               />
             ))
           ) : (
-            <div>
-              <p>You have no favorite songs</p>
-            </div>
+            <p>You have no favorite songs</p>
           )}
         </div>
       );

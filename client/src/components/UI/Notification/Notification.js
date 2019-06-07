@@ -3,8 +3,9 @@ import classes from "./Notification.css";
 
 const Notification = props => {
   const onClick = () => {
-    const el = document.querySelector(`.${classes.OpenNotification}`);
-    el.className = classes.CloseNotification;
+    const { OpenNotification, CloseNotification } = classes;
+    const el = document.querySelector(`.${OpenNotification}`);
+    if (el) el.classList.replace(OpenNotification, CloseNotification);
     setTimeout(() => props.closeNotification(), 700);
   };
 

@@ -48,8 +48,9 @@ class Modal extends Component {
   };
 
   closeModal = () => {
-    const el = document.querySelector(`.${classes.OpenModal}`);
-    el.className = classes.CloseModal;
+    const { OpenModal, CloseModal } = classes;
+    const el = document.querySelector(`.${OpenModal}`);
+    if (el) el.classList.replace(OpenModal, CloseModal);
     setTimeout(() => this.props.closeModal(), 700);
   };
 

@@ -3,15 +3,16 @@ import classes from "./Confirmation.css";
 
 const Confirmation = props => {
   const onClick = () => {
-    props.action();
-    closeConfirmation()
+    closeConfirmation();
+    setTimeout(() => props.action(), 700);
   };
 
-  const closeConfirmation=()=>{
-    const el = document.querySelector(`.${classes.OpenConfirmation}`);
-    el.className = classes.CloseConfirmation;
+  const closeConfirmation = () => {
+    const { OpenConfirmation, CloseConfirmation } = classes;
+    const el = document.querySelector(`.${OpenConfirmation}`);
+    if (el) el.classList.replace(OpenConfirmation, CloseConfirmation);
     setTimeout(() => props.closeConfirmation(), 700);
-  }
+  };
 
   return (
     <section className={classes.Confirmation}>

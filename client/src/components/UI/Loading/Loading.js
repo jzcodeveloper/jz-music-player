@@ -3,11 +3,6 @@ import classes from "./Loading.css";
 import icon from "../../../assets/13510.png";
 
 const Loading = () => {
-  setTimeout(() => {
-    const el = document.getElementsByClassName(classes.Modal)[0];
-    if (el) el.style.display = "none";
-  }, 2000);
-
   return (
     <div className={classes.Modal}>
       <div className={classes.Container}>

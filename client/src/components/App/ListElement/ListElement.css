@@ -6,6 +6,8 @@
   padding: 10px;
   border: 1px solid #000;
   border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
 }
 
 .ListElement img {
@@ -48,6 +50,14 @@
   overflow: hidden;
 }
 
+.OpenListElement {
+  animation: openListElement 0.7s ease-in forwards;
+}
+
+.CloseListElement {
+  animation: closeListElement 0.7s ease-out forwards;
+}
+
 @media (max-width: 700px) {
   .ListElement p:nth-of-type(3) {
     display: none;
@@ -70,5 +80,23 @@
   .ListElement img {
     flex: 0.5;
     width: 70px;
+  }
+}
+
+@keyframes openListElement {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes closeListElement {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
   }
 }

@@ -10,6 +10,7 @@ import background from "../../../assets/background.jpg";
 
 import Confirmation from "../../UI/Confirmation/Confirmation";
 import Backdrop from "../../UI/Backdrop/Backdrop";
+import Aux from "../../../hoc/Auxiliary/Auxiliary";
 
 class ListElement extends Component {
   state = {
@@ -43,8 +44,12 @@ class ListElement extends Component {
   };
 
   updateFavorites = () => {
-    const { pathname, info } = this.props;
-    this.props.updateFavorites(pathname, info._id);
+    const { pathname, info, index } = this.props;
+    const { OpenListElement, CloseListElement } = classes;
+    const selector = `.${OpenListElement}:nth-of-type(${index + 1})`;
+    const el = document.querySelector(selector);
+    if (el) el.classList.replace(OpenListElement, CloseListElement);
+    setTimeout(() => this.props.updateFavorites(pathname, info._id), 500);
   };
 
   removeFromPlaylist = () => {
@@ -71,42 +76,44 @@ class ListElement extends Component {
     }
 
     return (
-      <div className={classes.ListElement}>
-        <img
-          src={
-            info.albumArt
-              ? "data:image/jpeg;base64," + info.albumArt.albumArt
-              : background
-          }
-          alt="Album Art"
-        />
-        <p>{info.title || info.artist || info.album}</p>
-        <p>{pathname === "songs" ? info.artist : info.albumArtist}</p>
-        <p>
-          {info.count
-            ? `Songs: ${info.count}`
-            : `Genre: ${info.genre.join(" /")}`}
-        </p>
-        <p>Duration: {secondsToHms(info.duration)}</p>
+      <Aux>
+        <div className={`${classes.ListElement} ${classes.OpenListElement}`}>
+          <img
+            src={
+              info.albumArt
+                ? "data:image/jpeg;base64," + info.albumArt.albumArt
+                : background
+            }
+            alt="Album Art"
+          />
+          <p>{info.title || info.artist || info.album}</p>
+          <p>{pathname === "songs" ? info.artist : info.albumArtist}</p>
+          <p>
+            {info.count
+              ? `Songs: ${info.count}`
+              : `Genre: ${info.genre.join(" /")}`}
+          </p>
+          <p>Duration: {secondsToHms(info.duration)}</p>
 
-        <button className={classes.Play} onClick={() => this.onPlayClick()}>
-          <i className="fas fa-play" />
-        </button>
-        {!this.props.playlist ? (
-          <button
-            className={classes.Favorites}
-            onClick={() => this.onFavoriteClick()}
-          >
-            <i className="fas fa-star" />
+          <button className={classes.Play} onClick={() => this.onPlayClick()}>
+            <i className="fas fa-play" />
           </button>
-        ) : (
-          <button
-            className={classes.Remove}
-            onClick={() => this.onRemoveClick()}
-          >
-            <i className="far fa-trash-alt" />
-          </button>
-        )}
+          {!this.props.playlist ? (
+            <button
+              className={classes.Favorites}
+              onClick={() => this.onFavoriteClick()}
+            >
+              <i className="fas fa-star" />
+            </button>
+          ) : (
+            <button
+              className={classes.Remove}
+              onClick={() => this.onRemoveClick()}
+            >
+              <i className="far fa-trash-alt" />
+            </button>
+          )}
+        </div>
 
         {this.state.showConfirmation ? (
           <Confirmation
@@ -123,7 +130,7 @@ class ListElement extends Component {
           />
         ) : null}
         {this.state.showConfirmation ? <Backdrop show /> : null}
-      </div>
+      </Aux>
     );
   }
 }

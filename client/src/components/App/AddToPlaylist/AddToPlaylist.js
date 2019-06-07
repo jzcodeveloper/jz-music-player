@@ -30,8 +30,9 @@ class AddToPlaylist extends Component {
   };
 
   closePlaylists = () => {
-    const el = document.querySelector(`.${classes.OpenModal}`);
-    if (el) el.className = classes.CloseModal;
+    const { OpenModal, CloseModal } = classes;
+    const el = document.querySelector(`.${OpenModal}`);
+    if (el) el.classList.replace(OpenModal, CloseModal);
     setTimeout(() => this.props.closePlaylists(), 700);
   };
 
