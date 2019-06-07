@@ -1,5 +1,10 @@
+const Song = require("../models/Song");
+const Album = require("../models/Album");
+const Artist = require("../models/Artist");
+const Playlist = require("../models/Playlist");
+
 //Sends albums/artists/songs metadata with limit
-exports.sendTopMetadata = async (req, res, Album, Artist, Song) => {
+exports.sendTopMetadata = async (req, res) => {
   const limit = Number(req.query.limit);
   const albumsInfo = await Album.find({})
     .sort({ favoritesLength: -1 })
@@ -24,7 +29,11 @@ exports.sendTopMetadata = async (req, res, Album, Artist, Song) => {
 };
 
 //Sends all albums/artists/songs metadata with from, limit and query
-exports.sendMetadata = async (req, res, Model, findByProperty = "") => {
+exports.sendMetadata = async (req, res, findByProperty = "") => {
+  let Model = null;
+  if (findByProperty === "album") Model = Album;
+  if (findByProperty === "artist") Model = Artist;
+  if (findByProperty === "title") Model = Song;
   const query = new RegExp(req.query.query, "i");
   const from = Number(req.query.from);
   const limit = Number(req.query.limit);
@@ -43,7 +52,12 @@ exports.sendMetadata = async (req, res, Model, findByProperty = "") => {
 };
 
 //Sends metadata for a given album/artist/song/playlist
-exports.sendAllMetadata = async (req, res, Model, findByProperty = "") => {
+exports.sendAllMetadata = async (req, res, findByProperty = "") => {
+  let Model = null;
+  if (findByProperty === "album") Model = Album;
+  if (findByProperty === "artist") Model = Artist;
+  if (findByProperty === "title") Model = Song;
+  if (findByProperty === "name") Model = Playlist;
   const param =
     req.params.album ||
     req.params.artist ||
@@ -68,13 +82,15 @@ exports.sendAllMetadata = async (req, res, Model, findByProperty = "") => {
 };
 
 //Count documents for a given Model
-exports.countDocuments = async (req, res, Model) => {
+exports.countDocuments = async (req, res, model) => {
+  let Model = null;
+  if (model === "Song") Model = Song;
   const count = await Model.find({}).countDocuments();
   res.json(count);
 };
 
 //Deletes a song from the database using Artist + Song Title
-exports.deleteSong = async (req, res, Song, Album, Artist) => {
+exports.deleteSong = async (req, res) => {
   const _id = req.params.id;
   const deletedSong = await Song.findByIdAndRemove(_id);
 

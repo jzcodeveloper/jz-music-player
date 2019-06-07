@@ -1,7 +1,12 @@
+const Song = require("../models/Song");
+const Album = require("../models/Album");
+const Artist = require("../models/Artist");
+const Playlist = require("../models/Playlist");
+
 const validatePlaylists = require("../validation/playlists");
 
 //Returns all playlists
-exports.getAll = async (req, res, Playlist) => {
+exports.getAll = async (req, res) => {
   const userId = req.params.userId;
   const playlists = await Playlist.find({ user: userId }).populate({
     path: "songs",
@@ -15,7 +20,7 @@ exports.getAll = async (req, res, Playlist) => {
 };
 
 //Returns a playlist by id
-exports.getById = async (req, res, Playlist) => {
+exports.getById = async (req, res) => {
   const playlistId = req.params.playlistId;
   const playlist = await Playlist.findById(playlistId).populate("songs");
   if (playlist) {
@@ -26,7 +31,7 @@ exports.getById = async (req, res, Playlist) => {
 };
 
 //Creates a new playlist
-exports.createPlaylist = async (req, res, Playlist) => {
+exports.createPlaylist = async (req, res) => {
   //Validating all the fields
   const { errors, isValid } = validatePlaylists(req.body);
   //If invalid...
@@ -55,7 +60,7 @@ exports.createPlaylist = async (req, res, Playlist) => {
 };
 
 //Updates both the name and description of a given playlist
-exports.editPlaylist = async (req, res, Playlist) => {
+exports.editPlaylist = async (req, res) => {
   //Validating all the fields
   const { errors, isValid } = validatePlaylists(req.body);
   //If invalid...
@@ -86,13 +91,17 @@ exports.editPlaylist = async (req, res, Playlist) => {
 };
 
 //Appends a given song/album/artist to a given playlist
-exports.addToPlaylist = async (req, res, Playlist, Model, type = "") => {
+exports.addToPlaylist = async (req, res, model) => {
+  let Model = null;
+  if (model === "Album") Model = Album;
+  if (model === "Artist") Model = Artist;
+  if (model === "Song") Model = Song;
   const playlistId = req.params.playlistId;
   const itemId = req.params.itemId;
   const playlist = await Playlist.findById(playlistId);
   if (playlist) {
     const info =
-      type === 'song'
+      model === "Song"
         ? await Model.findById(itemId)
         : await Model.findById(itemId).populate("songs");
     if (info) {
@@ -102,7 +111,7 @@ exports.addToPlaylist = async (req, res, Playlist, Model, type = "") => {
         songs: [...playlist.songs]
       };
 
-      if (type === "song") {
+      if (model === "Song") {
         if (
           !updatedFields.songs.find(el => el.toString() === info._id.toString())
         ) {
@@ -113,7 +122,9 @@ exports.addToPlaylist = async (req, res, Playlist, Model, type = "") => {
       } else {
         info.songs.map(song => {
           if (
-            !updatedFields.songs.find(el => el.toString() === song._id.toString())
+            !updatedFields.songs.find(
+              el => el.toString() === song._id.toString()
+            )
           ) {
             updatedFields.count++;
             updatedFields.duration += song.duration;
@@ -137,7 +148,7 @@ exports.addToPlaylist = async (req, res, Playlist, Model, type = "") => {
 };
 
 //Removes a song from a given playlist
-exports.removeSong = async (req, res, Playlist, Song) => {
+exports.removeSong = async (req, res) => {
   const playlistId = req.params.playlistId;
   const songId = req.params.songId;
   const playlist = await Playlist.findById(playlistId);
@@ -167,7 +178,7 @@ exports.removeSong = async (req, res, Playlist, Song) => {
 };
 
 //Removes a playlist
-exports.removePlaylist = async (req, res, Playlist) => {
+exports.removePlaylist = async (req, res) => {
   const playlistId = req.params.playlistId;
   const playlist = await Playlist.findByIdAndRemove(playlistId);
   if (playlist) {

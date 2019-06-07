@@ -2,16 +2,11 @@ const express = require("express");
 const router = express.Router();
 const passport = require("passport");
 
-const Song = require("../models/Song");
-const Album = require("../models/Album");
-const Artist = require("../models/Artist");
-const Playlist = require("../models/Playlist");
-
 const Metadata = require("../controllers/MetadataController");
 
 //Sends the amount of songs stored in the DB
 router.get("/count/songs", (req, res) => {
-  Metadata.countDocuments(req, res, Song);
+  Metadata.countDocuments(req, res, "Song");
 });
 
 //Sends albums/artists/songs metadata with limit
@@ -19,7 +14,7 @@ router.get(
   "/metadata",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    Metadata.sendTopMetadata(req, res, Album, Artist, Song);
+    Metadata.sendTopMetadata(req, res);
   }
 );
 
@@ -28,7 +23,7 @@ router.get(
   "/albums",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    Metadata.sendMetadata(req, res, Album, "album");
+    Metadata.sendMetadata(req, res, "album");
   }
 );
 
@@ -37,7 +32,7 @@ router.get(
   "/artists",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    Metadata.sendMetadata(req, res, Artist, "artist");
+    Metadata.sendMetadata(req, res, "artist");
   }
 );
 
@@ -46,7 +41,7 @@ router.get(
   "/songs",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    Metadata.sendMetadata(req, res, Song, "title");
+    Metadata.sendMetadata(req, res, "title");
   }
 );
 
@@ -55,7 +50,7 @@ router.get(
   "/albums/:album",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    Metadata.sendAllMetadata(req, res, Album, "album");
+    Metadata.sendAllMetadata(req, res, "album");
   }
 );
 
@@ -64,7 +59,7 @@ router.get(
   "/artists/:artist",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    Metadata.sendAllMetadata(req, res, Artist, "artist");
+    Metadata.sendAllMetadata(req, res, "artist");
   }
 );
 
@@ -73,7 +68,7 @@ router.get(
   "/songs/:title",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    Metadata.sendAllMetadata(req, res, Song, "title");
+    Metadata.sendAllMetadata(req, res, "title");
   }
 );
 
@@ -82,13 +77,17 @@ router.get(
   "/playlists/:name",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    Metadata.sendAllMetadata(req, res, Playlist, "name");
+    Metadata.sendAllMetadata(req, res, "name");
   }
 );
 
 //Deletes a song by id
-router.delete("/songs/:id",passport.authenticate("jwt", { session: false }), (req, res) => {
-  Metadata.deleteSong(req, res, Song, Album, Artist);
-});
+router.delete(
+  "/songs/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Metadata.deleteSong(req, res);
+  }
+);
 
 module.exports = router;

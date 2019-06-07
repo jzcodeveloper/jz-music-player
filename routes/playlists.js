@@ -2,11 +2,6 @@ const express = require("express");
 const router = express.Router();
 const passport = require("passport");
 
-const Song = require("../models/Song");
-const Album = require("../models/Album");
-const Artist = require("../models/Artist");
-const Playlist = require("../models/Playlist");
-
 const PlaylistsController = require("../controllers/PlaylistsController");
 
 //Returns all playlists
@@ -14,7 +9,7 @@ router.get(
   "/all/:userId",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    PlaylistsController.getAll(req, res, Playlist);
+    PlaylistsController.getAll(req, res);
   }
 );
 
@@ -23,7 +18,7 @@ router.post(
   "/create",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    PlaylistsController.createPlaylist(req, res, Playlist);
+    PlaylistsController.createPlaylist(req, res);
   }
 );
 
@@ -32,7 +27,7 @@ router.put(
   "/edit/:playlistId",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    PlaylistsController.editPlaylist(req, res, Playlist);
+    PlaylistsController.editPlaylist(req, res);
   }
 );
 
@@ -41,7 +36,7 @@ router.put(
   "/add-songs/:playlistId/:itemId",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    PlaylistsController.addToPlaylist(req, res, Playlist, Song, "song");
+    PlaylistsController.addToPlaylist(req, res, "Song");
   }
 );
 
@@ -50,7 +45,7 @@ router.put(
   "/add-albums/:playlistId/:itemId",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    PlaylistsController.addToPlaylist(req, res, Playlist, Album, "album");
+    PlaylistsController.addToPlaylist(req, res, "Album");
   }
 );
 
@@ -59,7 +54,7 @@ router.put(
   "/add-artists/:playlistId/:itemId",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    PlaylistsController.addToPlaylist(req, res, Playlist, Artist, "artist");
+    PlaylistsController.addToPlaylist(req, res, "Artist");
   }
 );
 
@@ -68,7 +63,7 @@ router.delete(
   "/remove-song/:playlistId/:songId",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    PlaylistsController.removeSong(req, res, Playlist, Song);
+    PlaylistsController.removeSong(req, res);
   }
 );
 
@@ -77,7 +72,7 @@ router.delete(
   "/remove/:playlistId",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    PlaylistsController.removePlaylist(req, res, Playlist);
+    PlaylistsController.removePlaylist(req, res);
   }
 );
 

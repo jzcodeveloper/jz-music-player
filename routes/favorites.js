@@ -2,10 +2,6 @@ const express = require("express");
 const router = express.Router();
 const passport = require("passport");
 
-const Song = require("../models/Song");
-const Album = require("../models/Album");
-const Artist = require("../models/Artist");
-
 const Favorites = require("../controllers/FavoritesController");
 
 //Updates the favorites array in the Album model
@@ -13,7 +9,7 @@ router.get(
   "/albums/:id",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    Favorites.updateFavorites(req, res, Album);
+    Favorites.updateFavorites(req, res, "Album");
   }
 );
 
@@ -22,7 +18,7 @@ router.get(
   "/artists/:id",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    Favorites.updateFavorites(req, res, Artist);
+    Favorites.updateFavorites(req, res, "Artist");
   }
 );
 
@@ -31,7 +27,7 @@ router.get(
   "/songs/:id",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    Favorites.updateFavorites(req, res, Song);
+    Favorites.updateFavorites(req, res, "Song");
   }
 );
 
@@ -40,7 +36,7 @@ router.get(
   "/all",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    Favorites.sendMetadata(req, res, Album, Artist, Song);
+    Favorites.sendMetadata(req, res);
   }
 );
 

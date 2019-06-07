@@ -26,7 +26,7 @@ exports.loginUser = async (req, res) => {
     //Compare passwords
     const isMatch = await bcryptjs.compare(password, user.password);
     if (isMatch) {
-      const payload = { id: user.id, name: user.name,email:user.email };
+      const payload = { id: user.id, name: user.name, email: user.email };
       const token = await jwt.sign(payload, keys.secretOrKey, {
         expiresIn: keys.expiresIn
       });
@@ -59,8 +59,7 @@ exports.registerUser = async (req, res) => {
     const newUser = new User({
       name,
       email,
-      password: bcryptjs.hashSync(password, 10),
-      playlists:[]
+      password: bcryptjs.hashSync(password, 10)
     });
     res.json(await newUser.save());
   }
