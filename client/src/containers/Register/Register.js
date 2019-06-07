@@ -15,7 +15,7 @@ class Register extends Component {
 
   componentDidMount() {
     document.title = `JZ Music Player - Register`;
-    this.props.setErrors();
+    this.props.setErrors({});
     if (this.props.isAuthenticated) this.props.history.replace("/dashboard");
   }
 

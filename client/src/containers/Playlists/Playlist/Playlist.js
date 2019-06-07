@@ -16,7 +16,7 @@ const Playlist = props => {
   };
 
   return (
-    <div className={classes.Playlist}>
+    <div className={`${classes.Playlist} ${classes.OpenPlaylist}`}>
       <div>
         <span>{props.playlist.name}</span>
         <p>{props.playlist.description}</p>

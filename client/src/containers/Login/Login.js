@@ -13,7 +13,7 @@ class Login extends Component {
 
   componentDidMount() {
     document.title = `JZ Music Player - Login`;
-    this.props.setErrors();
+    this.props.setErrors({});
     if (this.props.isAuthenticated) this.props.history.replace("/dashboard");
   }
 

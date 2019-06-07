@@ -1,10 +1,9 @@
 import * as types from "../actions/types";
-import { updateObject } from "../utils/utility";
 
 const initialState = {};
 
 const setErrors = (state, action) => {
-  return updateObject(state, action.payload);
+  return action.payload;
 };
 
 export default function(state = initialState, action) {
