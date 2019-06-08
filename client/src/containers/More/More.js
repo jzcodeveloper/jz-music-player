@@ -80,12 +80,7 @@ class More extends Component {
       const path = pathname.split("/")[2];
       const query = this.state.query || "";
       this.props.history.push(`/more/${path}/${query}`);
-      this.props.fetchMore(
-        path,
-        this.state.from,
-        this.state.limit,
-        this.state.query
-      );
+      this.setState({ from: 0 });
     }
   };
 
