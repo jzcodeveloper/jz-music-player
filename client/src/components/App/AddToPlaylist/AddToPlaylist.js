@@ -15,7 +15,8 @@ class AddToPlaylist extends Component {
   };
 
   componentDidMount() {
-    this.props.fetchPlaylists(this.props.user.id);
+    const { user, fetchPlaylists } = this.props;
+    fetchPlaylists(user.id);
   }
 
   selectPlaylist = index => {
@@ -23,17 +24,18 @@ class AddToPlaylist extends Component {
   };
 
   onClick = () => {
-    const { pathname, itemId } = this.props;
-    const playlist = this.props.playlists[this.state.selectedPlaylistIndex];
-    this.props.addToPlaylist(pathname, playlist._id, itemId);
+    const { pathname, itemId, playlists, addToPlaylist } = this.props;
+    const playlist = playlists[this.state.selectedPlaylistIndex];
+    addToPlaylist(pathname, playlist._id, itemId);
     this.closePlaylists();
   };
 
   closePlaylists = () => {
+    const { closePlaylists } = this.props;
     const { OpenModal, CloseModal } = classes;
     const el = document.querySelector(`.${OpenModal}`);
     if (el) el.classList.replace(OpenModal, CloseModal);
-    setTimeout(() => this.props.closePlaylists(), 700);
+    setTimeout(() => closePlaylists(), 700);
   };
 
   showModal = () => {
@@ -45,7 +47,8 @@ class AddToPlaylist extends Component {
   };
 
   createPlaylist = payload => {
-    this.props.createPlaylist(payload);
+    const { createPlaylist } = this.props;
+    createPlaylist(payload);
   };
 
   render() {

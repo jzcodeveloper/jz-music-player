@@ -44,6 +44,18 @@
   outline: none;
 }
 
+.Playlist + div {
+  display: none;
+  flex-flow: column;
+}
+
+.Playlist + div > div {
+  margin: 8px 5px;
+  border: 1px solid #000;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
 .OpenPlaylist {
   animation: openPlaylist 0.7s ease-in forwards;
 }
@@ -69,9 +81,6 @@
 }
 
 @media (max-width: 450px) {
-  .Playlist {
-    flex-flow: column;
-  }
   .Playlist div:nth-of-type(2) {
     width: 100%;
   }
@@ -81,11 +90,8 @@
   .Playlist p:nth-of-type(2) {
     display: none;
   }
-}
-
-@media (max-width: 450px) {
   .Playlist span {
-    font-size: 0.9em;
+    font-size: 1.1em;
   }
   .Playlist button {
     flex: 1;

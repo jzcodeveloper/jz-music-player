@@ -1,7 +1,7 @@
 import React from "react";
 
 import classes from "./Toolbar.css";
-import icon from "../../../assets/13510.png";
+import icon from "../../../assets/icon.png";
 import NavigationItems from "../NavigationItems/NavigationItems";
 
 const Toolbar = props => {

@@ -71,6 +71,9 @@
 }
 
 @media (max-width: 450px) {
+  .ListElement {
+    margin: 30px 10px;
+  }
   .ListElement p:nth-of-type(2) {
     display: none;
   }

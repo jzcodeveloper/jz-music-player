@@ -9,8 +9,12 @@ const path = require("path");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const passport = require("passport");
+const responseTime = require("response-time");
 const app = express();
 const port = process.env.PORT || 5001;
+
+//Other middlewares
+app.use(responseTime());
 
 //Body parser middleware
 app.use(bodyParser.urlencoded({ extended: true }));

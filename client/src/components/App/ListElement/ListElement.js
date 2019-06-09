@@ -23,15 +23,11 @@ class ListElement extends Component {
   };
 
   onPlayClick = () => {
-    const { pathname, info } = this.props;
+    const { pathname, info, history } = this.props;
     if (pathname === "songs") {
-      this.props.history.push(
-        `/player/${pathname}/${info.artist} - ${info.title}`
-      );
+      history.push(`/player/${pathname}/${info.artist} - ${info.title}`);
     } else {
-      this.props.history.push(
-        `/player/${pathname}/${info.artist || info.album}`
-      );
+      history.push(`/player/${pathname}/${info.artist || info.album}`);
     }
   };
 
@@ -44,35 +40,40 @@ class ListElement extends Component {
   };
 
   updateFavorites = () => {
-    const { pathname, info, index } = this.props;
+    const { pathname, info, updateFavorites } = this.props;
+    this.closeListElement();
+    setTimeout(() => updateFavorites(pathname, info._id), 500);
+  };
+
+  removeFromPlaylist = () => {
+    const { playlist, info, removeFromPlaylist } = this.props;
+    this.closeListElement();
+    setTimeout(() => removeFromPlaylist(playlist._id, info._id), 500);
+  };
+
+  closeListElement = () => {
+    const { index } = this.props;
     const { OpenListElement, CloseListElement } = classes;
     const selector = `.${OpenListElement}:nth-of-type(${index + 1})`;
     const el = document.querySelector(selector);
     if (el) el.classList.replace(OpenListElement, CloseListElement);
-    setTimeout(() => this.props.updateFavorites(pathname, info._id), 500);
-  };
-
-  removeFromPlaylist = () => {
-    const { playlist, info } = this.props;
-    this.props.removeFromPlaylist(playlist._id, info._id);
   };
 
   render() {
     const { info, pathname } = this.props;
     const { action } = this.state;
+
     let title = "";
-    let question = "";
+    let question = "Are you sure you want to remove ";
     if (action === "updateFavorites") {
       title = "Remove from favorites";
-      question = `Are you sure you want to remove '${info.title ||
+      question += `'${info.title ||
         info.artist ||
         info.album}' from your favorites?`;
     }
     if (action === "removeFromPlaylist") {
       title = "Remove from playlist";
-      question = `Are you sure you want to remove the song '${
-        info.title
-      }' from this playlist?`;
+      question += `the song '${info.title}' from this playlist?`;
     }
 
     return (
@@ -80,8 +81,8 @@ class ListElement extends Component {
         <div className={`${classes.ListElement} ${classes.OpenListElement}`}>
           <img
             src={
-              info.albumArt
-                ? "data:image/jpeg;base64," + info.albumArt.albumArt
+              info.albumArt !== ""
+                ? require(`../../../assets/albumArts/${info.albumArt.albumArt}`)
                 : background
             }
             alt="Album Art"

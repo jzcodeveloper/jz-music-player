@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import classes from "./More.css";
-import NotFoundImage from "../../assets/NotFoundImage.jpg";
+import NotFoundImage from "../../assets/not-found.jpg";
 
 import { fetchMore, fetchLoadMore } from "../../actions/moreActions";
 import { addToPlaylist } from "../../actions/playlistsActions";

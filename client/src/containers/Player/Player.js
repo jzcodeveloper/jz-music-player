@@ -7,6 +7,8 @@ import Information from "./Information/Information";
 import Playlist from "./Playlist/Playlist";
 import Controls from "./Controls/Controls";
 
+import background from "../../assets/background.jpg";
+
 import {
   fetchPlaylist,
   resetPlaylist,
@@ -84,9 +86,9 @@ class Player extends Component {
           <div className={classes.TopSection}>
             <img
               src={
-                song.albumArt
-                  ? "data:image/jpeg;base64," + song.albumArt.albumArt
-                  : ""
+                song.albumArt !== ""
+                  ? require(`../../assets/albumArts/${song.albumArt.albumArt}`)
+                  : background
               }
               alt="Album Art"
             />

@@ -9,31 +9,28 @@ import background from "../../../assets/background.jpg";
 
 class GridElement extends Component {
   onFavoriteClick = (route, id) => {
-    this.props.updateFavorites(route, id);
+    const { updateFavorites } = this.props;
+    updateFavorites(route, id);
   };
 
   onAlbumArtClick = () => {
-    const { pathname, info } = this.props;
+    const { pathname, info, history } = this.props;
     if (pathname === "songs") {
-      this.props.history.push(
-        `/player/${pathname}/${info.artist} - ${info.title}`
-      );
+      history.push(`/player/${pathname}/${info.artist} - ${info.title}`);
     } else {
-      this.props.history.push(
-        `/player/${pathname}/${info.artist || info.album}`
-      );
+      history.push(`/player/${pathname}/${info.artist || info.album}`);
     }
   };
 
   render() {
-    const { info, pathname, user } = this.props;
+    const { info, pathname, user, showPlaylists } = this.props;
     return (
-      <div className={classes.GridElement}>
+      <div className={`${classes.GridElement} ${classes.OpenGridElement}`}>
         <figure key={info._id}>
           <img
             src={
-              info.albumArt
-                ? "data:image/jpeg;base64," + info.albumArt.albumArt
+              info.albumArt !== ""
+                ? require(`../../../assets/albumArts/${info.albumArt.albumArt}`)
                 : background
             }
             alt="Album Art"
@@ -54,7 +51,7 @@ class GridElement extends Component {
           <p>Duration: {secondsToHms(info.duration)}</p>
           <button
             className={`${classes.Icon} ${classes.AddToPlaylist}`}
-            onClick={() => this.props.showPlaylists(pathname, info._id)}
+            onClick={() => showPlaylists(pathname, info._id)}
           >
             <i className="fas fa-list-ul" />
           </button>

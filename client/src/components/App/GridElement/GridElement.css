@@ -61,16 +61,15 @@
   font-size: 1em;
 }
 
-/*@media (max-width: 600px) {
-  .GridElement figure {
-    width: 120px;
-    margin: 10px;
-  }
+.OpenGridElement {
+  animation: openGridElement 0.7s ease-in forwards;
 }
 
-@media (min-width: 600px) {
-  .GridElement figure {
-    width: 200px;
-    margin: 1px;
+@keyframes openGridElement {
+  from {
+    opacity: 0;
   }
-}*/
+  to {
+    opacity: 1;
+  }
+}

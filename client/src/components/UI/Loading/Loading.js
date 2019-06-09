@@ -1,6 +1,6 @@
 import React from "react";
 import classes from "./Loading.css";
-import icon from "../../../assets/13510.png";
+import icon from "../../../assets/icon.png";
 
 const Loading = () => {
   return (
