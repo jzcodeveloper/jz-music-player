@@ -28,7 +28,7 @@
   color: var(--interfaceColor);
 }
 
-.Player span.active {
+.Player li.active {
   animation: anim 4s ease;
   animation-iteration-count: infinite;
 }
@@ -87,14 +87,16 @@
 
 @keyframes anim {
   0% {
-    background-color: transparent;
+    background-color: white;
+    color: black;
   }
   50% {
     background-color: var(--interfaceColor);
     color: white;
   }
   100% {
-    background-color: transparent;
+    background-color: white;
+    color: black;
   }
 }
 

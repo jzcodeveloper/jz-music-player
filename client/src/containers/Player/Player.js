@@ -35,11 +35,13 @@ class Player extends Component {
 
   toggleActiveClass = () => {
     const index = this.props.currentSongIndex + 1;
-    const prevElement = document.querySelector(`.${classes.active}`);
-    const nextElement = document.querySelector(`li:nth-child(${index}) > span`);
-    if (prevElement) prevElement.classList.remove(classes.active);
-    if (nextElement) nextElement.classList.add(classes.active);
-    const playlist = document.querySelector(`.${classes.Player} ul`);
+    const { active, Player } = classes;
+    const prevElement = document.querySelector(`.${active}`);
+    const nextElementSelector = `.${Player} li:nth-child(${index})`;
+    const nextElement = document.querySelector(nextElementSelector);
+    if (prevElement) prevElement.classList.remove(active);
+    if (nextElement) nextElement.classList.add(active);
+    const playlist = document.querySelector(`.${Player} ul`);
     playlist.scrollTop = nextElement.offsetTop - 20;
   };
 
@@ -93,8 +95,8 @@ class Player extends Component {
               alt="Album Art"
             />
             <div>
-              <span>{song.artist}</span>
               <span>{song.title}</span>
+              <span>{song.artist}</span>
             </div>
             <i
               className={`fas fa-list-ul ${
