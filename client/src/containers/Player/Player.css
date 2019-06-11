@@ -21,7 +21,7 @@
 }
 
 .Player > section > div:first-child {
-  width: 50%;
+  max-width: 33.33%;
 }
 
 .Player span.active {

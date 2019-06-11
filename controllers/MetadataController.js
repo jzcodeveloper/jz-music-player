@@ -100,7 +100,6 @@ exports.countDocuments = async (req, res, model) => {
   //Check whether there is a key already in cache
   const result = await client.getAsync(`count/${model}`);
   if (result) {
-    console.log("redis: " + result);
     res.json(JSON.parse(result));
   } else {
     const count = await Model.find({}).countDocuments();
