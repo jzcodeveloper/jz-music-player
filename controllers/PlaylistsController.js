@@ -1,3 +1,5 @@
+const redis = require("../redis");
+
 const Song = require("../models/Song");
 const Album = require("../models/Album");
 const Artist = require("../models/Artist");

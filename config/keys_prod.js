@@ -1,5 +1,6 @@
 module.exports = {
   mongoURI: process.env.MONGO_URI,
   secretOrKey: process.env.SECRET_OR_KEY,
-  expiresIn: process.env.EXPIRES_IN
+  expiresIn: process.env.EXPIRES_IN,
+  redisURL: process.env.REDIS_URL
 };
