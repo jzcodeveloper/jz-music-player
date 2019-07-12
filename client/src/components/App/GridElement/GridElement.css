@@ -1,4 +1,4 @@
-.GridElement figure {
+.GridElement {
   position: relative;
   border: 1px solid #000;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
@@ -19,14 +19,16 @@
   color: var(--interfaceColor);
   text-align: center;
   z-index: 10;
+  font-size: 0.8em;
 }
 
 .GridElement p:first-of-type {
   font-weight: bold;
+  font-size: 1em;
 }
 
-.GridElement figure:hover,
-.GridElement figure:active {
+.GridElement:hover,
+.GridElement:active {
   transform: scale(1.05);
 }
 
@@ -63,6 +65,15 @@
 
 .OpenGridElement {
   animation: openGridElement 0.7s ease-in forwards;
+}
+
+@media (max-width: 450px) {
+  .GridElement p {
+    font-size: 0.7em;
+  }
+  .GridElement p:first-of-type {
+    font-size: 0.8em;
+  }
 }
 
 @keyframes openGridElement {

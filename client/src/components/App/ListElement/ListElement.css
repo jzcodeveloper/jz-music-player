@@ -23,14 +23,20 @@
   color: rgba(0, 0, 0, 0.8);
 }
 
-.ListElement > button {
+.ListElement > button,
+.ListElement > a {
   flex: 0.2;
   margin: 1px;
+  padding: 1px 6px;
   background-color: white;
   border-radius: 5px;
   cursor: pointer;
+  text-align: center;
   font-size: 1em;
   outline: none;
+  border: none;
+  border-style: double;
+  border-width: 2px;
 }
 
 .Play {

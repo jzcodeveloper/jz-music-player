@@ -1,71 +1,72 @@
 import * as types from "../actions/types";
-import { updateObject } from "../utils/utility";
 
 const initialState = {
   playlist: [],
   currentSongIndex: 0,
-  loading: false
+  loading: true
 };
 
-const fetchPlaylist = (state, action) => {
-  return updateObject(state, { playlist: action.payload });
+const fetchPlaylist = (state, payload) => {
+  return { ...state, playlist: payload };
 };
 
-const fetchPlaylistStart = (state, action) => {
-  return updateObject(state, { loading: true });
-};
-const fetchPlaylistEnd = (state, action) => {
-  return updateObject(state, { loading: false });
+const fetchPlaylistStart = (state, payload) => {
+  return { ...state, loading: true };
 };
 
-const resetPlaylist = (state, action) => {
-  return updateObject(state, { playlist: [], currentSongIndex: 0 });
+const fetchPlaylistEnd = (state, payload) => {
+  return { ...state, loading: false };
 };
 
-const setSongIndex = (state, action) => {
-  return updateObject(state, { currentSongIndex: action.payload });
+const resetPlaylist = (state, payload) => {
+  return { ...state, playlist: [], currentSongIndex: 0 };
 };
 
-const setPreviousIndex = (state, action) => {
-  return updateObject(state, { currentSongIndex: state.currentSongIndex - 1 });
+const setSongIndex = (state, payload) => {
+  return { ...state, currentSongIndex: payload };
 };
 
-const setNextIndex = (state, action) => {
-  return updateObject(state, { currentSongIndex: state.currentSongIndex + 1 });
+const setPreviousIndex = (state, payload) => {
+  return { ...state, currentSongIndex: state.currentSongIndex - 1 };
 };
 
-const setRandomIndex = (state, action) => {
+const setNextIndex = (state, payload) => {
+  return { ...state, currentSongIndex: state.currentSongIndex + 1 };
+};
+
+const setRandomIndex = (state, payload) => {
   const length = state.playlist.length;
   const index = Math.floor(Math.random() * Math.floor(length));
-
-  return updateObject(state, { currentSongIndex: index });
+  return { ...state, currentSongIndex: index };
 };
 
 export default function(state = initialState, action) {
-  switch (action.type) {
+  const { type, payload } = action;
+
+  switch (type) {
     case types.FETCH_PLAYLIST:
-      return fetchPlaylist(state, action);
+      return fetchPlaylist(state, payload);
 
     case types.FETCH_PLAYLIST_START: {
-      return fetchPlaylistStart(state, action);
+      return fetchPlaylistStart(state, payload);
     }
     case types.FETCH_PLAYLIST_END: {
-      return fetchPlaylistEnd(state, action);
+      return fetchPlaylistEnd(state, payload);
     }
     case types.RESET_PLAYLIST:
-      return resetPlaylist(state, action);
+      return resetPlaylist(state, payload);
 
     case types.SET_SONG_INDEX:
-      return setSongIndex(state, action);
+      return setSongIndex(state, payload);
 
     case types.SET_PREVIOUS_INDEX:
-      return setPreviousIndex(state, action);
+      return setPreviousIndex(state, payload);
 
     case types.SET_NEXT_INDEX:
-      return setNextIndex(state, action);
+      return setNextIndex(state, payload);
 
     case types.SET_RANDOM_INDEX:
-      return setRandomIndex(state, action);
+      return setRandomIndex(state, payload);
 
     default:
       return state;

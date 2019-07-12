@@ -12,18 +12,10 @@
   box-sizing: border-box;
 }
 
-.More figure {
+.More > div > div {
   width: 230px;
   margin: 15px;
   box-sizing: border-box;
-}
-
-.More p {
-  font-size: 0.8em;
-}
-
-.More p:first-of-type {
-  font-size: 1em;
 }
 
 .Search {
@@ -46,26 +38,6 @@
 .Search:focus {
   border: 2px solid lightblue;
   box-shadow: 0 0 5px lightblue;
-}
-
-.NotFound {
-  display: flex;
-  flex-flow: column;
-  justify-content: center;
-  align-items: center;
-  height: 540px;
-  margin-bottom: -40px;
-}
-
-.NotFound img {
-  width: 250px;
-  border-radius: 20px;
-}
-
-.NotFound h1 {
-  margin: 0;
-  text-align: center;
-  margin: 30px auto;
 }
 
 .LoadMore {
@@ -114,7 +86,7 @@
   .More > div {
     grid-template-columns: repeat(4, 1fr);
   }
-  .More figure {
+  .More > div > div {
     width: 220px;
     margin: 15px;
   }
@@ -124,7 +96,7 @@
   .More > div {
     grid-template-columns: repeat(3, 1fr);
   }
-  .More figure {
+  .More > div > div {
     width: 220px;
     margin: 15px;
   }
@@ -135,21 +107,9 @@
     grid-template-columns: repeat(2, 1fr);
     padding: 4px;
   }
-  .More figure {
+  .More > div > div {
     width: 146px;
     margin: 13px 5px;
-  }
-  .More p {
-    font-size: 0.7em;
-  }
-  .More p:first-of-type {
-    font-size: 0.8em;
-  }
-  .NotFound img {
-    width: 175px;
-  }
-  .NotFound h1 {
-    font-size: 1.5em;
   }
 }
 

@@ -16,7 +16,8 @@ module.exports = function validatePlaylists(body) {
   }
 
   if (!Validator.isLength(body.description, { min: 2, max: 35 })) {
-    errors.description = "Playlist Description must be between 2 and 35 characters";
+    errors.description =
+      "Playlist Description must be between 2 and 35 characters";
   }
 
   return {

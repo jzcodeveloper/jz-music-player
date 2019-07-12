@@ -1,28 +1,23 @@
-import React, { Component } from "react";
-import { withRouter, Redirect } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
 import { logoutUser } from "../../../actions/authActions";
 
-class Logout extends Component {
-  componentDidMount() {
-    this.props.logoutUser(this.props.history);
-  }
+const Logout = ({ logoutUser }) => {
+  useEffect(() => {
+    logoutUser();
+  }, []);
 
-  render() {
-    return <Redirect to="/" />;
-  }
-}
-
-const mapDispatchToProps = dispatch => {
-  return {
-    logoutUser: history => dispatch(logoutUser(history))
-  };
+  return <Redirect to="/" />;
 };
 
-export default withRouter(
-  connect(
-    null,
-    mapDispatchToProps
-  )(Logout)
-);
+Logout.propTypes = {
+  logoutUser: PropTypes.func.isRequired
+};
+
+export default connect(
+  null,
+  { logoutUser }
+)(Logout);

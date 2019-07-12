@@ -1,46 +1,23 @@
 import axios from "axios";
 import * as types from "./types";
 
-export const updateFavorites = (route, id) => dispatch => {
-  axios
-    .get(`/favorites/${route}/${id}`)
-    .then(res => dispatch(updateFavoritesSync(res.data)))
-    .catch(err => {});
+export const updateFavorites = (route, id) => async dispatch => {
+  try {
+    const { data } = await axios.get(`/favorites/${route}/${id}`);
+    dispatch({ type: types.UPDATE_FAVORITES, payload: { data, route } });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
-export const updateFavoritesSync = payload => {
-  return {
-    type: types.UPDATE_FAVORITES,
-    payload
-  };
-};
-
-export const fetchFavorites = () => dispatch => {
-  dispatch(fetchFavoritesStart());
-  axios
-    .get("/favorites/all")
-    .then(res => {
-      dispatch(fetchFavoritesSync(res.data));
-      dispatch(fetchFavoritesEnd());
-    })
-    .catch(err => dispatch(fetchFavoritesEnd()));
-};
-
-export const fetchFavoritesSync = payload => {
-  return {
-    type: types.FETCH_FAVORITES,
-    payload
-  };
-};
-
-export const fetchFavoritesStart = () => {
-  return {
-    type: types.FETCH_FAVORITES_START
-  };
-};
-
-export const fetchFavoritesEnd = () => {
-  return {
-    type: types.FETCH_FAVORITES_END
-  };
+export const fetchFavorites = () => async dispatch => {
+  dispatch({ type: types.FETCH_FAVORITES_START });
+  try {
+    const { data } = await axios.get("/favorites/all");
+    dispatch({ type: types.FETCH_FAVORITES, payload: data });
+    dispatch({ type: types.FETCH_FAVORITES_END });
+  } catch (error) {
+    console.log(error);
+    dispatch({ type: types.FETCH_FAVORITES_END });
+  }
 };

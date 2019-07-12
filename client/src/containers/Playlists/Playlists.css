@@ -8,17 +8,17 @@
   padding: 10px;
 }
 
-.Playlists p {
-  text-align: center;
-  color: rgba(0, 0, 0, 0.8);
-}
-
 .Playlists > div {
   margin: 22px 10px;
   padding: 10px;
   border: 1px solid #000;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.Playlists > div > p {
+  text-align: center;
+  color: rgba(0, 0, 0, 0.8);
 }
 
 .CreatePlaylist {

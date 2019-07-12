@@ -1,16 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import classes from "./Dashboard.css";
+import PropTypes from "prop-types";
 
+import classes from "./Dashboard.css";
 import Action from "./Action/Action";
 
-const Dashboard = props => {
-  document.title=`JZ Music Player - Dashboard`
-  const { user } = props;
+const Dashboard = ({ name }) => {
+  useEffect(() => {
+    document.title = `JZ Music Player - Dashboard`;
+  }, []);
 
   return (
     <div className={classes.Dashboard}>
-      <h1>Welcome, {user.name}</h1>
+      <h1>Welcome, {name}</h1>
       <Action
         iconStyle={classes.Music}
         iconClass="fas fa-music"
@@ -44,9 +46,13 @@ const Dashboard = props => {
   );
 };
 
+Dashboard.propTypes = {
+  name: PropTypes.string.isRequired
+};
+
 const mapStateToProps = state => {
   return {
-    user: state.auth.user
+    name: state.auth.user.name
   };
 };
 

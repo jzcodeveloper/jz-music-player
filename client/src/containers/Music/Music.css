@@ -19,37 +19,21 @@
   overflow-x: hidden;
 }
 
-.Music > div > figure {
-  grid-column: 1/3;
+.Music > div > div {
   text-align: center;
-  font-weight: bold;
   padding: 10px;
-  width: 90%;
-  margin: 15px auto 0 auto;
-  border: 1px solid #000;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  box-sizing: border-box;
-  transition: transform 1s;
-}
-
-.Music > div > div > figure {
-  flex-shrink: 0;
-  width: 200px;
   margin: 15px;
+  width: 200px;
   border: 1px solid #000;
-  text-align: center;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  padding: 10px;
   border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   box-sizing: border-box;
   transition: transform 1s;
+  flex-shrink: 0;
 }
 
-.Music > div > figure:hover,
-.Music > div > figure:active,
-.Music > div > div > figure:hover,
-.Music > div > div > figure:active {
+.Music > div > div:hover,
+.Music > div > div:active {
   transform: scale(1.05);
 }
 
@@ -97,7 +81,7 @@
 }
 
 @media (min-width: 450px) {
-  .Music > div > div > figure {
+  .Music > div > div {
     width: 230px;
     margin: 15px;
   }
@@ -113,14 +97,12 @@
   .Music > div > button:nth-of-type(2) {
     display: none;
   }
-  .Music > div > div > figure {
+  .Music > div > div {
     width: 146px;
     margin: 13px;
   }
-  .Music p {
-    font-size: 0.7em;
-  }
-  .Music p:first-of-type {
-    font-size: 0.8em;
+  .Music > div > div:last-of-type {
+    width: auto;
+    grid-column: 1/3;
   }
 }

@@ -1,16 +1,11 @@
 import axios from "axios";
 import * as types from "./types";
 
-export const countSongs = () => dispatch => {
-  axios
-    .get("/count/songs")
-    .then(res => dispatch(countSongsSync(res.data)))
-    .catch(err => {});
-};
-
-export const countSongsSync = payload => {
-  return {
-    type: types.COUNT_SONGS,
-    payload
-  };
+export const countSongs = () => async dispatch => {
+  try {
+    const { data } = await axios.get("metadata/count/songs");
+    dispatch({ type: types.COUNT_SONGS, payload: data });
+  } catch (error) {
+    console.log(error);
+  }
 };

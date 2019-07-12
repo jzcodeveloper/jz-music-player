@@ -1,94 +1,83 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import classes from "./Login.css";
+import { Redirect } from "react-router-dom";
+import PropTypes from "prop-types";
+
 import { login } from "../../actions/authActions";
 import { setErrors } from "../../actions/errorsActions";
 
-class Login extends Component {
-  state = {
-    email: "",
-    password: "",
-    errors: {}
-  };
+import classes from "./Login.css";
 
-  componentDidMount() {
+const Login = ({ login, setErrors, isAuthenticated, globalErrors }) => {
+  const [state, setState] = useState({ email: "", password: "", errors: {} });
+
+  const { email, password, errors } = state;
+
+  useEffect(() => {
     document.title = `JZ Music Player - Login`;
-    this.props.setErrors({});
-    if (this.props.isAuthenticated) this.props.history.replace("/dashboard");
-  }
+    return () => setErrors();
+  }, []);
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.isAuthenticated !== this.props.isAuthenticated)
-      this.props.history.replace("/dashboard");
-    if (prevProps.errors !== this.props.errors)
-      this.setState({ errors: this.props.errors });
-  }
+  useEffect(() => {
+    setState({ ...state, errors: globalErrors });
+  }, [globalErrors]);
 
-  onChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
+  const onChange = e => {
+    setState({ ...state, [e.target.name]: e.target.value });
   };
 
-  onSubmit = e => {
+  const onSubmit = e => {
     e.preventDefault();
-
-    const loginData = {
-      email: this.state.email,
-      password: this.state.password,
-      captcha: this.state.captcha
-    };
-
-    this.props.login(loginData, this.props.history);
+    login({ email, password });
   };
 
-  render() {
-    const { errors } = this.state;
+  if (isAuthenticated) return <Redirect to="/dashboard" />;
 
-    return (
-      <div className={classes.Login}>
-        <form onSubmit={this.onSubmit}>
-          <h1>Log In</h1>
-          <span>Sign in to your account</span>
-          <input
-            className={errors.email ? classes.Invalid : null}
-            name="email"
-            type="email"
-            placeholder="Email"
-            value={this.state.email}
-            onChange={this.onChange}
-          />
-          {errors.email ? <p>{errors.email}</p> : null}
-          <input
-            className={errors.password ? classes.Invalid : null}
-            name="password"
-            type="password"
-            placeholder="Password"
-            autoComplete="false"
-            value={this.state.password}
-            onChange={this.onChange}
-          />
-          {errors.password ? <p>{errors.password}</p> : null}
-          <button>Submit</button>
-        </form>
-      </div>
-    );
-  }
-}
+  return (
+    <div className={classes.Login}>
+      <form onSubmit={onSubmit}>
+        <h1>Log In</h1>
+        <span>Sign in to your account</span>
+        <input
+          className={errors.email ? classes.Invalid : null}
+          name="email"
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={onChange}
+        />
+        {errors.email ? <p>{errors.email}</p> : null}
+        <input
+          className={errors.password ? classes.Invalid : null}
+          name="password"
+          type="password"
+          placeholder="Password"
+          autoComplete="false"
+          value={password}
+          onChange={onChange}
+        />
+        {errors.password ? <p>{errors.password}</p> : null}
+        <button>Submit</button>
+      </form>
+    </div>
+  );
+};
+
+Login.propTypes = {
+  login: PropTypes.func.isRequired,
+  setErrors: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool.isRequired,
+  globalErrors: PropTypes.object
+};
 
 const mapStateToProps = state => {
   return {
-    errors: state.errors,
-    isAuthenticated: state.auth.isAuthenticated
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    login: (payload, history) => dispatch(login(payload, history)),
-    setErrors: () => dispatch(setErrors())
+    isAuthenticated: state.auth.isAuthenticated,
+    globalErrors: state.errors
   };
 };
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  { login, setErrors }
 )(Login);

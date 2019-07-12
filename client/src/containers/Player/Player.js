@@ -1,13 +1,6 @@
-import React, { Component } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { connect } from "react-redux";
-import classes from "./Player.css";
-
-import Spinner from "../../components/UI/Spinner/Spinner";
-import Information from "./Information/Information";
-import Playlist from "./Playlist/Playlist";
-import Controls from "./Controls/Controls";
-
-import background from "../../assets/background.jpg";
+import PropTypes from "prop-types";
 
 import {
   fetchPlaylist,
@@ -18,23 +11,40 @@ import {
   setRandomIndex
 } from "../../actions/playerActions";
 
-class Player extends Component {
-  state = {
-    showPlaylist: false
-  };
+import classes from "./Player.css";
+import Spinner from "../../components/UI/Spinner/Spinner";
+import Information from "./Information/Information";
+import Playlist from "./Playlist/Playlist";
+import Controls from "./Controls/Controls";
+import PlaylistItem from "./PlaylistItem/PlaylistItem";
 
-  componentDidMount() {
+const Player = ({
+  fetchPlaylist,
+  resetPlaylist,
+  setSongIndex,
+  setPreviousIndex,
+  setNextIndex,
+  setRandomIndex,
+  currentSongIndex,
+  loading,
+  playlist,
+  location: { pathname }
+}) => {
+  const [showPlaylist, setShowPlaylist] = useState(false);
+
+  const path = pathname.split("/");
+
+  useEffect(() => {
     document.title = `JZ Music Player - Player`;
-    const pathname = this.props.location.pathname.split("/");
-    this.props.fetchPlaylist(pathname);
-  }
+    fetchPlaylist(path);
 
-  componentWillUnmount() {
-    this.props.resetPlaylist();
-  }
+    return () => {
+      resetPlaylist();
+    };
+  }, []);
 
-  toggleActiveClass = () => {
-    const index = this.props.currentSongIndex + 1;
+  const toggleActiveClass = () => {
+    const index = currentSongIndex + 1;
     const { active, Player } = classes;
     const prevElement = document.querySelector(`.${active}`);
     const nextElementSelector = `.${Player} li:nth-child(${index})`;
@@ -45,84 +55,69 @@ class Player extends Component {
     playlist.scrollTop = nextElement.offsetTop - 20;
   };
 
-  onClick = index => {
-    this.props.setSongIndex(index);
+  const onClick = index => {
+    setSongIndex(index);
   };
 
-  setPreviousIndex = () => {
-    if (this.props.currentSongIndex > 0) {
-      this.props.setPreviousIndex();
-      this.toggleActiveClass();
+  const onSetPreviousIndex = () => {
+    if (currentSongIndex > 0) {
+      setPreviousIndex();
     }
   };
 
-  setNextIndex = () => {
-    if (this.props.playlist.length - 1 > this.props.currentSongIndex) {
-      this.props.setNextIndex();
-      this.toggleActiveClass();
+  const onSetNextIndex = () => {
+    if (playlist.length - 1 > currentSongIndex) {
+      setNextIndex();
     }
   };
 
-  togglePlaylist = () => {
-    if (this.state.showPlaylist) {
-      this.setState({ showPlaylist: false });
+  const togglePlaylist = () => {
+    if (showPlaylist) {
+      setShowPlaylist(false);
     } else {
-      this.setState({ showPlaylist: true });
+      setShowPlaylist(true);
     }
   };
 
-  render() {
-    let player = <Spinner />;
+  const song = playlist[currentSongIndex];
 
-    if (!this.props.loading && this.props.playlist.length > 0) {
-      let artists = null;
-      let song = this.props.playlist[this.props.currentSongIndex];
-      if (song.artists && song.artists.length === 1) {
-        artists = song.artist;
-      } else {
-        artists = song.artists.join(" / ");
-      }
-
-      player = (
+  return (
+    <Fragment>
+      {loading || !song ? (
+        <Spinner />
+      ) : (
         <div className={classes.Player}>
           <div className={classes.TopSection}>
-            <img
-              src={
-                song.albumArt !== ""
-                  ? require(`../../assets/albumArts/${song.albumArt.albumArt}`)
-                  : background
-              }
-              alt="Album Art"
+            <PlaylistItem
+              albumArt={song.albumArt}
+              title={song.title}
+              artist={song.artist}
             />
-            <div>
-              <span>{song.title}</span>
-              <span>{song.artist}</span>
-            </div>
             <i
               className={`fas fa-list-ul ${
-                this.state.showPlaylist ? `${classes.Brown}` : ""
+                showPlaylist ? `${classes.Brown}` : ""
               } ${classes.PlaylistIcon}`}
-              onClick={this.togglePlaylist}
+              onClick={togglePlaylist}
             />
           </div>
 
           <section>
             <div>
-              {!this.state.showPlaylist ? (
+              {showPlaylist ? null : (
                 <Playlist
-                  playlist={this.props.playlist}
-                  onClick={this.onClick}
-                  toggleActiveClass={this.toggleActiveClass}
+                  playlist={playlist}
+                  onClick={onClick}
+                  toggleActiveClass={toggleActiveClass}
                 />
-              ) : null}
+              )}
             </div>
             <div>
-              <Information artists={artists} song={song} />
-              {this.state.showPlaylist ? (
+              <Information song={song} />
+              {showPlaylist ? (
                 <Playlist
-                  playlist={this.props.playlist}
-                  onClick={this.onClick}
-                  toggleActiveClass={this.toggleActiveClass}
+                  playlist={playlist}
+                  onClick={onClick}
+                  toggleActiveClass={toggleActiveClass}
                 />
               ) : null}
             </div>
@@ -130,18 +125,29 @@ class Player extends Component {
 
           <Controls
             src={song.url}
-            toggleActiveClass={this.toggleActiveClass}
-            setPreviousIndex={this.setPreviousIndex}
-            setNextIndex={this.setNextIndex}
-            setRandomIndex={this.props.setRandomIndex}
+            toggleActiveClass={toggleActiveClass}
+            setPreviousIndex={onSetPreviousIndex}
+            setNextIndex={onSetNextIndex}
+            setRandomIndex={setRandomIndex}
           />
         </div>
-      );
-    }
+      )}
+    </Fragment>
+  );
+};
 
-    return player;
-  }
-}
+Player.propTypes = {
+  fetchPlaylist: PropTypes.func.isRequired,
+  resetPlaylist: PropTypes.func.isRequired,
+  setSongIndex: PropTypes.func.isRequired,
+  setPreviousIndex: PropTypes.func.isRequired,
+  setNextIndex: PropTypes.func.isRequired,
+  setRandomIndex: PropTypes.func.isRequired,
+  currentSongIndex: PropTypes.number.isRequired,
+  loading: PropTypes.bool.isRequired,
+  playlist: PropTypes.array.isRequired,
+  location: PropTypes.object.isRequired
+};
 
 const mapStateToProps = state => {
   return {
@@ -151,18 +157,14 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    fetchPlaylist: payload => dispatch(fetchPlaylist(payload)),
-    resetPlaylist: () => dispatch(resetPlaylist()),
-    setSongIndex: payload => dispatch(setSongIndex(payload)),
-    setPreviousIndex: () => dispatch(setPreviousIndex()),
-    setNextIndex: () => dispatch(setNextIndex()),
-    setRandomIndex: () => dispatch(setRandomIndex())
-  };
-};
-
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  {
+    fetchPlaylist,
+    resetPlaylist,
+    setSongIndex,
+    setPreviousIndex,
+    setNextIndex,
+    setRandomIndex
+  }
 )(Player);

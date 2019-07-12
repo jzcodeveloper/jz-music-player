@@ -1,25 +1,28 @@
-import React, { Component } from "react";
+import React, { Fragment, useEffect } from "react";
 import { connect } from "react-redux";
-import classes from "./Favorites.css";
+import PropTypes from "prop-types";
 
 import { fetchFavorites } from "../../actions/favoriteActions";
 
+import classes from "./Favorites.css";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import ListElement from "../../components/App/ListElement/ListElement";
 
-class Favorites extends Component {
-  componentDidMount() {
+const Favorites = ({
+  fetchFavorites,
+  loading,
+  favorite: { favoriteAlbums, favoriteArtists, favoriteSongs }
+}) => {
+  useEffect(() => {
     document.title = `JZ Music Player - My Favorites`;
-    this.props.fetchFavorites();
-  }
+    fetchFavorites();
+  }, []);
 
-  render() {
-    const { favoriteAlbums, favoriteArtists, favoriteSongs } = this.props;
-
-    let favorites = <Spinner />;
-
-    if (!this.props.loading) {
-      favorites = (
+  return (
+    <Fragment>
+      {loading || favoriteAlbums === null ? (
+        <Spinner />
+      ) : (
         <div className={classes.Favorites}>
           <h1>My Favorites</h1>
           <span>Favorite Albums</span>
@@ -30,7 +33,6 @@ class Favorites extends Component {
                 index={index}
                 pathname="albums"
                 info={album}
-                history={this.props.history}
               />
             ))
           ) : (
@@ -44,7 +46,6 @@ class Favorites extends Component {
                 index={index}
                 pathname="artists"
                 info={artist}
-                history={this.props.history}
               />
             ))
           ) : (
@@ -58,37 +59,31 @@ class Favorites extends Component {
                 index={index}
                 pathname="songs"
                 info={song}
-                history={this.props.history}
               />
             ))
           ) : (
             <p>You have no favorite songs</p>
           )}
         </div>
-      );
-    }
+      )}
+    </Fragment>
+  );
+};
 
-    return favorites;
-  }
-}
+Favorites.propTypes = {
+  fetchFavorites: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
+  favorite: PropTypes.object.isRequired
+};
 
 const mapStateToProps = state => {
   return {
-    user: state.auth.user,
     loading: state.favorite.loading,
-    favoriteAlbums: state.favorite.favorite.favoriteAlbums,
-    favoriteArtists: state.favorite.favorite.favoriteArtists,
-    favoriteSongs: state.favorite.favorite.favoriteSongs
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    fetchFavorites: () => dispatch(fetchFavorites())
+    favorite: state.favorite.favorite
   };
 };
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  { fetchFavorites }
 )(Favorites);

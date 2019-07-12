@@ -1,150 +1,151 @@
-import React, { Component } from "react";
+import React, { Fragment, useState } from "react";
+import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import classes from "./ListElement.css";
+import PropTypes from "prop-types";
 
 import { updateFavorites } from "../../../actions/favoriteActions";
 import { removeFromPlaylist } from "../../../actions/playlistsActions";
 
-import { secondsToHms } from "../../../utils/utility";
+import classes from "./ListElement.css";
 import background from "../../../assets/background.jpg";
+import { secondsToHms } from "../../../utils/utility";
 
 import Confirmation from "../../UI/Confirmation/Confirmation";
-import Backdrop from "../../UI/Backdrop/Backdrop";
-import Aux from "../../../hoc/Auxiliary/Auxiliary";
 
-class ListElement extends Component {
-  state = {
-    showConfirmation: false,
-    action: ""
+const ListElement = ({
+  updateFavorites,
+  removeFromPlaylist,
+  pathname,
+  info: {
+    _id,
+    title,
+    artist,
+    album,
+    albumArt,
+    albumArtist,
+    count,
+    genre,
+    duration
+  },
+  playlist,
+  index
+}) => {
+  const [state, setState] = useState({ showConfirmation: false, action: "" });
+
+  const { showConfirmation, action } = state;
+
+  const closeConfirmation = () => {
+    setState({ showConfirmation: false, action: "" });
   };
 
-  closeConfirmation = () => {
-    this.setState({ action: "", showConfirmation: false });
+  const onFavoriteClick = () => {
+    setState({ showConfirmation: true, action: "updateFavorites" });
   };
 
-  onPlayClick = () => {
-    const { pathname, info, history } = this.props;
-    if (pathname === "songs") {
-      history.push(`/player/${pathname}/${info.artist} - ${info.title}`);
-    } else {
-      history.push(`/player/${pathname}/${info.artist || info.album}`);
-    }
+  const onRemoveClick = () => {
+    setState({ showConfirmation: true, action: "removeFromPlaylist" });
   };
 
-  onFavoriteClick = () => {
-    this.setState({ action: "updateFavorites", showConfirmation: true });
+  const onUpdateFavorites = () => {
+    closeListElement();
+    setTimeout(() => updateFavorites(pathname, _id), 500);
   };
 
-  onRemoveClick = () => {
-    this.setState({ action: "removeFromPlaylist", showConfirmation: true });
+  const onRemoveFromPlaylist = () => {
+    closeListElement();
+    setTimeout(() => removeFromPlaylist(playlist._id, _id), 500);
   };
 
-  updateFavorites = () => {
-    const { pathname, info, updateFavorites } = this.props;
-    this.closeListElement();
-    setTimeout(() => updateFavorites(pathname, info._id), 500);
-  };
-
-  removeFromPlaylist = () => {
-    const { playlist, info, removeFromPlaylist } = this.props;
-    this.closeListElement();
-    setTimeout(() => removeFromPlaylist(playlist._id, info._id), 500);
-  };
-
-  closeListElement = () => {
-    const { index } = this.props;
+  const closeListElement = () => {
     const { OpenListElement, CloseListElement } = classes;
     const selector = `.${OpenListElement}:nth-of-type(${index + 1})`;
     const el = document.querySelector(selector);
     if (el) el.classList.replace(OpenListElement, CloseListElement);
   };
 
-  render() {
-    const { info, pathname } = this.props;
-    const { action } = this.state;
+  //Default value for Play icon
+  let link = `/player/${pathname}/${artist || album}`;
+  //Default values for Favorite Icon
+  let buttonClass = classes.Favorites;
+  let buttonAction = onFavoriteClick;
+  let buttonIcon = "fas fa-star";
 
-    let title = "";
-    let question = "Are you sure you want to remove ";
-    if (action === "updateFavorites") {
-      title = "Remove from favorites";
-      question += `'${info.title ||
-        info.artist ||
-        info.album}' from your favorites?`;
+  if (pathname === "songs") {
+    link = `/player/${pathname}/${artist} - ${title}`;
+    if (playlist) {
+      //Values for Remove Icon
+      buttonClass = classes.Remove;
+      buttonAction = onRemoveClick;
+      buttonIcon = "far fa-trash-alt";
     }
-    if (action === "removeFromPlaylist") {
-      title = "Remove from playlist";
-      question += `the song '${info.title}' from this playlist?`;
-    }
-
-    return (
-      <Aux>
-        <div className={`${classes.ListElement} ${classes.OpenListElement}`}>
-          <img
-            src={
-              info.albumArt !== ""
-                ? require(`../../../assets/albumArts/${info.albumArt.albumArt}`)
-                : background
-            }
-            alt="Album Art"
-          />
-          <p>{info.title || info.artist || info.album}</p>
-          <p>{pathname === "songs" ? info.artist : info.albumArtist}</p>
-          <p>
-            {info.count
-              ? `Songs: ${info.count}`
-              : `Genre: ${info.genre.join(" /")}`}
-          </p>
-          <p>Duration: {secondsToHms(info.duration)}</p>
-
-          <button className={classes.Play} onClick={() => this.onPlayClick()}>
-            <i className="fas fa-play" />
-          </button>
-          {!this.props.playlist ? (
-            <button
-              className={classes.Favorites}
-              onClick={() => this.onFavoriteClick()}
-            >
-              <i className="fas fa-star" />
-            </button>
-          ) : (
-            <button
-              className={classes.Remove}
-              onClick={() => this.onRemoveClick()}
-            >
-              <i className="far fa-trash-alt" />
-            </button>
-          )}
-        </div>
-
-        {this.state.showConfirmation ? (
-          <Confirmation
-            title={title}
-            question={question}
-            caption1="Remove"
-            caption2="Cancel"
-            action={
-              action === "updateFavorites"
-                ? this.updateFavorites
-                : this.removeFromPlaylist
-            }
-            closeConfirmation={this.closeConfirmation}
-          />
-        ) : null}
-        {this.state.showConfirmation ? <Backdrop show /> : null}
-      </Aux>
-    );
   }
-}
 
-const mapDispatchToProps = dispatch => {
-  return {
-    updateFavorites: (route, id) => dispatch(updateFavorites(route, id)),
-    removeFromPlaylist: (playlistId, songId) =>
-      dispatch(removeFromPlaylist(playlistId, songId))
-  };
+  let confirmationTitle = "";
+  let question = "Are you sure you want to remove ";
+
+  if (action === "updateFavorites") {
+    confirmationTitle = "Remove from favorites";
+    question += `'${title || artist || album}' from your favorites?`;
+  }
+  if (action === "removeFromPlaylist") {
+    confirmationTitle = "Remove from playlist";
+    question += `the song '${title}' from this playlist?`;
+  }
+
+  return (
+    <Fragment>
+      <div className={`${classes.ListElement} ${classes.OpenListElement}`}>
+        <img
+          src={
+            albumArt !== ""
+              ? require(`../../../assets/albumArts/${albumArt.albumArt}`)
+              : background
+          }
+          alt="Album Art"
+        />
+
+        <p>{title || artist || album}</p>
+        <p>{pathname === "songs" ? artist : albumArtist}</p>
+        <p>{count ? `Songs: ${count}` : `Genre: ${genre.join(" /")}`}</p>
+        <p>Duration: {secondsToHms(duration)}</p>
+
+        <Link className={classes.Play} to={link}>
+          <i className="fas fa-play" />
+        </Link>
+
+        <button className={buttonClass} onClick={buttonAction}>
+          <i className={buttonIcon} />
+        </button>
+      </div>
+
+      {showConfirmation ? (
+        <Confirmation
+          title={confirmationTitle}
+          question={question}
+          caption1="Remove"
+          caption2="Cancel"
+          action={
+            action === "updateFavorites"
+              ? onUpdateFavorites
+              : onRemoveFromPlaylist
+          }
+          closeConfirmation={closeConfirmation}
+        />
+      ) : null}
+    </Fragment>
+  );
+};
+
+ListElement.propTypes = {
+  updateFavorites: PropTypes.func.isRequired,
+  removeFromPlaylist: PropTypes.func.isRequired,
+  pathname: PropTypes.string.isRequired,
+  info: PropTypes.object.isRequired,
+  playlist: PropTypes.object,
+  index: PropTypes.number.isRequired
 };
 
 export default connect(
   null,
-  mapDispatchToProps
+  { updateFavorites, removeFromPlaylist }
 )(ListElement);

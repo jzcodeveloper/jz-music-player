@@ -1,114 +1,108 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import classes from "./Register.css";
+import { Redirect } from "react-router-dom";
+import PropTypes from "prop-types";
+
 import { register } from "../../actions/authActions";
 import { setErrors } from "../../actions/errorsActions";
 
-class Register extends Component {
-  state = {
+import classes from "./Register.css";
+
+const Register = ({ register, setErrors, isAuthenticated, globalErrors }) => {
+  const [state, setState] = useState({
     name: "",
     email: "",
     password: "",
     password2: "",
     errors: {}
-  };
+  });
 
-  componentDidMount() {
+  const { name, email, password, password2, errors } = state;
+
+  useEffect(() => {
     document.title = `JZ Music Player - Register`;
-    this.props.setErrors({});
-    if (this.props.isAuthenticated) this.props.history.replace("/dashboard");
-  }
+    return () => setErrors();
+  }, []);
 
-  componentDidUpdate(prevProps) {
-    if (this.props.errors !== prevProps.errors)
-      this.setState({ errors: this.props.errors });
-  }
+  useEffect(() => {
+    setState({ ...state, errors: globalErrors });
+  }, [globalErrors]);
 
-  onChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
+  const onChange = e => {
+    setState({ ...state, [e.target.name]: e.target.value });
   };
 
-  onSubmit = e => {
+  const onSubmit = e => {
     e.preventDefault();
-
-    const registerData = {
-      name: this.state.name,
-      email: this.state.email,
-      password: this.state.password,
-      password2: this.state.password2
-    };
-
-    this.props.register(registerData, this.props.history);
+    register({ name, email, password, password2 });
   };
 
-  render() {
-    const { errors } = this.state;
+  if (isAuthenticated) return <Redirect to="/dashboard" />;
 
-    return (
-      <div className={classes.Register}>
-        <form onSubmit={this.onSubmit}>
-          <h1>Sign Up</h1>
-          <span>Create an account</span>
-          <input
-            className={errors.name ? classes.Invalid : null}
-            name="name"
-            type="text"
-            placeholder="Name"
-            value={this.state.name}
-            onChange={this.onChange}
-          />
-          {errors.name ? <p>{errors.name}</p> : null}
-          <input
-            className={errors.email ? classes.Invalid : null}
-            name="email"
-            type="email"
-            placeholder="Email"
-            value={this.state.email}
-            onChange={this.onChange}
-          />
-          {errors.email ? <p>{errors.email}</p> : null}
-          <input
-            className={errors.password ? classes.Invalid : null}
-            name="password"
-            type="password"
-            placeholder="Password"
-            autoComplete="false"
-            value={this.state.password}
-            onChange={this.onChange}
-          />
-          {errors.password ? <p>{errors.password}</p> : null}
-          <input
-            className={errors.password2 ? classes.Invalid : null}
-            name="password2"
-            type="password"
-            placeholder="Confirm Password"
-            autoComplete="false"
-            value={this.state.password2}
-            onChange={this.onChange}
-          />
-          {errors.password2 ? <p>{errors.password2}</p> : null}
-          <button>Submit</button>
-        </form>
-      </div>
-    );
-  }
-}
+  return (
+    <div className={classes.Register}>
+      <form onSubmit={e => onSubmit(e)}>
+        <h1>Sign Up</h1>
+        <span>Create an account</span>
+        <input
+          className={errors.name ? classes.Invalid : null}
+          name="name"
+          type="text"
+          placeholder="Name"
+          value={name}
+          onChange={onChange}
+        />
+        {errors.name ? <p>{errors.name}</p> : null}
+        <input
+          className={errors.email ? classes.Invalid : null}
+          name="email"
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={onChange}
+        />
+        {errors.email ? <p>{errors.email}</p> : null}
+        <input
+          className={errors.password ? classes.Invalid : null}
+          name="password"
+          type="password"
+          placeholder="Password"
+          autoComplete="false"
+          value={password}
+          onChange={onChange}
+        />
+        {errors.password ? <p>{errors.password}</p> : null}
+        <input
+          className={errors.password2 ? classes.Invalid : null}
+          name="password2"
+          type="password"
+          placeholder="Confirm Password"
+          autoComplete="false"
+          value={password2}
+          onChange={onChange}
+        />
+        {errors.password2 ? <p>{errors.password2}</p> : null}
+        <button>Submit</button>
+      </form>
+    </div>
+  );
+};
+
+Register.propTypes = {
+  register: PropTypes.func.isRequired,
+  setErrors: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool.isRequired,
+  globalErrors: PropTypes.object
+};
 
 const mapStateToProps = state => {
   return {
-    errors: state.errors,
-    isAuthenticated: state.auth.isAuthenticated
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    register: (payload, history) => dispatch(register(payload, history)),
-    setErrors: () => dispatch(setErrors())
+    isAuthenticated: state.auth.isAuthenticated,
+    globalErrors: state.errors
   };
 };
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  { register, setErrors }
 )(Register);

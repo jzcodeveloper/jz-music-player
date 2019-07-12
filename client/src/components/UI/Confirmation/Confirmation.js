@@ -1,35 +1,53 @@
 import React from "react";
+import PropTypes from "prop-types";
+
 import classes from "./Confirmation.css";
 
-const Confirmation = props => {
+const Confirmation = ({
+  action,
+  closeConfirmation,
+  title,
+  question,
+  caption1,
+  caption2
+}) => {
   const onClick = () => {
-    closeConfirmation();
-    setTimeout(() => props.action(), 700);
+    onCloseConfirmation();
+    setTimeout(() => action(), 700);
   };
 
-  const closeConfirmation = () => {
+  const onCloseConfirmation = () => {
     const { OpenConfirmation, CloseConfirmation } = classes;
     const el = document.querySelector(`.${OpenConfirmation}`);
     if (el) el.classList.replace(OpenConfirmation, CloseConfirmation);
-    setTimeout(() => props.closeConfirmation(), 700);
+    setTimeout(() => closeConfirmation(), 700);
   };
 
   return (
     <section className={classes.Confirmation}>
       <div className={classes.OpenConfirmation}>
-        <h1>{props.title}</h1>
-        <span>{props.question}</span>
+        <h1>{title}</h1>
+        <span>{question}</span>
         <div>
           <button className={classes.Button} onClick={onClick}>
-            {props.caption1}
+            {caption1}
           </button>
-          <button className={classes.Cancel} onClick={closeConfirmation}>
-            {props.caption2}
+          <button className={classes.Cancel} onClick={onCloseConfirmation}>
+            {caption2}
           </button>
         </div>
       </div>
     </section>
   );
+};
+
+Confirmation.propTypes = {
+  action: PropTypes.func.isRequired,
+  closeConfirmation: PropTypes.func.isRequired,
+  title: PropTypes.string.isRequired,
+  question: PropTypes.string.isRequired,
+  caption1: PropTypes.string.isRequired,
+  caption2: PropTypes.string.isRequired
 };
 
 export default Confirmation;

@@ -1,26 +1,39 @@
-import React from "react";
+import React, { Fragment } from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
 import classes from "./SideDrawer.css";
-import Aux from "../../../hoc/Auxiliary/Auxiliary";
 import Backdrop from "../../UI/Backdrop/Backdrop";
 import NavigationItems from "../NavigationItems/NavigationItems";
 
-const SideDrawer = props => {
+const SideDrawer = ({ show, close, isAuth }) => {
   let asignedClasses = [classes.SideDrawer];
-  if (props.show) {
+  if (show) {
     asignedClasses.push(classes.Open);
   } else {
     asignedClasses.push(classes.Close);
   }
 
   return (
-    <Aux>
-      <Backdrop show={props.show} click={props.close} />
-      <div className={asignedClasses.join(" ")} onClick={props.close}>
-        <NavigationItems isAuth={props.isAuth} />
+    <Fragment>
+      <Backdrop show={show} click={close} />
+      <div className={asignedClasses.join(" ")} onClick={close}>
+        <NavigationItems isAuth={isAuth} />
       </div>
-    </Aux>
+    </Fragment>
   );
 };
 
-export default SideDrawer;
+SideDrawer.propTypes = {
+  show: PropTypes.bool.isRequired,
+  close: PropTypes.func.isRequired,
+  isAuth: PropTypes.bool.isRequired
+};
+
+const mapStateToProps = state => {
+  return {
+    isAuth: state.auth.isAuthenticated
+  };
+};
+
+export default connect(mapStateToProps)(SideDrawer);

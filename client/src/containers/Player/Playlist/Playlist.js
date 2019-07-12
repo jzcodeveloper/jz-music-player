@@ -1,32 +1,29 @@
 import React, { useEffect } from "react";
-import classes from "./Playlist.css";
-import background from "../../../assets/background.jpg";
+import PropTypes from "prop-types";
 
-const Playlist = props => {
+import classes from "./Playlist.css";
+import PlaylistItem from "../PlaylistItem/PlaylistItem";
+
+const Playlist = ({ toggleActiveClass, playlist, onClick }) => {
   useEffect(() => {
-    props.toggleActiveClass();
+    toggleActiveClass();
   }, []);
 
   return (
     <ul className={classes.Playlist}>
-      {props.playlist.map((song, index) => (
-        <li key={index} onClick={() => props.onClick(index)}>
-          <img
-            src={
-              song.albumArt !== ""
-                ? require(`../../../assets/albumArts/${song.albumArt.albumArt}`)
-                : background
-            }
-            alt="Album Art"
-          />
-          <div>
-            <span>{song.title}</span>
-            <span>{song.artist}</span>
-          </div>
+      {playlist.map(({ albumArt, title, artist }, index) => (
+        <li key={index} onClick={() => onClick(index)}>
+          <PlaylistItem albumArt={albumArt} title={title} artist={artist} />
         </li>
       ))}
     </ul>
   );
+};
+
+Playlist.propTypes = {
+  toggleActiveClass: PropTypes.func.isRequired,
+  playlist: PropTypes.array.isRequired,
+  onClick: PropTypes.func.isRequired
 };
 
 export default Playlist;

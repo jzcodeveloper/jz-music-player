@@ -1,4 +1,4 @@
-module.exports = function isEmpty(value) {
+const isEmpty = value => {
   return (
     value === undefined ||
     value === null ||
@@ -6,3 +6,5 @@ module.exports = function isEmpty(value) {
     (typeof value === "string" && value.trim().length === 0)
   );
 };
+
+module.exports = isEmpty;

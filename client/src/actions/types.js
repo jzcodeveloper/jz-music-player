@@ -5,8 +5,14 @@ export const CLEAR_ERRORS = "CLEAR_ERRORS";
 export const COUNT_SONGS = "COUNT_SONGS";
 //Auth actions
 export const LOGIN = "LOGIN";
+export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
+export const LOGIN_FAIL = "LOGIN_FAIL";
 export const REGISTER = "REGISTER";
+export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
+export const REGISTER_FAIL = "REGISTER_FAIL";
 export const SET_CURRENT_USER = "SET_CURRENT_USER";
+export const AUTH_ERROR = "AUTH_ERROR";
+export const LOGOUT = "LOGOUT";
 //Player actions
 export const FETCH_PLAYLIST = "FETCH_PLAYLIST";
 export const FETCH_PLAYLIST_START = "FETCH_PLAYLIST_START";

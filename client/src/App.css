@@ -6,8 +6,11 @@ html {
   scroll-behavior: smooth;
 }
 
-.App {
-  text-align: left;
+body {
+  margin: 0;
+  margin-top: 60px;
+  padding: 0;
+  font-family: Georgia;
 }
 
 ::-webkit-scrollbar {

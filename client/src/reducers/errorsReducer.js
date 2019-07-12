@@ -1,16 +1,17 @@
 import * as types from "../actions/types";
-import { updateObject } from "../utils/utility";
 
 const initialState = {};
 
-const setErrors = (state, action) => {
-  return updateObject({}, action.payload);
+const setErrors = (state, payload) => {
+  return payload;
 };
 
 export default function(state = initialState, action) {
-  switch (action.type) {
+  const { type, payload } = action;
+
+  switch (type) {
     case types.SET_ERRORS:
-      return setErrors(state, action);
+      return setErrors(state, payload);
 
     default:
       return state;

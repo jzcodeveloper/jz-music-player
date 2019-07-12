@@ -1,18 +1,18 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import PropTypes from "prop-types";
 
 import classes from "./NavigationItem.css";
 
-const NavigationItem = props => (
+const NavigationItem = ({ link, children }) => (
   <li className={classes.NavigationItem}>
-    <NavLink
-      to={props.link}
-      exact={props.exact}
-      activeClassName={classes.active}
-    >
-      {props.children}
-    </NavLink>
+    <NavLink to={link}>{children}</NavLink>
   </li>
 );
+
+NavigationItem.propTypes = {
+  link: PropTypes.string.isRequired,
+  children: PropTypes.string.isRequired
+};
 
 export default NavigationItem;

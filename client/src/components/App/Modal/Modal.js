@@ -1,118 +1,126 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import classes from "./Modal.css";
+import PropTypes from "prop-types";
+
 import { setErrors } from "../../../actions/errorsActions";
 
-class Modal extends Component {
-  state = {
-    name: "",
-    description: "",
-    errors: {}
+import classes from "./Modal.css";
+import { useIsMounted } from "../../../hooks/customHooks";
+
+const Modal = ({
+  setErrors,
+  createPlaylist,
+  editPlaylist,
+  closeModal,
+  playlist,
+  playlists,
+  action,
+  globalErrors
+}) => {
+  const [state, setState] = useState({ name: "", description: "", errors: {} });
+
+  const { name, description, errors } = state;
+
+  const isMounted = useIsMounted();
+
+  useEffect(() => {
+    setErrors();
+  }, []);
+
+  useEffect(() => {
+    setState({ ...state, errors: globalErrors });
+  }, [globalErrors]);
+
+  useEffect(() => {
+    if (playlist) {
+      const { name, description } = playlist;
+      setState({ ...state, name, description });
+    }
+  }, [playlist]);
+
+  useEffect(() => {
+    if (isMounted) onCloseModal();
+  }, [playlists]);
+
+  const onChange = e => {
+    setState({ ...state, [e.target.name]: e.target.value });
   };
 
-  componentDidMount() {
-    this.props.setErrors();
-    if (this.props.action === "edit") {
-      const playlist = this.props.playlists[this.props.playlistIndex];
-      this.setState({ name: playlist.name, description: playlist.description });
-    }
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.errors !== this.props.errors)
-      this.setState({ errors: this.props.errors });
-    if (prevProps.playlists !== this.props.playlists) {
-      this.closeModal();
-    }
-  }
-
-  onChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
-  };
-
-  onSubmit = e => {
-    e.preventDefault();
-
-    const playlistData = {
-      name: this.state.name,
-      description: this.state.description,
-      user: this.props.user.id
-    };
-
-    if (this.props.action === "create") {
-      this.props.createPlaylist(playlistData);
+  const onSubmit = () => {
+    if (action === "create") {
+      createPlaylist({ name, description });
     } else {
-      const playlist = this.props.playlists[this.props.playlistIndex];
-      this.props.editPlaylist(playlist._id, playlistData);
+      editPlaylist({ name, description });
     }
   };
 
-  closeModal = () => {
+  const onCloseModal = () => {
     const { OpenModal, CloseModal } = classes;
     const el = document.querySelector(`.${OpenModal}`);
     if (el) el.classList.replace(OpenModal, CloseModal);
-    setTimeout(() => this.props.closeModal(), 700);
+    setTimeout(() => closeModal(), 700);
   };
 
-  render() {
-    const { errors } = this.state;
-    const title =
-      this.props.action === "create" ? "Create Playlist" : "Edit Playlist";
-    const caption = this.props.action === "create" ? "Create" : "Edit";
+  const title = action === "create" ? "Create Playlist" : "Edit Playlist";
+  const caption = action === "create" ? "Create" : "Edit";
 
-    return (
-      <section className={classes.Modal}>
-        <div className={classes.OpenModal}>
-          <h1>{title}</h1>
-          <span>Fill up all the fields</span>
-          <input
-            className={errors.name ? classes.Invalid : null}
-            name="name"
-            type="text"
-            placeholder="Playlist Name"
-            value={this.state.name}
-            onChange={this.onChange}
-            autoFocus
-          />
-          {errors.name ? <p>{errors.name}</p> : null}
-          <input
-            className={errors.description ? classes.Invalid : null}
-            name="description"
-            type="text"
-            placeholder="Playlist Description"
-            value={this.state.description}
-            onChange={this.onChange}
-          />
-          {errors.description ? <p>{errors.description}</p> : null}
-          <div>
-            <button className={classes.Button} onClick={this.onSubmit}>
-              {caption}
-            </button>
-            <button className={classes.Cancel} onClick={this.closeModal}>
-              Cancel
-            </button>
-          </div>
+  return (
+    <section className={classes.Modal}>
+      <div className={classes.OpenModal}>
+        <h1>{title}</h1>
+        <span>Fill up all the fields</span>
+        <input
+          className={errors.name ? classes.Invalid : null}
+          name="name"
+          type="text"
+          placeholder="Playlist Name"
+          value={name}
+          onChange={onChange}
+          autoFocus
+        />
+        {errors.name ? <p>{errors.name}</p> : null}
+        <input
+          className={errors.description ? classes.Invalid : null}
+          name="description"
+          type="text"
+          placeholder="Playlist Description"
+          value={description}
+          onChange={onChange}
+        />
+        {errors.description ? <p>{errors.description}</p> : null}
+
+        <div>
+          <button className={classes.Button} onClick={onSubmit}>
+            {caption}
+          </button>
+          <button className={classes.Cancel} onClick={onCloseModal}>
+            Cancel
+          </button>
         </div>
-      </section>
-    );
-  }
-}
+      </div>
+    </section>
+  );
+};
+
+Modal.propTypes = {
+  setErrors: PropTypes.func.isRequired,
+  createPlaylist: PropTypes.func,
+  editPlaylist: PropTypes.func,
+  closeModal: PropTypes.func.isRequired,
+  playlist: PropTypes.object,
+  playlists: PropTypes.array.isRequired,
+  action: PropTypes.string.isRequired,
+  globalErrors: PropTypes.object.isRequired
+};
 
 const mapStateToProps = state => {
   return {
-    user: state.auth.user,
     playlists: state.playlists.playlists,
-    errors: state.errors
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    setErrors: () => dispatch(setErrors())
+    globalErrors: state.errors
   };
 };
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  { setErrors }
 )(Modal);

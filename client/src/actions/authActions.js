@@ -1,62 +1,56 @@
 import axios from "axios";
-import { setErrors } from "./errorsActions";
 import { setAuthToken } from "../utils/setAuthToken";
-import jwt_decode from "jwt-decode";
 import * as types from "./types";
 
-export const login = (payload, history) => dispatch => {
-  axios
-    .post("/auth/login", payload)
-    .then(res => {
-      const { token } = res.data;
-      const decoded = jwt_decode(token);
-      localStorage.setItem("Authorization", token);
-      setAuthToken(token);
-      dispatch(setCurrentUser(decoded));
-      dispatch(setErrors());
-      history.push("/dashboard");
-    })
-    .catch(err => {
-      dispatch(setErrors(err.response.data));
-    });
-};
+export const loadUser = () => async dispatch => {
+  if (localStorage.token) {
+    setAuthToken(localStorage.token);
+  }
 
-export const register = (payload, history) => dispatch => {
-  axios
-    .post("/auth/register", payload)
-    .then(res => {
-      history.push("/login");
-      dispatch(setErrors());
-    })
-    .catch(err => {
-      dispatch(setErrors(err.response.data));
-    });
-};
-
-export const logoutUser = history => dispatch => {
-  localStorage.removeItem("Authorization");
-  setAuthToken(false);
-  dispatch(setCurrentUser());
-};
-
-export const checkAuthState = history => dispatch => {
-  if (localStorage.Authorization) {
-    const decoded = jwt_decode(localStorage.Authorization);
-    const currentTime = Date.now() / 1000;
-    if (decoded.exp <= currentTime) {
-      dispatch(logoutUser(history));
-    } else {
-      setAuthToken(localStorage.Authorization);
-      dispatch(setCurrentUser(decoded));
-    }
-  } else {
-    dispatch(logoutUser(history));
+  try {
+    const { data } = await axios.get("/auth/user");
+    dispatch({ type: types.SET_CURRENT_USER, payload: data });
+  } catch (err) {
+    dispatch({ type: types.AUTH_ERROR });
   }
 };
 
-export const setCurrentUser = (payload = {}) => {
-  return {
-    type: types.SET_CURRENT_USER,
-    payload
-  };
+export const login = payload => async dispatch => {
+  try {
+    const { data } = await axios.post("/auth/login", payload);
+    dispatch({ type: types.LOGIN_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({ type: types.LOGIN_FAIL });
+    dispatch({ type: types.SET_ERRORS, payload: error.response.data });
+  }
+};
+
+export const register = payload => async dispatch => {
+  try {
+    const { data } = await axios.post("/auth/register", payload);
+    dispatch({ type: types.REGISTER_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({ type: types.REGISTER_FAIL });
+    dispatch({ type: types.SET_ERRORS, payload: error.response.data });
+  }
+};
+
+export const checkAuthState = () => dispatch => {
+  const { token, expiresIn } = localStorage;
+
+  if (token) {
+    const currentTime = Date.now() / 1000;
+
+    if (expiresIn <= currentTime) {
+      dispatch(logoutUser());
+    } else {
+      dispatch(loadUser());
+    }
+  } else {
+    dispatch(logoutUser());
+  }
+};
+
+export const logoutUser = () => dispatch => {
+  dispatch({ type: types.LOGOUT });
 };

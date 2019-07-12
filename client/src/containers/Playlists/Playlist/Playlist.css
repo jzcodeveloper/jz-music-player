@@ -34,14 +34,20 @@
   margin: 0;
 }
 
-.Playlist button {
+.Playlist > div > button,
+.Playlist > div > a {
   flex: 0.2;
   margin: 1px;
+  padding: 1px 6px;
   background-color: white;
   border-radius: 5px;
   cursor: pointer;
+  text-align: center;
   font-size: 1em;
   outline: none;
+  border: none;
+  border-style: double;
+  border-width: 2px;
 }
 
 .Playlist + div {
@@ -78,6 +84,10 @@
 
 .Expand {
   color: orange;
+}
+
+.Center {
+  text-align: center;
 }
 
 @media (max-width: 450px) {

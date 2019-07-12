@@ -1,56 +1,54 @@
-import React, { Component } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { connect } from "react-redux";
-import classes from "./Playlists.css";
+import PropTypes from "prop-types";
 
 import { fetchPlaylists, createPlaylist } from "../../actions/playlistsActions";
 
+import classes from "./Playlists.css";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import Modal from "../../components/App/Modal/Modal";
-import Backdrop from "../../components/UI/Backdrop/Backdrop";
 import Playlist from "./Playlist/Playlist";
 
-class Playlists extends Component {
-  state = {
-    showModal: false
-  };
+const Playlists = ({
+  fetchPlaylists,
+  createPlaylist,
+  loading,
+  playlists,
+  history
+}) => {
+  const [showModal, setShowModal] = useState(false);
 
-  componentDidMount() {
+  useEffect(() => {
     document.title = `JZ Music Player - My Playlists`;
-    this.props.fetchPlaylists(this.props.user.id);
-  }
+    fetchPlaylists();
+  }, []);
 
-  createPlaylist = payload => {
-    const { createPlaylist } = this.props;
+  const onCreatePlaylist = payload => {
     createPlaylist(payload);
   };
 
-  closeModal = () => {
-    this.setState({ showModal: false });
+  const onCloseModal = () => {
+    setShowModal(false);
   };
 
-  showModal = () => {
-    this.setState({ showModal: true });
+  const onShowModal = () => {
+    setShowModal(true);
   };
 
-  render() {
-    const { playlists, history } = this.props;
-
-    let playlistsPage = <Spinner />;
-
-    if (!this.props.loading) {
-      playlistsPage = (
+  return (
+    <Fragment>
+      {loading ? (
+        <Spinner />
+      ) : (
         <div className={classes.Playlists}>
           <h1>My Playlists</h1>
-          <button
-            className={classes.CreatePlaylist}
-            onClick={() => this.showModal(null)}
-          >
+          <button className={classes.CreatePlaylist} onClick={onShowModal}>
             Create Playlist
           </button>
           {playlists.length > 0 ? (
             playlists.map((playlist, index) => (
               <div key={playlist._id}>
-                <Playlist playlist={playlist} index={index} history={history} />
+                <Playlist playlist={playlist} index={index} />
               </div>
             ))
           ) : (
@@ -59,38 +57,35 @@ class Playlists extends Component {
             </div>
           )}
 
-          {this.state.showModal ? (
+          {showModal ? (
             <Modal
-              closeModal={this.closeModal}
+              closeModal={onCloseModal}
               action={"create"}
-              createPlaylist={this.createPlaylist}
+              createPlaylist={onCreatePlaylist}
             />
           ) : null}
-          {this.state.showModal ? <Backdrop show /> : null}
         </div>
-      );
-    }
+      )}
+    </Fragment>
+  );
+};
 
-    return playlistsPage;
-  }
-}
+Playlists.propTypes = {
+  fetchPlaylists: PropTypes.func.isRequired,
+  createPlaylist: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
+  playlists: PropTypes.array.isRequired,
+  history: PropTypes.object.isRequired
+};
 
 const mapStateToProps = state => {
   return {
-    user: state.auth.user,
     loading: state.playlists.loading,
     playlists: state.playlists.playlists
   };
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    fetchPlaylists: userId => dispatch(fetchPlaylists(userId)),
-    createPlaylist: payload => dispatch(createPlaylist(payload))
-  };
-};
-
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  { fetchPlaylists, createPlaylist }
 )(Playlists);

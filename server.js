@@ -1,40 +1,19 @@
-//Models
-require("./models/AlbumArt");
-require("./models/User");
-
-//Dependencies
-require("colors");
 const express = require("express");
+const connectDB = require("./config/db");
 const path = require("path");
-const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
-const passport = require("passport");
 const responseTime = require("response-time");
+
 const app = express();
-const port = process.env.PORT || 5001;
 
-//Other middlewares
+//Connect DB
+connectDB();
+
+//Init Middlewares
 app.use(responseTime());
+app.use(express.json({ extended: false }));
 
-//Body parser middleware
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-
-//Passport config
-app.use(passport.initialize());
-require("./config/passport")(passport);
-
-//Use routes
-app.use(require("./routes/index"));
-
-//DB config
-const db = require("./config/keys").mongoURI;
-
-//Connect to MongoDB
-mongoose
-  .connect(db, { useNewUrlParser: true, useFindAndModify: false })
-  .then(() => console.log("MongoDB Connected".green))
-  .catch(err => console.log("Could not connect to MongoDB".red));
+//Define Routes
+app.use("/api", require("./routes/index"));
 
 //Serve static assets if in production
 if (process.env.NODE_ENV === "production") {
@@ -46,5 +25,6 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-//Starts server
-app.listen(port, () => console.log(`Server running on port ${port}`.blue));
+const PORT = process.env.PORT || 5001;
+
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

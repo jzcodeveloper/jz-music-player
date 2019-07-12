@@ -1,176 +1,152 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import React, { Fragment, useState, useEffect } from "react";
 import { connect } from "react-redux";
-import classes from "./Music.css";
+import PropTypes from "prop-types";
 
 import { fetchMetadata } from "../../actions/musicActions";
-import { addToPlaylist } from "../../actions/playlistsActions";
 import { smoothScroll } from "../../utils/smoothScroll";
 
+import classes from "./Music.css";
 import Spinner from "../../components/UI/Spinner/Spinner";
-import Backdrop from "../../components/UI/Backdrop/Backdrop";
-import GridElement from "../../components/App/GridElement/GridElement";
+import Section from "./Section/Section";
 import AddToPlaylist from "../../components/App/AddToPlaylist/AddToPlaylist";
 
-class Music extends Component {
-  state = {
+const Music = ({ fetchMetadata, loading, history, albums, artists, songs }) => {
+  const [state, setState] = useState({
     showPlaylists: false,
     pathname: "",
-    itemId: {}
-  };
+    itemId: ""
+  });
 
-  showPlaylists = (pathname, itemId) => {
-    this.setState({ showPlaylists: true, pathname, itemId });
-  };
+  const { showPlaylists, pathname, itemId } = state;
 
-  closePlaylists = () => {
-    this.setState({ showPlaylists: false, pathname: "", itemId: {} });
-  };
-
-  addToPlaylist = (route, playlistId, itemId) => {
-    this.props.addToPlaylist(route, playlistId, itemId);
-  };
-
-  componentDidMount() {
+  useEffect(() => {
     document.title = `JZ Music Player - Music`;
-    const { albums, artists, songs } = this.props;
     if (albums.length === 0 || artists.length === 0 || songs.length === 0) {
-      this.props.fetchMetadata();
+      fetchMetadata();
     }
-  }
+  }, []);
 
-  toggleButtons = index => {
+  const onShowPlaylists = (pathname, itemId) => {
+    setState({ showPlaylists: true, pathname, itemId });
+  };
+
+  const onClosePlaylists = () => {
+    setState({ showPlaylists: false, pathname: "", itemId: "" });
+  };
+
+  const toggleButtons = index => {
     const divs = document.querySelectorAll("span + div");
-    const left = document.querySelector(
-      `span:nth-of-type(${index + 1}) + div > button:nth-of-type(1)`
-    );
-    const right = document.querySelector(
-      `span:nth-of-type(${index + 1}) + div > button:nth-of-type(2)`
-    );
+    const buttons = document.querySelectorAll("span + div > button");
+    const left = buttons[index * 2];
+    const right = buttons[index * 2 + 1];
+    const scrollWidth = divs[index].scrollLeft + divs[index].clientWidth;
+
     if (divs[index].scrollLeft === 0) {
       left.style.display = "none";
     } else {
       left.style.display = "block";
     }
 
-    if (
-      divs[index].scrollLeft + divs[index].clientWidth >=
-      divs[index].scrollWidth
-    ) {
+    if (scrollWidth >= divs[index].scrollWidth) {
       right.style.display = "none";
     } else {
       right.style.display = "block";
     }
   };
 
-  scrollLeft = index => {
+  const scrollLeft = async index => {
     const divs = document.querySelectorAll("span + div");
     let targetScroll = divs[index].scrollLeft - 250;
     if (targetScroll < 0) targetScroll = 0;
 
-    smoothScroll(divs[index], targetScroll, 251).then(() =>
-      this.toggleButtons(index)
-    );
+    try {
+      await smoothScroll(divs[index], targetScroll, 251);
+      toggleButtons(index);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  scrollRight = index => {
+  const scrollRight = async index => {
     const divs = document.querySelectorAll("span + div");
     const maxScroll = divs[index].scrollWidth - divs[index].clientWidth;
     let targetScroll = divs[index].scrollLeft + 250;
     if (targetScroll > maxScroll) targetScroll = maxScroll;
 
-    smoothScroll(divs[index], targetScroll, 251).then(() =>
-      this.toggleButtons(index)
-    );
+    try {
+      await smoothScroll(divs[index], targetScroll, 251);
+      toggleButtons(index);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  render() {
-    let music = <Spinner />;
-    const { albums, artists, songs, history, loading } = this.props;
-    if (!loading && albums.length > 0) {
-      music = (
+  return (
+    <Fragment>
+      {loading ? (
+        <Spinner />
+      ) : (
         <div className={classes.Music}>
-          <span>TOP ALBUMS</span>
-          <div>
-            {albums.map(album => (
-              <GridElement
-                key={album._id}
-                info={album}
-                pathname="albums"
-                history={history}
-                showPlaylists={this.showPlaylists}
-              />
-            ))}
-            <figure>
-              <Link to="/more/albums/">More albums...</Link>
-            </figure>
+          <Section
+            sectionTitle="TOP ALBUMS"
+            info={albums}
+            pathname="albums"
+            history={history}
+            showPlaylists={onShowPlaylists}
+            link="/more/albums/"
+            linkCaption="More albums..."
+            buttonIndex={0}
+            scrollLeft={scrollLeft}
+            scrollRight={scrollRight}
+          />
 
-            <button onClick={() => this.scrollLeft(0)}>
-              <p>{"<"}</p>
-            </button>
-            <button onClick={() => this.scrollRight(0)}>
-              <p>{">"}</p>
-            </button>
-          </div>
-          <span>TOP ARTISTS</span>
-          <div>
-            {artists.map(artist => (
-              <GridElement
-                key={artist._id}
-                info={artist}
-                pathname="artists"
-                history={history}
-                showPlaylists={this.showPlaylists}
-              />
-            ))}
-            <figure>
-              <Link to="/more/artists/">More artists...</Link>
-            </figure>
-            <button onClick={() => this.scrollLeft(1)}>
-              <p>{"<"}</p>
-            </button>
-            <button onClick={() => this.scrollRight(1)}>
-              <p>{">"}</p>
-            </button>
-          </div>
-          <span>TOP SONGS</span>
-          <div>
-            {songs.map(song => (
-              <GridElement
-                key={song._id}
-                info={song}
-                pathname="songs"
-                history={history}
-                showPlaylists={this.showPlaylists}
-              />
-            ))}
-            <figure>
-              <Link to="/more/songs/">More songs...</Link>
-            </figure>
-            <button onClick={() => this.scrollLeft(2)}>
-              <p>{"<"}</p>
-            </button>
-            <button onClick={() => this.scrollRight(2)}>
-              <p>{">"}</p>
-            </button>
-          </div>
+          <Section
+            sectionTitle="TOP ARTISTS"
+            info={artists}
+            pathname="artists"
+            history={history}
+            showPlaylists={onShowPlaylists}
+            link="/more/artists/"
+            linkCaption="More artists..."
+            buttonIndex={1}
+            scrollLeft={scrollLeft}
+            scrollRight={scrollRight}
+          />
 
-          {this.state.showPlaylists ? (
+          <Section
+            sectionTitle="TOP SONGS"
+            info={songs}
+            pathname="songs"
+            history={history}
+            showPlaylists={onShowPlaylists}
+            link="/more/songs/"
+            linkCaption="More songs..."
+            buttonIndex={2}
+            scrollLeft={scrollLeft}
+            scrollRight={scrollRight}
+          />
+
+          {showPlaylists ? (
             <AddToPlaylist
-              pathname={this.state.pathname}
-              itemId={this.state.itemId}
-              addToPlaylist={this.addToPlaylist}
-              closePlaylists={this.closePlaylists}
+              pathname={pathname}
+              itemId={itemId}
+              closePlaylists={onClosePlaylists}
             />
           ) : null}
-          {this.state.showPlaylists ? <Backdrop show /> : null}
         </div>
-      );
-    }
+      )}
+    </Fragment>
+  );
+};
 
-    return music;
-  }
-}
+Music.propTypes = {
+  fetchMetadata: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
+  history: PropTypes.object.isRequired,
+  albums: PropTypes.array.isRequired,
+  artists: PropTypes.array.isRequired,
+  songs: PropTypes.array.isRequired
+};
 
 const mapStateToProps = state => {
   return {
@@ -181,15 +157,7 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    fetchMetadata: () => dispatch(fetchMetadata()),
-    addToPlaylist: (route, playlistId, itemId) =>
-      dispatch(addToPlaylist(route, playlistId, itemId))
-  };
-};
-
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  { fetchMetadata }
 )(Music);

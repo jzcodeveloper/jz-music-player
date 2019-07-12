@@ -1,8 +1,17 @@
-import React, { Component } from "react";
-import classes from "./Controls.css";
+import React, { useState, useEffect, useRef } from "react";
+import PropTypes from "prop-types";
 
-class Controls extends Component {
-  state = {
+import classes from "./Controls.css";
+import { usePrevious, useInterval } from "../../../hooks/customHooks";
+
+const Controls = ({
+  toggleActiveClass,
+  src,
+  setPreviousIndex,
+  setNextIndex,
+  setRandomIndex
+}) => {
+  const [state, setState] = useState({
     currentTime: 0,
     duration: 0,
     loop: false,
@@ -10,53 +19,57 @@ class Controls extends Component {
     random: false,
     sliderPosition: 0,
     status: "stopped",
-    volume: 100
-  };
+    volume: 1
+  });
 
-  componentDidMount() {
-    this._isMounted = true;
-    this.progressInterval = setInterval(() => {
-      if (!this.player.paused) {
-        const e = this.player;
-        const sliderValue = (e.currentTime / e.duration) * 100;
+  const {
+    currentTime,
+    duration,
+    loop,
+    muted,
+    random,
+    sliderPosition,
+    status,
+    volume
+  } = state;
 
-        if (this._isMounted) {
-          this.setState({
-            currentTime: e.currentTime || 0,
-            duration: e.duration || 0,
-            sliderPosition: sliderValue || 0
-          });
-        }
-      }
-    }, 1000);
-  }
+  const prevStatus = usePrevious(status);
+  const player = useRef();
 
-  componentWillUnmount() {
-    clearInterval(this.progressInterval);
-  }
+  useInterval(() => {
+    if (!player.current.paused) {
+      const e = player.current;
+      const sliderValue = (e.currentTime / e.duration) * 100;
 
-  componentDidUpdate(prevProps, prevState) {
-    if (this.props.src !== prevProps.src) {
-      this.player.src = this.props.src;
-      this.player.play();
-      this.setState({ status: "playing" });
+      setState(prevState => ({
+        ...prevState,
+        currentTime: e.currentTime || 0,
+        duration: e.duration || 0,
+        sliderPosition: sliderValue || 0
+      }));
     }
+  }, 1000);
 
-    if (this.state.status !== prevState.status) {
-      if (this.state.status === "paused") {
-        this.player.pause();
-      }
-      if (this.state.status === "playing" && prevState.status === "paused") {
-        this.player.play();
-      }
-      if (this.state.status === "playing" && prevState.status === "stopped") {
-        this.player.load();
-        this.player.play();
-      }
+  useEffect(() => {
+    player.current.src = src;
+    player.current.play();
+    setState({ ...state, status: "playing" });
+  }, [src]);
+
+  useEffect(() => {
+    if (status === "paused") {
+      player.current.pause();
     }
-  }
+    if (status === "playing" && prevStatus === "paused") {
+      player.current.play();
+    }
+    if (status === "playing" && prevStatus === "stopped") {
+      player.current.load();
+      player.current.play();
+    }
+  }, [status]);
 
-  getTime = time => {
+  const getTime = time => {
     if (!isNaN(time)) {
       return (
         Math.floor(time / 60) + ":" + ("0" + Math.floor(time % 60)).slice(-2)
@@ -64,171 +77,159 @@ class Controls extends Component {
     }
   };
 
-  onChange = e => {
-    const currentTime = (e.target.value * this.state.duration) / 100;
-    this.player.currentTime = currentTime;
-    this.setState({ currentTime });
+  const onChange = e => {
+    const currentTime = (e.target.value * duration) / 100;
+    player.current.currentTime = currentTime;
+    setState({ ...state, currentTime });
   };
 
-  onVolumeChange = e => {
+  const onVolumeChange = e => {
     const volume = e.target.value / 100;
-    this.player.volume = volume;
-    this.setState({ volume });
+    player.current.volume = volume;
+    setState({ ...state, volume });
   };
 
-  onEnded = () => {
-    if (this.state.random) {
-      this.props.setRandomIndex();
+  const onEnded = () => {
+    if (random) {
+      setRandomIndex();
     } else {
-      this.props.setNextIndex();
+      setNextIndex();
     }
   };
 
-  onPrev = () => {
-    if (this.state.random) {
-      this.props.setRandomIndex();
+  const onPrev = () => {
+    if (random) {
+      setRandomIndex();
     } else {
-      this.props.setPreviousIndex();
+      setPreviousIndex();
     }
   };
 
-  onNext = () => {
-    if (this.state.random) {
-      this.props.setRandomIndex();
+  const onNext = () => {
+    if (random) {
+      setRandomIndex();
     } else {
-      this.props.setNextIndex();
+      setNextIndex();
     }
   };
 
-  setStatus = newStatus => {
-    if (this._isMounted) {
-      this.setState({ status: newStatus });
-    }
+  const setStatus = newStatus => {
+    setState({ ...state, status: newStatus });
   };
 
-  setLoop = () => {
-    this.setState(prevState => {
-      return { loop: !prevState.loop };
-    });
+  const setLoop = () => {
+    setState({ ...state, loop: !loop });
   };
 
-  setRandom = () => {
-    this.setState(prevState => {
-      return { random: !prevState.random };
-    });
+  const setRandom = () => {
+    setState({ ...state, random: !random });
   };
 
-  setMuted = () => {
-    this.setState(prevState => {
-      return { muted: !prevState.muted };
-    });
+  const setMuted = () => {
+    setState({ ...state, muted: !muted });
   };
 
-  render() {
-    const currentTime = this.getTime(this.state.currentTime);
-    const duration = this.getTime(this.state.duration);
-    const volume = this.state.volume * 100;
-    const { status, muted } = this.state;
-    let volumeIcon = "";
-    if (volume >= 25) volumeIcon = "fa-volume-up";
-    if (volume < 25) volumeIcon = "fa-volume-down";
-    if (volume === 0 || muted) volumeIcon = "fa-volume-off";
+  const convertedVolume = volume * 100;
 
-    return (
-      <div className={classes.Controls}>
-        <div className={classes.slidecontainer}>
+  const repeatIcon = `${classes.Repeat} ${loop ? `${classes.Brown}` : ""}`;
+  const randomIcon = `${classes.Shuffle} ${random ? `${classes.Brown}` : ""}`;
+  const backwardIcon = `fa fa-step-backward ${classes.FastBackward}`;
+  const forwardIcon = `fa fa-step-forward ${classes.FastForward}`;
+
+  let volumeIcon = `${classes.VolumeIcon} `;
+  if (convertedVolume >= 25) volumeIcon += "fa-volume-up";
+  if (convertedVolume < 25) volumeIcon += "fa-volume-down";
+  if (convertedVolume === 0 || muted)
+    volumeIcon = `${classes.VolumeIcon} fa-volume-off`;
+
+  let playIcon = `${classes.MainButton} `;
+  if (status === "paused" || status === "stopped") {
+    playIcon += "fa-play-circle";
+  } else {
+    playIcon += "fa-pause-circle";
+  }
+
+  return (
+    <div className={classes.Controls}>
+      <div className={classes.slidecontainer}>
+        <input
+          type="range"
+          min="1"
+          max="100"
+          step="0.1"
+          value={sliderPosition}
+          onChange={onChange}
+          className={classes.slider}
+        />
+        <progress
+          min="1"
+          max="100"
+          value={sliderPosition}
+          className={classes.Progress}
+        />
+      </div>
+
+      <i className={`fas fa-redo ${repeatIcon}`} onClick={setLoop} />
+      <i className={`fas fa-random ${randomIcon}`} onClick={setRandom} />
+
+      <div className={classes.Volume}>
+        <i className={`fas ${volumeIcon}`} onClick={setMuted} />
+        <div className={classes.VolumeIndicator}>
           <input
             type="range"
             min="1"
             max="100"
             step="0.1"
-            value={this.state.sliderPosition}
-            onChange={this.onChange}
+            value={convertedVolume}
+            onChange={onVolumeChange}
             className={classes.slider}
           />
           <progress
             min="1"
             max="100"
-            value={this.state.sliderPosition}
+            value={convertedVolume}
             className={classes.Progress}
           />
         </div>
-
-        <i
-          className={`fas fa-redo ${classes.Repeat} ${
-            this.state.loop ? `${classes.Brown}` : ""
-          }`}
-          onClick={this.setLoop}
-        />
-        <i
-          className={`fas fa-random ${classes.Shuffle} ${
-            this.state.random ? `${classes.Brown}` : ""
-          }`}
-          onClick={this.setRandom}
-        />
-        <div className={classes.Volume}>
-          <i
-            className={`fas ${volumeIcon} ${classes.VolumeIcon}`}
-            onClick={this.setMuted}
-          />
-          <div className={classes.VolumeIndicator}>
-            <input
-              type="range"
-              min="1"
-              max="100"
-              step="0.1"
-              value={this.state.volume * 100}
-              onChange={this.onVolumeChange}
-              className={classes.slider}
-            />
-            <progress
-              min="1"
-              max="100"
-              value={this.state.volume * 100}
-              className={classes.Progress}
-            />
-          </div>
-        </div>
-        <span>{currentTime}</span>
-        <span>{duration}</span>
-
-        <div>
-          <i
-            className={`fa fa-step-backward ${classes.FastBackward}`}
-            onClick={this.onPrev}
-          />
-
-          {status === "paused" || status === "stopped" ? (
-            <i
-              className={`fa fa-play-circle ${classes.MainButton}`}
-              onClick={() => this.setStatus("playing")}
-            />
-          ) : (
-            <i
-              className={`fa fa-pause-circle ${classes.MainButton}`}
-              onClick={() => this.setStatus("paused")}
-            />
-          )}
-
-          <i
-            className={`fa fa-step-forward ${classes.FastForward}`}
-            onClick={this.onNext}
-          />
-        </div>
-
-        <audio
-          controlsList="nodownload"
-          ref={ref => (this.player = ref)}
-          src={this.props.src ? this.props.src : null}
-          onEnded={this.onEnded}
-          onPlay={this.props.toggleActiveClass}
-          loop={this.state.loop}
-          muted={this.state.muted}
-          volume={this.state.volume}
-        />
       </div>
-    );
-  }
-}
+      <span>{getTime(currentTime)}</span>
+      <span>{getTime(duration)}</span>
+
+      <div>
+        <i className={backwardIcon} onClick={onPrev} />
+
+        <i
+          className={`fa ${playIcon}`}
+          onClick={
+            status === "paused" || status === "stopped"
+              ? () => setStatus("playing")
+              : () => setStatus("paused")
+          }
+        />
+
+        <i className={forwardIcon} onClick={onNext} />
+      </div>
+
+      <audio
+        controlsList="nodownload"
+        ref={player}
+        src={src ? src : null}
+        onEnded={onEnded}
+        onPlay={toggleActiveClass}
+        loop={loop}
+        muted={muted}
+        volume={volume}
+      />
+    </div>
+  );
+};
+
+Controls.propTypes = {
+  toggleActiveClass: PropTypes.func.isRequired,
+  src: PropTypes.string.isRequired,
+  setPreviousIndex: PropTypes.func.isRequired,
+  setNextIndex: PropTypes.func.isRequired,
+  setRandomIndex: PropTypes.func.isRequired
+};
 
 export default Controls;

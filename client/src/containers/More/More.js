@@ -1,180 +1,138 @@
-import React, { Component } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { connect } from "react-redux";
-import classes from "./More.css";
-import NotFoundImage from "../../assets/not-found.jpg";
+import PropTypes from "prop-types";
 
 import { fetchMore, fetchLoadMore } from "../../actions/moreActions";
-import { addToPlaylist } from "../../actions/playlistsActions";
 
+import classes from "./More.css";
 import Spinner from "../../components/UI/Spinner/Spinner";
-import Backdrop from "../../components/UI/Backdrop/Backdrop";
+import NotFound from "../../components/UI/NotFound/NotFound";
 import GridElement from "../../components/App/GridElement/GridElement";
 import AddToPlaylist from "../../components/App/AddToPlaylist/AddToPlaylist";
 
-class More extends Component {
-  state = {
+const More = ({
+  fetchMore,
+  fetchLoadMore,
+  loading,
+  more,
+  history,
+  location: { pathname }
+}) => {
+  const [state, setState] = useState({
     from: 0,
     limit: 10,
     query: "",
-    //Modal
     showPlaylists: false,
-    pathname: "",
-    itemId: {}
-  };
+    itemId: ""
+  });
 
-  componentDidMount() {
+  const { from, limit, query, showPlaylists, itemId } = state;
+
+  const [, , path, queryURL] = pathname.split("/");
+
+  useEffect(() => {
     document.title = `JZ Music Player - More`;
-    const { pathname } = this.props.location;
-    const path = pathname.split("/")[2];
-    const query = pathname.split("/")[3];
-    this.props.fetchMore(path, this.state.from, this.state.limit, query);
-    this.setState({ query });
-  }
+  }, []);
 
-  componentDidUpdate(prevProps) {
-    const newQuery = this.props.location.pathname.split("/")[3];
-    const currentQuery = prevProps.location.pathname.split("/")[3];
-    const path = prevProps.location.pathname.split("/")[2];
-    if (newQuery !== currentQuery) {
-      this.props.fetchMore(path, this.state.from, this.state.limit, newQuery);
-      this.setState({ query: newQuery });
-    }
-  }
+  useEffect(() => {
+    fetchMore(path, 0, limit, queryURL);
+    setState({ ...state, from: 0, query: queryURL });
+  }, [pathname]);
 
-  showPlaylists = (pathname, itemId) => {
-    this.setState({ showPlaylists: true, pathname, itemId });
+  const onShowPlaylists = (route, itemId) => {
+    setState({ ...state, showPlaylists: true, itemId });
   };
 
-  closePlaylists = () => {
-    this.setState({ showPlaylists: false, pathname: "", itemId: {} });
+  const onClosePlaylists = () => {
+    setState({ ...state, showPlaylists: false, itemId: "" });
   };
 
-  addToPlaylist = (route, playlistId, itemId) => {
-    this.props.addToPlaylist(route, playlistId, itemId);
+  const onClick = () => {
+    fetchLoadMore(path, from + limit, limit, query);
+    setState({ ...state, from: from + limit });
   };
 
-  onClick = () => {
-    this.setState(prevState => {
-      const { pathname } = this.props.location;
-      const path = pathname.split("/")[2];
-      const query = pathname.split("/")[3];
-      this.props.fetchLoadMore(
-        path,
-        this.state.from + this.state.limit,
-        this.state.limit,
-        query
-      );
-      return {
-        from: prevState.from + prevState.limit
-      };
-    });
+  const onChange = e => {
+    setState({ ...state, query: e.target.value });
   };
 
-  onChange = e => {
-    this.setState({ query: e.target.value });
+  const onKeyDown = e => {
+    if (e.keyCode === 13) history.push(`/more/${path}/${query}`);
   };
 
-  onKeyDown = e => {
-    if (e.keyCode === 13) {
-      const { pathname } = this.props.location;
-      const path = pathname.split("/")[2];
-      const query = this.state.query || "";
-      this.props.history.push(`/more/${path}/${query}`);
-      this.setState({ from: 0 });
-    }
-  };
+  const albumsLength = more.albums.info.length;
+  const artistsLength = more.artists.info.length;
+  const songsLength = more.songs.info.length;
 
-  render() {
-    const { history, loading, location } = this.props;
-    const { albums, artists, songs } = this.props.more;
-    const pathname = location.pathname.split("/")[2];
+  return (
+    <Fragment>
+      <input
+        className={classes.Search}
+        type="search"
+        placeholder={`Search ${path}...`}
+        onChange={e => onChange(e)}
+        onKeyDown={e => onKeyDown(e)}
+        value={query || ""}
+        autoFocus
+      />
 
-    let more = <Spinner />;
+      {loading ? (
+        <Spinner />
+      ) : (
+        <Fragment>
+          {albumsLength > 0 || artistsLength > 0 || songsLength > 0 ? (
+            <div className={classes.More}>
+              <div>
+                {more[path].info.map(info => (
+                  <GridElement
+                    key={info._id}
+                    info={info}
+                    pathname={path}
+                    history={history}
+                    showPlaylists={onShowPlaylists}
+                  />
+                ))}
+              </div>
+              {from + limit < more[path].count ? (
+                <button className={classes.LoadMore} onClick={e => onClick(e)}>
+                  Load more...
+                </button>
+              ) : null}
 
-    if (!loading) {
-      if (
-        albums.info.length > 0 ||
-        artists.info.length > 0 ||
-        songs.info.length > 0
-      ) {
-        more = (
-          <div className={classes.More}>
-            <div>
-              {this.props.more[pathname].info.map(info => (
-                <GridElement
-                  key={info._id}
-                  info={info}
-                  pathname={pathname}
-                  history={history}
-                  showPlaylists={this.showPlaylists}
+              {showPlaylists ? (
+                <AddToPlaylist
+                  pathname={path}
+                  itemId={itemId}
+                  closePlaylists={onClosePlaylists}
                 />
-              ))}
+              ) : null}
             </div>
-            {this.state.from + this.state.limit <
-            this.props.more[pathname].count ? (
-              <button className={classes.LoadMore} onClick={this.onClick}>
-                Load more...
-              </button>
-            ) : null}
+          ) : (
+            <NotFound msg="Nothing here, try another search" />
+          )}
+        </Fragment>
+      )}
+    </Fragment>
+  );
+};
 
-            {this.state.showPlaylists ? (
-              <AddToPlaylist
-                pathname={this.state.pathname}
-                itemId={this.state.itemId}
-                addToPlaylist={this.addToPlaylist}
-                closePlaylists={this.closePlaylists}
-              />
-            ) : null}
-            {this.state.showPlaylists ? <Backdrop show /> : null}
-          </div>
-        );
-      } else {
-        const msg = "Nothing here, try another search";
-        more = (
-          <div className={classes.NotFound}>
-            <img src={NotFoundImage} alt="Not Found" />
-            <h1>{msg}</h1>
-          </div>
-        );
-      }
-    }
-
-    return (
-      <div>
-        <input
-          className={classes.Search}
-          type="search"
-          placeholder={`Search ${pathname}...`}
-          onChange={this.onChange}
-          onKeyDown={this.onKeyDown}
-          value={this.state.query}
-          autoFocus
-        />
-        {more}
-      </div>
-    );
-  }
-}
+More.propTypes = {
+  fetchMore: PropTypes.func.isRequired,
+  fetchLoadMore: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
+  more: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired
+};
 
 const mapStateToProps = state => {
   return {
-    more: state.more.more,
-    loading: state.more.loading
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    fetchMore: (payload, from, limit, query) =>
-      dispatch(fetchMore(payload, from, limit, query)),
-    fetchLoadMore: (payload, from, limit, query) =>
-      dispatch(fetchLoadMore(payload, from, limit, query)),
-    addToPlaylist: (route, playlistId, itemId) =>
-      dispatch(addToPlaylist(route, playlistId, itemId))
+    loading: state.more.loading,
+    more: state.more.more
   };
 };
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  { fetchMore, fetchLoadMore }
 )(More);

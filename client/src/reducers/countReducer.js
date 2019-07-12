@@ -1,18 +1,19 @@
 import * as types from "../actions/types";
-import { updateObject } from "../utils/utility";
 
 const initialState = {
   count: 0
 };
 
-const countSongs = (state, action) => {
-  return updateObject(state, { count: action.payload });
+const countSongs = (state, payload) => {
+  return { count: payload };
 };
 
 export default function(state = initialState, action) {
-  switch (action.type) {
+  const { type, payload } = action;
+
+  switch (type) {
     case types.COUNT_SONGS:
-      return countSongs(state, action);
+      return countSongs(state, payload);
 
     default:
       return state;

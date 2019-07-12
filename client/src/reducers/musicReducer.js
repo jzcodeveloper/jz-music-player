@@ -1,5 +1,4 @@
 import * as types from "../actions/types";
-import { updateObject } from "../utils/utility";
 
 const initialState = {
   metadata: {
@@ -7,55 +6,53 @@ const initialState = {
     artistsInfo: [],
     songsInfo: []
   },
-  loading: false
+  loading: true
 };
 
-const fetchMetadata = (state, action) => {
-  return updateObject(state, { metadata: action.payload });
+const fetchMetadata = (state, payload) => {
+  return { ...state, metadata: payload };
 };
 
-const fetchMetadataStart = (state, action) => {
-  return updateObject(state, { loading: true });
+const fetchMetadataStart = (state, payload) => {
+  return { ...state, loading: true };
 };
 
-const fetchMetadataEnd = (state, action) => {
-  return updateObject(state, { loading: false });
+const fetchMetadataEnd = (state, payload) => {
+  return { ...state, loading: false };
 };
 
-const updateFavorites = (state, action) => {
-  const payload = action.payload;
-  const albumsInfo = [...state.metadata.albumsInfo];
-  const artistsInfo = [...state.metadata.artistsInfo];
-  const songsInfo = [...state.metadata.songsInfo];
-  const albumIndex = albumsInfo.findIndex(el => el._id === payload._id);
-  const artistIndex = artistsInfo.findIndex(el => el._id === payload._id);
-  const songIndex = songsInfo.findIndex(el => el._id === payload._id);
-  if (albumIndex >= 0) albumsInfo[albumIndex] = payload;
-  if (artistIndex >= 0) artistsInfo[artistIndex] = payload;
-  if (songIndex >= 0) songsInfo[songIndex] = payload;
+const updateFavorites = (state, payload) => {
+  const { data, route } = payload;
+  const key = `${route}Info`;
+  const obj = {};
+  obj[key] = [...state.metadata[key]];
+  const index = obj[key].findIndex(el => el._id === data._id);
+  if (index >= 0) obj[key][index] = data;
 
-  return updateObject(state, {
+  return {
+    ...state,
     metadata: {
-      albumsInfo,
-      artistsInfo,
-      songsInfo
+      ...state.metadata,
+      [key]: obj[key]
     }
-  });
+  };
 };
 
 export default function(state = initialState, action) {
-  switch (action.type) {
+  const { type, payload } = action;
+
+  switch (type) {
     case types.FETCH_METADATA:
-      return fetchMetadata(state, action);
+      return fetchMetadata(state, payload);
 
     case types.FETCH_METADATA_START:
-      return fetchMetadataStart(state, action);
+      return fetchMetadataStart(state, payload);
 
     case types.FETCH_METADATA_END:
-      return fetchMetadataEnd(state, action);
+      return fetchMetadataEnd(state, payload);
 
     case types.UPDATE_FAVORITES:
-      return updateFavorites(state, action);
+      return updateFavorites(state, payload);
 
     default:
       return state;

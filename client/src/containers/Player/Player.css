@@ -45,31 +45,8 @@
   background-color: whitesmoke;
 }
 
-.TopSection img {
-  width: 40px;
-}
-
 .TopSection > div {
-  display: flex;
-  flex-flow: column;
   max-width: calc(100% - 90px);
-}
-
-.TopSection span {
-  margin-left: 10px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.TopSection span:nth-child(1) {
-  border-bottom: 1px solid #000;
-  padding-bottom: 2.5px;
-}
-
-.TopSection span:nth-child(2) {
-  font-size: 0.7em;
-  padding-top: 2.5px;
 }
 
 .PlaylistIcon {

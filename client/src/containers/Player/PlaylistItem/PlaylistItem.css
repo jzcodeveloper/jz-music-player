@@ -1,0 +1,26 @@
+.Image {
+  width: 40px;
+}
+
+.Content {
+  display: flex;
+  flex-flow: column;
+  max-width: calc(100% - 42.5px);
+}
+
+.Content span {
+  margin-left: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.Content span:nth-child(1) {
+  border-bottom: 1px solid #000;
+  padding-bottom: 2.5px;
+}
+
+.Content span:nth-child(2) {
+  font-size: 0.7em;
+  padding-top: 2.5px;
+}
