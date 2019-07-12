@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../axios";
 import * as types from "./types";
 
 export const fetchMetadata = (payload = 6) => async dispatch => {
