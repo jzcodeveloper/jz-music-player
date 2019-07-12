@@ -54,7 +54,6 @@ exports.sendMetadata = async (req, res, findByProperty = "") => {
         .skip(from)
         .limit(limit)
         .populate("albumArt")
-        .populate({ path: "songs", populate: { path: "albumArt" } })
     };
 
     res.json(info);
