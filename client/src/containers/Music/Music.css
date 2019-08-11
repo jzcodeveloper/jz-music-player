@@ -99,7 +99,7 @@
   }
   .Music > div > div {
     width: 146px;
-    margin: 13px;
+    margin: 13px 5px;
   }
   .Music > div > div:last-of-type {
     width: auto;

@@ -7,6 +7,7 @@
   display: flex;
   align-items: center;
   background-color: var(--interfaceColor);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
   z-index: 25;
 }
 
@@ -17,7 +18,7 @@
 
 .Toolbar > div {
   display: none;
-  margin-left: 10px;
+  margin-left: 12px;
   height: 80%;
   width: 60px;
   cursor: pointer;
@@ -25,6 +26,19 @@
 
 .Toolbar > div > img {
   height: 100%;
+}
+
+/*.Toolbar > div > div {
+  height: 10.5px;
+  border-bottom: 2px solid white;
+}*/
+
+.showToolbar {
+  animation: showToolbar 1s forwards;
+}
+
+.hideToolbar {
+  animation: hideToolbar 1s forwards;
 }
 
 @media (max-width: 1000px) {
@@ -35,5 +49,23 @@
     display: flex;
     flex-flow: column;
     width: 55px;
+  }
+}
+
+@keyframes showToolbar {
+  0% {
+    transform: translateY(-63px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes hideToolbar {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-63px);
   }
 }

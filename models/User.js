@@ -13,7 +13,31 @@ const User = new Schema({
   password: {
     type: String,
     required: true
-  }
+  },
+  favoriteAlbums: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Album"
+    }
+  ],
+  favoriteArtists: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Artist"
+    }
+  ],
+  favoriteSongs: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Song"
+    }
+  ],
+  playlists: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Playlist"
+    }
+  ]
 });
 
 module.exports = mongoose.model("User", User);

@@ -18,10 +18,10 @@ const Album = new Schema({
   duration: {
     type: Number
   },
-  songs:[
+  songs: [
     {
-      type:Schema.Types.ObjectId,
-      ref:'Song'
+      type: Schema.Types.ObjectId,
+      ref: "Song"
     }
   ],
   favorites: [
@@ -31,6 +31,9 @@ const Album = new Schema({
     }
   ],
   favoritesLength: {
+    type: Number
+  },
+  timesPlayed: {
     type: Number
   }
 });

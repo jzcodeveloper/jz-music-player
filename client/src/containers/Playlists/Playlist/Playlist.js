@@ -94,53 +94,55 @@ const Playlist = ({ editPlaylist, removePlaylist, index, playlist }) => {
 
   return (
     <Fragment>
-      <div className={`${classes.Playlist} ${classes.OpenPlaylist}`}>
-        <div>
-          <span>{name}</span>
-          <p>{description}</p>
+      <div className={`${classes.OpenPlaylist}`}>
+        <div className={`${classes.Playlist}`}>
+          <div>
+            <span>{name}</span>
+            <p>{description}</p>
+          </div>
+
+          <p>Songs: {count}</p>
+          <p>Duration: {secondsToHms(duration) || 0}</p>
+          <div>
+            {songs.length > 0 ? (
+              <Link className={classes.Play} to={`/player/playlists/${name}`}>
+                <i className="fas fa-play" />
+              </Link>
+            ) : (
+              <button className={classes.Play} onClick={onShowNotification}>
+                <i className="fas fa-play" />
+              </button>
+            )}
+
+            <button className={classes.Edit} onClick={onShowModal}>
+              <i className="fas fa-edit" />
+            </button>
+            <button className={classes.Remove} onClick={onRemoveClick}>
+              <i className="far fa-trash-alt" />
+            </button>
+            <button className={classes.Expand} onClick={toggleClassName}>
+              <i className="fas fa-plus-circle" />
+            </button>
+          </div>
         </div>
 
-        <p>Songs: {count}</p>
-        <p>Duration: {secondsToHms(duration) || 0}</p>
         <div>
           {songs.length > 0 ? (
-            <Link className={classes.Play} to={`/player/playlists/${name}`}>
-              <i className="fas fa-play" />
-            </Link>
+            songs.map((song, index) => (
+              <ListElement
+                key={song._id}
+                index={index}
+                pathname="songs"
+                info={song}
+                playlist={playlist}
+              />
+            ))
           ) : (
-            <button className={classes.Play} onClick={onShowNotification}>
-              <i className="fas fa-play" />
-            </button>
+            <div className={classes.Center}>
+              <p>No songs added yet</p>
+            </div>
           )}
-
-          <button className={classes.Edit} onClick={onShowModal}>
-            <i className="fas fa-edit" />
-          </button>
-          <button className={classes.Remove} onClick={onRemoveClick}>
-            <i className="far fa-trash-alt" />
-          </button>
-          <button className={classes.Expand} onClick={toggleClassName}>
-            <i className="fas fa-plus-circle" />
-          </button>
         </div>
-      </div>
-
-      <div>
-        {songs.length > 0 ? (
-          songs.map((song, index) => (
-            <ListElement
-              key={song._id}
-              index={index}
-              pathname="songs"
-              info={song}
-              playlist={playlist}
-            />
-          ))
-        ) : (
-          <div className={classes.Center}>
-            <p>You have not added any song to this playlist</p>
-          </div>
-        )}
       </div>
 
       {showModal ? (

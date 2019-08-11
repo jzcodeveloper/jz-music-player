@@ -71,11 +71,9 @@ exports.sendAllMetadata = async (req, res, findByProperty = "") => {
     if (findByProperty === "artist") Model = Artist;
     if (findByProperty === "title") Model = Song;
     if (findByProperty === "name") Model = Playlist;
-    const param =
-      req.params.album ||
-      req.params.artist ||
-      req.params.title ||
-      req.params.name;
+
+    const { album, artist, title, name } = req.params;
+    const param = album || artist || title || name;
     const fields = {};
 
     //Check whether there is a key already in cache
@@ -130,7 +128,7 @@ exports.countDocuments = async (req, res, model) => {
 };
 
 //Deletes a song from the database using Artist + Song Title
-exports.deleteSong = async (req, res) => {
+/*exports.deleteSong = async (req, res) => {
   try {
     const { id } = req.params;
     const deletedSong = await Song.findByIdAndRemove(id);
@@ -169,3 +167,4 @@ exports.deleteSong = async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 };
+*/

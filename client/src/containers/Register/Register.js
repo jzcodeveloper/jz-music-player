@@ -8,25 +8,20 @@ import { setErrors } from "../../actions/errorsActions";
 
 import classes from "./Register.css";
 
-const Register = ({ register, setErrors, isAuthenticated, globalErrors }) => {
+const Register = ({ register, setErrors, isAuthenticated, errors }) => {
   const [state, setState] = useState({
     name: "",
     email: "",
     password: "",
-    password2: "",
-    errors: {}
+    password2: ""
   });
 
-  const { name, email, password, password2, errors } = state;
+  const { name, email, password, password2 } = state;
 
   useEffect(() => {
     document.title = `JZ Music Player - Register`;
     return () => setErrors();
   }, []);
-
-  useEffect(() => {
-    setState({ ...state, errors: globalErrors });
-  }, [globalErrors]);
 
   const onChange = e => {
     setState({ ...state, [e.target.name]: e.target.value });
@@ -92,13 +87,13 @@ Register.propTypes = {
   register: PropTypes.func.isRequired,
   setErrors: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool.isRequired,
-  globalErrors: PropTypes.object
+  errors: PropTypes.object
 };
 
 const mapStateToProps = state => {
   return {
     isAuthenticated: state.auth.isAuthenticated,
-    globalErrors: state.errors
+    errors: state.errors
   };
 };
 

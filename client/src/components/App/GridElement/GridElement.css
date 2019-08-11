@@ -68,11 +68,12 @@
 }
 
 @media (max-width: 450px) {
-  .GridElement p {
-    font-size: 0.7em;
-  }
   .GridElement p:first-of-type {
     font-size: 0.8em;
+  }
+  .GridElement p:not(:first-of-type) {
+    display: none;
+    font-size: 0.7em;
   }
 }
 

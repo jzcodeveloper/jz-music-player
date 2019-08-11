@@ -32,6 +32,9 @@ const Artist = new Schema({
   ],
   favoritesLength: {
     type: Number
+  },
+  timesPlayed: {
+    type: Number
   }
 });
 

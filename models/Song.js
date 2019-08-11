@@ -37,6 +37,9 @@ const Song = new Schema({
   ],
   favoritesLength: {
     type: Number
+  },
+  timesPlayed: {
+    type: Number
   }
 });
 
