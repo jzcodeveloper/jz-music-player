@@ -78,7 +78,11 @@ exports.registerUser = async (req, res) => {
     user = new User({
       name,
       email,
-      password
+      password,
+      favoriteAlbums: [],
+      favoriteArtists: [],
+      favoriteSongs: [],
+      playlists: []
     });
 
     const salt = await bcrypt.genSalt(10);

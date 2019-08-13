@@ -6,7 +6,7 @@ const Metadata = require("../controllers/MetadataController");
 
 //Sends the amount of songs stored in the DB
 router.get("/count/songs", (req, res) => {
-  Metadata.countDocuments(req, res, "Song");
+  Metadata.countDocuments(req, res);
 });
 
 //Sends albums/artists/songs metadata with limit

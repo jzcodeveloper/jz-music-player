@@ -33,23 +33,6 @@ const fetchLoadMore = (state, payload) => {
   return { ...state, more };
 };
 
-const updateFavorites = (state, payload) => {
-  const { data, route } = payload;
-  const obj = {};
-  obj[route] = [...state.more[route].info];
-  const index = obj[route].findIndex(el => el._id === data._id);
-  if (index >= 0) obj[route][index] = data;
-
-  return {
-    ...state,
-    more: {
-      albums: { count: state.more.albums.count, info: obj[route] },
-      artists: { count: state.more.artists.count, info: obj[route] },
-      songs: { count: state.more.songs.count, info: obj[route] }
-    }
-  };
-};
-
 export default function(state = initialState, action) {
   const { type, payload } = action;
 
@@ -65,9 +48,6 @@ export default function(state = initialState, action) {
 
     case types.FETCH_LOAD_MORE:
       return fetchLoadMore(state, payload);
-
-    case types.UPDATE_FAVORITES:
-      return updateFavorites(state, payload);
 
     default:
       return state;

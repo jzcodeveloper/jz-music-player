@@ -72,7 +72,6 @@
     font-size: 0.8em;
   }
   .GridElement p:not(:first-of-type) {
-    display: none;
     font-size: 0.7em;
   }
 }

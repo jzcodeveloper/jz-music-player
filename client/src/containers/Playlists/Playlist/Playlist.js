@@ -131,7 +131,7 @@ const Playlist = ({ editPlaylist, removePlaylist, index, playlist }) => {
             songs.map((song, index) => (
               <ListElement
                 key={song._id}
-                index={index}
+                index={index + 1}
                 pathname="songs"
                 info={song}
                 playlist={playlist}

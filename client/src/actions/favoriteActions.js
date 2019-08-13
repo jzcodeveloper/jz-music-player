@@ -4,7 +4,7 @@ import * as types from "./types";
 export const updateFavorites = (route, id) => async dispatch => {
   try {
     const { data } = await axios.get(`/favorites/${route}/${id}`);
-    dispatch({ type: types.UPDATE_FAVORITES, payload: { data, route } });
+    dispatch({ type: types.UPDATE_FAVORITES, payload: data });
   } catch (error) {
     console.log(error);
   }

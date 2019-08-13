@@ -22,8 +22,7 @@ const GridElement = ({
     albumArtist,
     count,
     genre,
-    duration,
-    favorites
+    duration
   },
   showPlaylists
 }) => {
@@ -40,7 +39,15 @@ const GridElement = ({
   };
 
   //Check whether to render a solid or a regular star icon
-  const icon = favorites.indexOf(user._id) >= 0 ? "fas fa-star" : "far fa-star";
+  let icon = "fa-star ";
+
+  if (pathname === "albums") {
+    icon += user.favoriteAlbums.indexOf(_id) >= 0 ? "fas" : "far";
+  } else if (pathname === "artists") {
+    icon += user.favoriteArtists.indexOf(_id) >= 0 ? "fas" : "far";
+  } else {
+    icon += user.favoriteSongs.indexOf(_id) >= 0 ? "fas" : "far";
+  }
 
   return (
     <div className={`${classes.GridElement} ${classes.OpenGridElement}`}>

@@ -26,44 +26,53 @@ const Favorites = ({
         <div className={classes.Favorites}>
           <h1>My Favorites</h1>
           <span>Favorite Albums</span>
-          {favoriteAlbums.length > 0 ? (
-            favoriteAlbums.map((album, index) => (
-              <ListElement
-                key={album._id}
-                index={index}
-                pathname="albums"
-                info={album}
-              />
-            ))
-          ) : (
-            <p>You have no favorite albums</p>
-          )}
+          <div>
+            {favoriteAlbums.length > 0 ? (
+              favoriteAlbums.map((album, index) => (
+                <ListElement
+                  key={album._id}
+                  position={1}
+                  index={index + 1}
+                  pathname="albums"
+                  info={album}
+                />
+              ))
+            ) : (
+              <p>You have no favorite albums</p>
+            )}
+          </div>
           <span>Favorite Artists</span>
-          {favoriteArtists.length > 0 ? (
-            favoriteArtists.map((artist, index) => (
-              <ListElement
-                key={artist._id}
-                index={index}
-                pathname="artists"
-                info={artist}
-              />
-            ))
-          ) : (
-            <p>You have no favorite artists</p>
-          )}
+          <div>
+            {favoriteArtists.length > 0 ? (
+              favoriteArtists.map((artist, index) => (
+                <ListElement
+                  key={artist._id}
+                  position={2}
+                  index={index + 1}
+                  pathname="artists"
+                  info={artist}
+                />
+              ))
+            ) : (
+              <p>You have no favorite artists</p>
+            )}
+          </div>
           <span>Favorite Songs</span>
-          {favoriteSongs.length > 0 ? (
-            favoriteSongs.map((song, index) => (
-              <ListElement
-                key={song._id}
-                index={index}
-                pathname="songs"
-                info={song}
-              />
-            ))
-          ) : (
-            <p>You have no favorite songs</p>
-          )}
+          <div>
+            {favoriteSongs.length > 0 ? (
+              favoriteSongs.map((song, index) => (
+                <ListElement
+                  key={song._id}
+                  position={3}
+                  index={index + 1}
+                  pathname="songs"
+                  info={song}
+                />
+              ))
+            ) : (
+              <p>You have no favorite songs</p>
+            )}
+          </div>
         </div>
       )}
     </Fragment>

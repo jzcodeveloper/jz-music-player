@@ -19,7 +19,7 @@ export const login = payload => async dispatch => {
   try {
     const { data } = await axios.post("/auth/login", payload);
     dispatch({ type: types.LOGIN_SUCCESS, payload: data });
-    setAuthToken(localStorage.token);
+    dispatch(loadUser());
   } catch (error) {
     dispatch({ type: types.LOGIN_FAIL });
     dispatch({ type: types.SET_ERRORS, payload: error.response.data });
@@ -30,7 +30,7 @@ export const register = payload => async dispatch => {
   try {
     const { data } = await axios.post("/auth/register", payload);
     dispatch({ type: types.REGISTER_SUCCESS, payload: data });
-    setAuthToken(localStorage.token);
+    dispatch(loadUser());
   } catch (error) {
     dispatch({ type: types.REGISTER_FAIL });
     dispatch({ type: types.SET_ERRORS, payload: error.response.data });

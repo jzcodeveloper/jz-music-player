@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
@@ -28,8 +28,10 @@ const ListElement = ({
     duration
   },
   playlist,
+  position,
   index
 }) => {
+  const uniqueID = useRef(Date.now().toString());
   const [state, setState] = useState({ showConfirmation: false, action: "" });
 
   const { showConfirmation, action } = state;
@@ -58,8 +60,7 @@ const ListElement = ({
 
   const closeListElement = () => {
     const { OpenListElement, CloseListElement } = classes;
-    const selector = `.${OpenListElement}:nth-of-type(${index + 1})`;
-    const el = document.querySelector(selector);
+    const el = document.getElementById(uniqueID.current);
     if (el) el.classList.replace(OpenListElement, CloseListElement);
   };
 
@@ -94,7 +95,10 @@ const ListElement = ({
 
   return (
     <Fragment>
-      <div className={`${classes.ListElement} ${classes.OpenListElement}`}>
+      <div
+        className={`${classes.ListElement} ${classes.OpenListElement}`}
+        id={uniqueID.current}
+      >
         <img
           src={
             albumArt !== ""
@@ -142,7 +146,10 @@ ListElement.propTypes = {
   pathname: PropTypes.string.isRequired,
   info: PropTypes.object.isRequired,
   playlist: PropTypes.object,
-  index: PropTypes.number.isRequired
+  playlistIndex: PropTypes.number,
+  index: PropTypes.number.isRequired,
+  position: PropTypes.number,
+  className: PropTypes.string
 };
 
 export default connect(

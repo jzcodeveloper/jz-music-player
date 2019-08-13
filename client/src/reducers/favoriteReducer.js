@@ -22,22 +22,11 @@ const fetchFavoritesEnd = (state, payload) => {
 };
 
 const updateFavorites = (state, payload) => {
-  const { data, route } = payload;
-  const firstLetter = route.charAt(0).toUpperCase();
-  const rest = route.slice(1);
-  const key = `favorite${firstLetter}${rest}`;
-  const obj = {};
-  obj[key] = [...state.favorite[key]];
-  const index = obj[key].findIndex(el => el._id === data._id);
-  if (index >= 0) obj[key].splice(index, 1);
-
-  return {
-    ...state,
-    favorite: {
-      ...state.favorite,
-      [key]: obj[key]
-    }
-  };
+  const key = `favorite${payload.model}`;
+  const favorite = { ...state.favorite };
+  const index = favorite[key].findIndex(el => el._id === payload.id);
+  if (index > -1) favorite[key].splice(index, 1);
+  return { ...state, favorite };
 };
 
 export default function(state = initialState, action) {

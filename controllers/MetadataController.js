@@ -9,26 +9,33 @@ const Playlist = require("../models/Playlist");
 exports.sendTopMetadata = async (req, res) => {
   try {
     const limit = Number(req.query.limit);
-    const albumsInfo = await Album.find({})
-      .sort({ favoritesLength: -1 })
-      .limit(limit)
-      .populate("albumArt");
 
-    const artistsInfo = await Artist.find({})
-      .sort({ favoritesLength: -1 })
-      .limit(limit)
-      .populate("albumArt");
+    //Check whether there is a key already in the cache
+    const result = await client.getAsync(`music/${limit}`);
+    if (result) {
+      res.json(JSON.parse(result));
+    } else {
+      const albumsInfo = await Album.find({})
+        .sort({ favoritesLength: -1 })
+        .limit(limit)
+        .populate("albumArt");
 
-    const songsInfo = await Song.find({})
-      .sort({ favoritesLength: -1 })
-      .limit(limit)
-      .populate("albumArt");
+      const artistsInfo = await Artist.find({})
+        .sort({ favoritesLength: -1 })
+        .limit(limit)
+        .populate("albumArt");
 
-    res.json({
-      albumsInfo,
-      artistsInfo,
-      songsInfo
-    });
+      const songsInfo = await Song.find({})
+        .sort({ favoritesLength: -1 })
+        .limit(limit)
+        .populate("albumArt");
+
+      const info = { albumsInfo, artistsInfo, songsInfo };
+
+      //Caching response
+      await client.setexAsync(`music/${limit}`, 3600, JSON.stringify(info));
+      res.json(info);
+    }
   } catch (error) {
     console.log(error);
     res.status(500).send("Internal Server Error");
@@ -45,18 +52,28 @@ exports.sendMetadata = async (req, res, findByProperty = "") => {
     const query = new RegExp(req.query.query, "i");
     const from = Number(req.query.from);
     const limit = Number(req.query.limit);
-    const fields = {};
-    fields[findByProperty] = query;
 
-    const info = {
-      count: await Model.find(fields).countDocuments(),
-      info: await Model.find(fields)
-        .skip(from)
-        .limit(limit)
-        .populate("albumArt")
-    };
+    //Check whether there is a key already in the cache
+    const key = `more/${query}${from}${limit}`;
+    const result = await client.getAsync(key);
+    if (result) {
+      res.json(JSON.parse(result));
+    } else {
+      const fields = {};
+      fields[findByProperty] = query;
 
-    res.json(info);
+      const info = {
+        count: await Model.find(fields).countDocuments(),
+        info: await Model.find(fields)
+          .skip(from)
+          .limit(limit)
+          .populate("albumArt")
+      };
+
+      //Caching response
+      await client.setexAsync(key, 3600, JSON.stringify(info));
+      res.json(info);
+    }
   } catch (error) {
     console.log(error);
     res.status(500).send("Internal Server Error");
@@ -76,7 +93,7 @@ exports.sendAllMetadata = async (req, res, findByProperty = "") => {
     const param = album || artist || title || name;
     const fields = {};
 
-    //Check whether there is a key already in cache
+    //Check whether there is a key already in the cache
     const result = await client.getAsync(`player/${param}`);
     if (result) {
       res.json(JSON.parse(result));
@@ -85,16 +102,20 @@ exports.sendAllMetadata = async (req, res, findByProperty = "") => {
         const [artist, title] = param.split(" - ");
         fields["artist"] = artist;
         fields["title"] = title;
+
         const info = await Model.find(fields).populate("albumArt");
+
         //Caching response
         await client.setexAsync(`player/${param}`, 3600, JSON.stringify(info));
         res.json(info);
       } else {
         fields[findByProperty] = param;
+
         const { songs } = await Model.findOne(fields).populate({
           path: "songs",
           populate: { path: "albumArt" }
         });
+
         //Caching response
         await client.setexAsync(`player/${param}`, 3600, JSON.stringify(songs));
         res.json(songs);
@@ -106,19 +127,17 @@ exports.sendAllMetadata = async (req, res, findByProperty = "") => {
   }
 };
 
-//Count documents for a given Model
-exports.countDocuments = async (req, res, model) => {
+//Count documents for the Song Model
+exports.countDocuments = async (req, res) => {
   try {
-    let Model = null;
-    if (model === "Song") Model = Song;
-    //Check whether there is a key already in cache
-    const result = await client.getAsync(`count/${model}`);
+    //Check whether there is a key already in the cache
+    const result = await client.getAsync(`count/songs`);
     if (result) {
       res.json(JSON.parse(result));
     } else {
-      const count = await Model.find({}).countDocuments();
+      const count = await Song.find({}).countDocuments();
       //Caching response
-      await client.setexAsync(`count/${model}`, 3600, JSON.stringify(count));
+      await client.setexAsync(`count/songs`, 3600, JSON.stringify(count));
       res.json(count);
     }
   } catch (error) {

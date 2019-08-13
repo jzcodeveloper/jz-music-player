@@ -7,12 +7,9 @@ import icon from "../../../assets/icon.png";
 import NavigationItems from "../NavigationItems/NavigationItems";
 
 const Toolbar = ({ toggleSide, isAuth }) => (
-  <nav className={`${classes.Toolbar} ${classes.showToolbar}`}>
+  <nav className={classes.Toolbar}>
     <div onClick={toggleSide}>
       <img src={icon} alt="Menu Icon" />
-      {/*<div />
-      <div />
-      <div />*/}
     </div>
     <nav className={classes.DesktopOnly}>
       <NavigationItems isAuth={isAuth} />

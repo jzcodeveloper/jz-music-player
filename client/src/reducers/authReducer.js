@@ -4,7 +4,7 @@ const initialState = {
   token: localStorage.getItem("token"),
   expiresIn: localStorage.getItem("expiresIn"),
   isAuthenticated: false,
-  user: null
+  user: {}
 };
 
 const setCurrentUser = (state, payload) => {
@@ -20,7 +20,24 @@ const setState = (state, payload) => {
 const resetState = (state, payload) => {
   localStorage.removeItem("token");
   localStorage.removeItem("expiresIn");
-  return { ...state, expiresIn: 0, isAuthenticated: false, token: null };
+  return {
+    ...state,
+    expiresIn: 0,
+    isAuthenticated: false,
+    user: {},
+    token: null
+  };
+};
+
+const updateFavorites = (state, payload) => {
+  const { favoriteAlbums, favoriteArtists, favoriteSongs } = payload;
+  const user = {
+    ...state.user,
+    favoriteAlbums,
+    favoriteArtists,
+    favoriteSongs
+  };
+  return { ...state, user };
 };
 
 export default function(state = initialState, action) {
@@ -39,6 +56,9 @@ export default function(state = initialState, action) {
     case types.AUTH_ERROR:
     case types.LOGOUT:
       return resetState(state, payload);
+
+    case types.UPDATE_FAVORITES:
+      return updateFavorites(state, payload);
 
     default:
       return state;
