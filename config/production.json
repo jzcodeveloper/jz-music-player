@@ -2,5 +2,5 @@
   "mongoURI": "mongodb://Javier:jzmp123@ds033484.mlab.com:33484/jz-music-player",
   "jwtSecret": "jz-music-player-secret",
   "expiresIn": 3600,
-  "redisURL": "redis://h:p83bec44d169d98f717f07cbbc093ecff4c9d7d52aee684d19f20c9875668cd86@ec2-3-212-174-118.compute-1.amazonaws.com:22549"
+  "redisURL": "redis://h:p625006109e1b2d9e06888ca59e2c28f73487b669cb1a833614610387e211649b@ec2-3-221-203-141.compute-1.amazonaws.com:25369"
 }
