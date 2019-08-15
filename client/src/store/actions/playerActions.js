@@ -7,6 +7,9 @@ export const fetchPlaylist = payload => async dispatch => {
     const { data } = await axios.get(`/metadata/${payload[2]}/${payload[3]}`);
     dispatch({ type: types.FETCH_PLAYLIST, payload: data });
     dispatch({ type: types.FETCH_PLAYLIST_END });
+
+    // Updates item metadata (timesPlayed property)
+    await axios.get(`/metadata/update/${payload[2]}/${payload[3]}`);
   } catch (error) {
     console.log(error);
     dispatch({ type: types.FETCH_PLAYLIST_END });

@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { connect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 
 import {
@@ -9,7 +9,7 @@ import {
   setPreviousIndex,
   setNextIndex,
   setRandomIndex
-} from "../../actions/playerActions";
+} from "../../store/actions/playerActions";
 
 import classes from "./Player.css";
 import Spinner from "../../components/UI/Spinner/Spinner";
@@ -18,34 +18,28 @@ import Playlist from "./Playlist/Playlist";
 import Controls from "./Controls/Controls";
 import PlaylistItem from "./PlaylistItem/PlaylistItem";
 
-const Player = ({
-  fetchPlaylist,
-  resetPlaylist,
-  setSongIndex,
-  setPreviousIndex,
-  setNextIndex,
-  setRandomIndex,
-  currentSongIndex,
-  loading,
-  playlist,
-  location: { pathname }
-}) => {
+const Player = ({ location: { pathname } }) => {
+  const dispatch = useDispatch();
+  const loading = useSelector(({ player }) => player.loading);
+  const playlist = useSelector(({ player }) => player.playlist);
+  const currentSongIndex = useSelector(({ player }) => player.currentSongIndex);
+
   const [showPlaylist, setShowPlaylist] = useState(false);
 
   const path = pathname.split("/");
 
   useEffect(() => {
     document.title = `JZ Music Player - Player`;
-    fetchPlaylist(path);
+    dispatch(fetchPlaylist(path));
 
     return () => {
-      resetPlaylist();
+      dispatch(resetPlaylist());
     };
   }, []);
 
   const toggleActiveClass = () => {
-    const index = currentSongIndex + 1;
     const { active, Player } = classes;
+    const index = currentSongIndex + 1;
     const prevElement = document.querySelector(`.${active}`);
     const nextElementSelector = `.${Player} li:nth-child(${index})`;
     const nextElement = document.querySelector(nextElementSelector);
@@ -56,19 +50,23 @@ const Player = ({
   };
 
   const onClick = index => {
-    setSongIndex(index);
+    dispatch(setSongIndex(index));
   };
 
   const onSetPreviousIndex = () => {
     if (currentSongIndex > 0) {
-      setPreviousIndex();
+      dispatch(setPreviousIndex());
     }
   };
 
   const onSetNextIndex = () => {
     if (playlist.length - 1 > currentSongIndex) {
-      setNextIndex();
+      dispatch(setNextIndex());
     }
+  };
+
+  const onSetRandomIndex = () => {
+    dispatch(setRandomIndex());
   };
 
   const togglePlaylist = () => {
@@ -86,7 +84,7 @@ const Player = ({
       {loading || !song ? (
         <Spinner />
       ) : (
-        <div className={classes.Player}>
+        <Fragment>
           <div className={classes.TopSection}>
             <PlaylistItem
               albumArt={song.albumArt}
@@ -101,7 +99,7 @@ const Player = ({
             />
           </div>
 
-          <section>
+          <section className={classes.Player}>
             <div>
               {showPlaylist ? null : (
                 <Playlist
@@ -128,43 +126,16 @@ const Player = ({
             toggleActiveClass={toggleActiveClass}
             setPreviousIndex={onSetPreviousIndex}
             setNextIndex={onSetNextIndex}
-            setRandomIndex={setRandomIndex}
+            setRandomIndex={onSetRandomIndex}
           />
-        </div>
+        </Fragment>
       )}
     </Fragment>
   );
 };
 
 Player.propTypes = {
-  fetchPlaylist: PropTypes.func.isRequired,
-  resetPlaylist: PropTypes.func.isRequired,
-  setSongIndex: PropTypes.func.isRequired,
-  setPreviousIndex: PropTypes.func.isRequired,
-  setNextIndex: PropTypes.func.isRequired,
-  setRandomIndex: PropTypes.func.isRequired,
-  currentSongIndex: PropTypes.number.isRequired,
-  loading: PropTypes.bool.isRequired,
-  playlist: PropTypes.array.isRequired,
   location: PropTypes.object.isRequired
 };
 
-const mapStateToProps = state => {
-  return {
-    playlist: state.player.playlist,
-    currentSongIndex: state.player.currentSongIndex,
-    loading: state.player.loading
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  {
-    fetchPlaylist,
-    resetPlaylist,
-    setSongIndex,
-    setPreviousIndex,
-    setNextIndex,
-    setRandomIndex
-  }
-)(Player);
+export default Player;

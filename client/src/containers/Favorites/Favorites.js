@@ -1,21 +1,22 @@
 import React, { Fragment, useEffect } from "react";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
+import { useSelector, useDispatch } from "react-redux";
 
-import { fetchFavorites } from "../../actions/favoriteActions";
+import { fetchFavorites } from "../../store/actions/favoriteActions";
 
 import classes from "./Favorites.css";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import ListElement from "../../components/App/ListElement/ListElement";
 
-const Favorites = ({
-  fetchFavorites,
-  loading,
-  favorite: { favoriteAlbums, favoriteArtists, favoriteSongs }
-}) => {
+const Favorites = () => {
+  const dispatch = useDispatch();
+  const loading = useSelector(({ favorite }) => favorite.loading);
+  const { favoriteAlbums, favoriteArtists, favoriteSongs } = useSelector(
+    ({ favorite }) => favorite.favorite
+  );
+
   useEffect(() => {
     document.title = `JZ Music Player - My Favorites`;
-    fetchFavorites();
+    dispatch(fetchFavorites());
   }, []);
 
   return (
@@ -28,14 +29,8 @@ const Favorites = ({
           <span>Favorite Albums</span>
           <div>
             {favoriteAlbums.length > 0 ? (
-              favoriteAlbums.map((album, index) => (
-                <ListElement
-                  key={album._id}
-                  position={1}
-                  index={index + 1}
-                  pathname="albums"
-                  info={album}
-                />
+              favoriteAlbums.map(album => (
+                <ListElement key={album._id} pathname="albums" info={album} />
               ))
             ) : (
               <p>You have no favorite albums</p>
@@ -44,11 +39,9 @@ const Favorites = ({
           <span>Favorite Artists</span>
           <div>
             {favoriteArtists.length > 0 ? (
-              favoriteArtists.map((artist, index) => (
+              favoriteArtists.map(artist => (
                 <ListElement
                   key={artist._id}
-                  position={2}
-                  index={index + 1}
                   pathname="artists"
                   info={artist}
                 />
@@ -60,14 +53,8 @@ const Favorites = ({
           <span>Favorite Songs</span>
           <div>
             {favoriteSongs.length > 0 ? (
-              favoriteSongs.map((song, index) => (
-                <ListElement
-                  key={song._id}
-                  position={3}
-                  index={index + 1}
-                  pathname="songs"
-                  info={song}
-                />
+              favoriteSongs.map(song => (
+                <ListElement key={song._id} pathname="songs" info={song} />
               ))
             ) : (
               <p>You have no favorite songs</p>
@@ -79,20 +66,4 @@ const Favorites = ({
   );
 };
 
-Favorites.propTypes = {
-  fetchFavorites: PropTypes.func.isRequired,
-  loading: PropTypes.bool.isRequired,
-  favorite: PropTypes.object.isRequired
-};
-
-const mapStateToProps = state => {
-  return {
-    loading: state.favorite.loading,
-    favorite: state.favorite.favorite
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  { fetchFavorites }
-)(Favorites);
+export default Favorites;

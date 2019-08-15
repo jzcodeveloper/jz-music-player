@@ -1,23 +1,25 @@
 import React, { Fragment } from "react";
-import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 
 import classes from "./SideDrawer.css";
 import Backdrop from "../../UI/Backdrop/Backdrop";
 import NavigationItems from "../NavigationItems/NavigationItems";
 
-const SideDrawer = ({ show, close, isAuth }) => {
-  let asignedClasses = [classes.SideDrawer];
+const SideDrawer = ({ show, close }) => {
+  const isAuth = useSelector(({ auth }) => auth.isAuthenticated);
+
+  const assignedClasses = [classes.SideDrawer];
   if (show) {
-    asignedClasses.push(classes.Open);
+    assignedClasses.push(classes.Open);
   } else {
-    asignedClasses.push(classes.Close);
+    assignedClasses.push(classes.Close);
   }
 
   return (
     <Fragment>
       <Backdrop show={show} click={close} />
-      <div className={asignedClasses.join(" ")} onClick={close}>
+      <div className={assignedClasses.join(" ")} onClick={close}>
         <NavigationItems isAuth={isAuth} />
       </div>
     </Fragment>
@@ -26,14 +28,7 @@ const SideDrawer = ({ show, close, isAuth }) => {
 
 SideDrawer.propTypes = {
   show: PropTypes.bool.isRequired,
-  close: PropTypes.func.isRequired,
-  isAuth: PropTypes.bool.isRequired
+  close: PropTypes.func.isRequired
 };
 
-const mapStateToProps = state => {
-  return {
-    isAuth: state.auth.isAuthenticated
-  };
-};
-
-export default connect(mapStateToProps)(SideDrawer);
+export default SideDrawer;

@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Redirect } from "react-router-dom";
-import PropTypes from "prop-types";
 
-import { register } from "../../actions/authActions";
-import { setErrors } from "../../actions/errorsActions";
+import { register } from "../../store/actions/authActions";
+import { setErrors } from "../../store/actions/errorsActions";
 
 import classes from "./Register.css";
 
-const Register = ({ register, setErrors, isAuthenticated, errors }) => {
+const Register = () => {
+  const dispatch = useDispatch();
+  const isAuth = useSelector(({ auth }) => auth.isAuthenticated);
+  const errors = useSelector(({ errors }) => errors);
+
   const [state, setState] = useState({
     name: "",
     email: "",
@@ -20,7 +23,7 @@ const Register = ({ register, setErrors, isAuthenticated, errors }) => {
 
   useEffect(() => {
     document.title = `JZ Music Player - Register`;
-    return () => setErrors();
+    return () => dispatch(setErrors());
   }, []);
 
   const onChange = e => {
@@ -29,14 +32,14 @@ const Register = ({ register, setErrors, isAuthenticated, errors }) => {
 
   const onSubmit = e => {
     e.preventDefault();
-    register({ name, email, password, password2 });
+    dispatch(register({ name, email, password, password2 }));
   };
 
-  if (isAuthenticated) return <Redirect to="/dashboard" />;
+  if (isAuth) return <Redirect to="/dashboard" />;
 
   return (
     <div className={classes.Register}>
-      <form onSubmit={e => onSubmit(e)}>
+      <form onSubmit={onSubmit}>
         <h1>Sign Up</h1>
         <span>Create an account</span>
         <input
@@ -83,21 +86,4 @@ const Register = ({ register, setErrors, isAuthenticated, errors }) => {
   );
 };
 
-Register.propTypes = {
-  register: PropTypes.func.isRequired,
-  setErrors: PropTypes.func.isRequired,
-  isAuthenticated: PropTypes.bool.isRequired,
-  errors: PropTypes.object
-};
-
-const mapStateToProps = state => {
-  return {
-    isAuthenticated: state.auth.isAuthenticated,
-    errors: state.errors
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  { register, setErrors }
-)(Register);
+export default Register;

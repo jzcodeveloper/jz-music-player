@@ -1,30 +1,30 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
+import { useSelector, useDispatch } from "react-redux";
 
-import { fetchPlaylists, createPlaylist } from "../../actions/playlistsActions";
+import {
+  fetchPlaylists,
+  createPlaylist
+} from "../../store/actions/playlistsActions";
 
 import classes from "./Playlists.css";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import Modal from "../../components/App/Modal/Modal";
 import Playlist from "./Playlist/Playlist";
 
-const Playlists = ({
-  fetchPlaylists,
-  createPlaylist,
-  loading,
-  playlists,
-  history
-}) => {
+const Playlists = () => {
+  const dispatch = useDispatch();
+  const loading = useSelector(({ playlists }) => playlists.loading);
+  const playlists = useSelector(({ playlists }) => playlists.playlists);
+
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     document.title = `JZ Music Player - My Playlists`;
-    fetchPlaylists();
+    dispatch(fetchPlaylists());
   }, []);
 
   const onCreatePlaylist = payload => {
-    createPlaylist(payload);
+    dispatch(createPlaylist(payload));
   };
 
   const onCloseModal = () => {
@@ -70,22 +70,4 @@ const Playlists = ({
   );
 };
 
-Playlists.propTypes = {
-  fetchPlaylists: PropTypes.func.isRequired,
-  createPlaylist: PropTypes.func.isRequired,
-  loading: PropTypes.bool.isRequired,
-  playlists: PropTypes.array.isRequired,
-  history: PropTypes.object.isRequired
-};
-
-const mapStateToProps = state => {
-  return {
-    loading: state.playlists.loading,
-    playlists: state.playlists.playlists
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  { fetchPlaylists, createPlaylist }
-)(Playlists);
+export default Playlists;

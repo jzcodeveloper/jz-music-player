@@ -10,13 +10,16 @@ import Loading from "./components/UI/Loading/Loading";
 import Footer from "./components/UI/Footer/Footer";
 
 //Redux
-import store from "./store";
-import { checkAuthState } from "./actions/authActions";
+import store from "./store/store";
+import { checkAuthState } from "./store/actions/authActions";
 
 import "./App.css";
 
 const App = () => {
-  const [state, setState] = useState({ showSide: false, loading: true });
+  const [state, setState] = useState({
+    showSide: false,
+    loading: true
+  });
   const { showSide, loading } = state;
 
   useEffect(() => {

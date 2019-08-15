@@ -1,40 +1,37 @@
 import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 
-import { setErrors } from "../../../actions/errorsActions";
+import { setErrors } from "../../../store/actions/errorsActions";
 
 import classes from "./Modal.css";
 import { useIsMounted } from "../../../hooks/customHooks";
 
 const Modal = ({
-  setErrors,
   createPlaylist,
   editPlaylist,
   closeModal,
   playlist,
-  playlists,
-  action,
-  globalErrors
+  action
 }) => {
-  const [state, setState] = useState({ name: "", description: "", errors: {} });
+  const dispatch = useDispatch();
+  const playlists = useSelector(({ playlists }) => playlists.playlists);
+  const errors = useSelector(({ errors }) => errors);
 
-  const { name, description, errors } = state;
+  const [state, setState] = useState({ name: "", description: "" });
+
+  const { name, description } = state;
 
   const isMounted = useIsMounted();
 
   useEffect(() => {
-    setErrors();
+    dispatch(setErrors());
   }, []);
-
-  useEffect(() => {
-    setState({ ...state, errors: globalErrors });
-  }, [globalErrors]);
 
   useEffect(() => {
     if (playlist) {
       const { name, description } = playlist;
-      setState({ ...state, name, description });
+      setState({ name, description });
     }
   }, [playlist]);
 
@@ -103,24 +100,11 @@ const Modal = ({
 };
 
 Modal.propTypes = {
-  setErrors: PropTypes.func.isRequired,
   createPlaylist: PropTypes.func,
   editPlaylist: PropTypes.func,
   closeModal: PropTypes.func.isRequired,
   playlist: PropTypes.object,
-  playlists: PropTypes.array.isRequired,
-  action: PropTypes.string.isRequired,
-  globalErrors: PropTypes.object.isRequired
+  action: PropTypes.string.isRequired
 };
 
-const mapStateToProps = state => {
-  return {
-    playlists: state.playlists.playlists,
-    globalErrors: state.errors
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  { setErrors }
-)(Modal);
+export default Modal;

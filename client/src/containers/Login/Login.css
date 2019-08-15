@@ -1,13 +1,13 @@
 .Login {
   width: 100%;
+  min-height: 70vh;
+  margin: 80px auto 40px auto;
   display: flex;
   justify-content: center;
 }
 
 .Login form {
   width: 50%;
-  display: flex;
-  flex-flow: column;
   justify-content: center;
 }
 
@@ -15,12 +15,12 @@
   text-align: center;
   font-size: 3em;
   font-weight: normal;
-  margin: 20px auto;
+  margin: 0 auto 20px 0;
 }
 
 .Login span {
+  display: block;
   text-align: center;
-  margin: auto;
 }
 
 .Login input {

@@ -1,25 +1,20 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { connect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 
 import {
   fetchPlaylists,
   createPlaylist,
   addToPlaylist
-} from "../../../actions/playlistsActions";
+} from "../../../store/actions/playlistsActions";
 
 import classes from "./AddToPlaylist.css";
 import Modal from "../Modal/Modal";
 
-const AddToPlaylist = ({
-  fetchPlaylists,
-  createPlaylist,
-  addToPlaylist,
-  closePlaylists,
-  playlists,
-  pathname,
-  itemId
-}) => {
+const AddToPlaylist = ({ closePlaylists, pathname, itemId }) => {
+  const dispatch = useDispatch();
+  const playlists = useSelector(({ playlists }) => playlists.playlists);
+
   const [state, setState] = useState({
     selectedPlaylistIndex: null,
     showModal: false
@@ -28,7 +23,7 @@ const AddToPlaylist = ({
   const { selectedPlaylistIndex, showModal } = state;
 
   useEffect(() => {
-    fetchPlaylists();
+    dispatch(fetchPlaylists());
   }, []);
 
   const selectPlaylist = index => {
@@ -37,7 +32,7 @@ const AddToPlaylist = ({
 
   const onClick = () => {
     const { _id } = playlists[selectedPlaylistIndex];
-    addToPlaylist(pathname, _id, itemId);
+    dispatch(addToPlaylist(pathname, _id, itemId));
     onClosePlaylists();
   };
 
@@ -57,7 +52,7 @@ const AddToPlaylist = ({
   };
 
   const onCreatePlaylist = payload => {
-    createPlaylist(payload);
+    dispatch(createPlaylist(payload));
   };
 
   const icons = ["fas fa-check-circle", "far fa-circle"];
@@ -116,22 +111,9 @@ const AddToPlaylist = ({
 };
 
 AddToPlaylist.propTypes = {
-  fetchPlaylists: PropTypes.func.isRequired,
-  createPlaylist: PropTypes.func.isRequired,
-  addToPlaylist: PropTypes.func.isRequired,
   closePlaylists: PropTypes.func.isRequired,
-  playlists: PropTypes.array.isRequired,
   pathname: PropTypes.string.isRequired,
   itemId: PropTypes.string.isRequired
 };
 
-const mapStateToProps = state => {
-  return {
-    playlists: state.playlists.playlists
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  { fetchPlaylists, createPlaylist, addToPlaylist }
-)(AddToPlaylist);
+export default AddToPlaylist;

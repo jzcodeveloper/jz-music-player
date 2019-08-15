@@ -1,8 +1,8 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { connect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 
-import { fetchMetadata } from "../../actions/musicActions";
+import { fetchMetadata } from "../../store/actions/musicActions";
 import { smoothScroll } from "../../utils/smoothScroll";
 
 import classes from "./Music.css";
@@ -10,7 +10,13 @@ import Spinner from "../../components/UI/Spinner/Spinner";
 import Section from "./Section/Section";
 import AddToPlaylist from "../../components/App/AddToPlaylist/AddToPlaylist";
 
-const Music = ({ fetchMetadata, loading, history, albums, artists, songs }) => {
+const Music = ({ history }) => {
+  const dispatch = useDispatch();
+  const loading = useSelector(({ music }) => music.loading);
+  const { albumsInfo, artistsInfo, songsInfo } = useSelector(
+    ({ music }) => music.metadata
+  );
+
   const [state, setState] = useState({
     showPlaylists: false,
     pathname: "",
@@ -21,8 +27,9 @@ const Music = ({ fetchMetadata, loading, history, albums, artists, songs }) => {
 
   useEffect(() => {
     document.title = `JZ Music Player - Music`;
-    if (albums.length === 0 || artists.length === 0 || songs.length === 0) {
-      fetchMetadata();
+    const lengths = [albumsInfo.length, artistsInfo.length, songsInfo.length];
+    if (lengths[0] === 0 || lengths[1] === 0 || lengths[2] === 0) {
+      dispatch(fetchMetadata());
     }
   }, []);
 
@@ -88,8 +95,8 @@ const Music = ({ fetchMetadata, loading, history, albums, artists, songs }) => {
       ) : (
         <div className={classes.Music}>
           <Section
-            sectionTitle="TOP ALBUMS"
-            info={albums}
+            sectionTitle="Top Albums"
+            info={albumsInfo}
             pathname="albums"
             history={history}
             showPlaylists={onShowPlaylists}
@@ -101,8 +108,8 @@ const Music = ({ fetchMetadata, loading, history, albums, artists, songs }) => {
           />
 
           <Section
-            sectionTitle="TOP ARTISTS"
-            info={artists}
+            sectionTitle="Top Artists"
+            info={artistsInfo}
             pathname="artists"
             history={history}
             showPlaylists={onShowPlaylists}
@@ -114,8 +121,8 @@ const Music = ({ fetchMetadata, loading, history, albums, artists, songs }) => {
           />
 
           <Section
-            sectionTitle="TOP SONGS"
-            info={songs}
+            sectionTitle="Top Songs"
+            info={songsInfo}
             pathname="songs"
             history={history}
             showPlaylists={onShowPlaylists}
@@ -140,24 +147,7 @@ const Music = ({ fetchMetadata, loading, history, albums, artists, songs }) => {
 };
 
 Music.propTypes = {
-  fetchMetadata: PropTypes.func.isRequired,
-  loading: PropTypes.bool.isRequired,
-  history: PropTypes.object.isRequired,
-  albums: PropTypes.array.isRequired,
-  artists: PropTypes.array.isRequired,
-  songs: PropTypes.array.isRequired
+  history: PropTypes.object.isRequired
 };
 
-const mapStateToProps = state => {
-  return {
-    loading: state.music.loading,
-    albums: state.music.metadata.albumsInfo,
-    artists: state.music.metadata.artistsInfo,
-    songs: state.music.metadata.songsInfo
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  { fetchMetadata }
-)(Music);
+export default Music;

@@ -1,32 +1,31 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { connect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 
-import { fetchMore, fetchLoadMore } from "../../actions/moreActions";
+import { fetchMore, fetchLoadMore } from "../../store/actions/moreActions";
 
 import classes from "./More.css";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import NotFound from "../../components/UI/NotFound/NotFound";
+import Search from "../../components/App/Search/Search";
 import GridElement from "../../components/App/GridElement/GridElement";
 import AddToPlaylist from "../../components/App/AddToPlaylist/AddToPlaylist";
 
-const More = ({
-  fetchMore,
-  fetchLoadMore,
-  loading,
-  more,
-  history,
-  location: { pathname }
-}) => {
+const More = ({ history, location: { pathname } }) => {
+  const dispatch = useDispatch();
+  const loading = useSelector(({ more }) => more.loading);
+  const more = useSelector(({ more }) => more.more);
+
   const [state, setState] = useState({
     from: 0,
     limit: 10,
     query: "",
     showPlaylists: false,
+    showSearch: false,
     itemId: ""
   });
 
-  const { from, limit, query, showPlaylists, itemId } = state;
+  const { from, limit, query, showPlaylists, showSearch, itemId } = state;
 
   const [, , path, queryURL] = pathname.split("/");
 
@@ -35,7 +34,7 @@ const More = ({
   }, []);
 
   useEffect(() => {
-    fetchMore(path, 0, limit, queryURL);
+    dispatch(fetchMore(path, 0, limit, queryURL));
     setState({ ...state, from: 0, query: queryURL });
   }, [pathname]);
 
@@ -47,8 +46,16 @@ const More = ({
     setState({ ...state, showPlaylists: false, itemId: "" });
   };
 
+  const showSearchModal = () => {
+    setState({ ...state, showSearch: true });
+  };
+
+  const closeSearchModal = () => {
+    setState({ ...state, showSearch: false });
+  };
+
   const onClick = () => {
-    fetchLoadMore(path, from + limit, limit, query);
+    dispatch(fetchLoadMore(path, from + limit, limit, query));
     setState({ ...state, from: from + limit });
   };
 
@@ -66,15 +73,20 @@ const More = ({
 
   return (
     <Fragment>
-      <input
-        className={classes.Search}
-        type="search"
-        placeholder={`Search ${path}...`}
-        onChange={e => onChange(e)}
-        onKeyDown={e => onKeyDown(e)}
-        value={query || ""}
-        autoFocus
-      />
+      {showSearch ? (
+        <Search
+          onChange={onChange}
+          onKeyDown={onKeyDown}
+          value={query}
+          path={path}
+          close={closeSearchModal}
+        />
+      ) : (
+        <i
+          className={`fas fa-search ${classes.SearchIcon}`}
+          onClick={showSearchModal}
+        />
+      )}
 
       {loading ? (
         <Spinner />
@@ -117,22 +129,8 @@ const More = ({
 };
 
 More.propTypes = {
-  fetchMore: PropTypes.func.isRequired,
-  fetchLoadMore: PropTypes.func.isRequired,
-  loading: PropTypes.bool.isRequired,
-  more: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired
 };
 
-const mapStateToProps = state => {
-  return {
-    loading: state.more.loading,
-    more: state.more.more
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  { fetchMore, fetchLoadMore }
-)(More);
+export default More;

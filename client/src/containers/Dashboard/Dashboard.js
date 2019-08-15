@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
 
 import classes from "./Dashboard.css";
 import Action from "./Action/Action";
 
-const Dashboard = ({ name }) => {
+const Dashboard = () => {
+  const name = useSelector(({ auth }) => auth.user.name);
+
   useEffect(() => {
     document.title = `JZ Music Player - Dashboard`;
   }, []);
@@ -45,15 +46,4 @@ const Dashboard = ({ name }) => {
     </div>
   );
 };
-
-Dashboard.propTypes = {
-  name: PropTypes.string.isRequired
-};
-
-const mapStateToProps = state => {
-  return {
-    name: state.auth.user.name
-  };
-};
-
-export default connect(mapStateToProps)(Dashboard);
+export default Dashboard;

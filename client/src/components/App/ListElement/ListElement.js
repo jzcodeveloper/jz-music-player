@@ -1,10 +1,10 @@
 import React, { Fragment, useState, useRef } from "react";
 import { Link } from "react-router-dom";
-import { connect } from "react-redux";
+import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 
-import { updateFavorites } from "../../../actions/favoriteActions";
-import { removeFromPlaylist } from "../../../actions/playlistsActions";
+import { updateFavorites } from "../../../store/actions/favoriteActions";
+import { removeFromPlaylist } from "../../../store/actions/playlistsActions";
 
 import classes from "./ListElement.css";
 import background from "../../../assets/background.jpg";
@@ -13,8 +13,6 @@ import { secondsToHms } from "../../../utils/utility";
 import Confirmation from "../../UI/Confirmation/Confirmation";
 
 const ListElement = ({
-  updateFavorites,
-  removeFromPlaylist,
   pathname,
   info: {
     _id,
@@ -27,11 +25,12 @@ const ListElement = ({
     genre,
     duration
   },
-  playlist,
-  position,
-  index
+  playlist
 }) => {
+  const dispatch = useDispatch();
+
   const uniqueID = useRef(Date.now().toString());
+
   const [state, setState] = useState({ showConfirmation: false, action: "" });
 
   const { showConfirmation, action } = state;
@@ -50,12 +49,12 @@ const ListElement = ({
 
   const onUpdateFavorites = () => {
     closeListElement();
-    setTimeout(() => updateFavorites(pathname, _id), 500);
+    setTimeout(() => dispatch(updateFavorites(pathname, _id)), 500);
   };
 
   const onRemoveFromPlaylist = () => {
     closeListElement();
-    setTimeout(() => removeFromPlaylist(playlist._id, _id), 500);
+    setTimeout(() => dispatch(removeFromPlaylist(playlist._id, _id)), 500);
   };
 
   const closeListElement = () => {
@@ -141,18 +140,10 @@ const ListElement = ({
 };
 
 ListElement.propTypes = {
-  updateFavorites: PropTypes.func.isRequired,
-  removeFromPlaylist: PropTypes.func.isRequired,
   pathname: PropTypes.string.isRequired,
   info: PropTypes.object.isRequired,
   playlist: PropTypes.object,
-  playlistIndex: PropTypes.number,
-  index: PropTypes.number.isRequired,
-  position: PropTypes.number,
-  className: PropTypes.string
+  playlistIndex: PropTypes.number
 };
 
-export default connect(
-  null,
-  { updateFavorites, removeFromPlaylist }
-)(ListElement);
+export default ListElement;

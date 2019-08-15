@@ -16,17 +16,17 @@ exports.sendTopMetadata = async (req, res) => {
       res.json(JSON.parse(result));
     } else {
       const albumsInfo = await Album.find({})
-        .sort({ favoritesLength: -1 })
+        .sort({ timesPlayed: -1 })
         .limit(limit)
         .populate("albumArt");
 
       const artistsInfo = await Artist.find({})
-        .sort({ favoritesLength: -1 })
+        .sort({ timesPlayed: -1 })
         .limit(limit)
         .populate("albumArt");
 
       const songsInfo = await Song.find({})
-        .sort({ favoritesLength: -1 })
+        .sort({ timesPlayed: -1 })
         .limit(limit)
         .populate("albumArt");
 
@@ -54,7 +54,7 @@ exports.sendMetadata = async (req, res, findByProperty = "") => {
     const limit = Number(req.query.limit);
 
     //Check whether there is a key already in the cache
-    const key = `more/${query}${from}${limit}`;
+    const key = `more/${findByProperty}/${query}/${from}/${limit}`;
     const result = await client.getAsync(key);
     if (result) {
       res.json(JSON.parse(result));
@@ -98,7 +98,7 @@ exports.sendAllMetadata = async (req, res, findByProperty = "") => {
     if (result) {
       res.json(JSON.parse(result));
     } else {
-      if (findByProperty === "title") {
+      if (title) {
         const [artist, title] = param.split(" - ");
         fields["artist"] = artist;
         fields["title"] = title;
@@ -146,6 +146,31 @@ exports.countDocuments = async (req, res) => {
   }
 };
 
+//Updates metadata for a given album, artist or song (timesPlayed property)
+exports.updateMetadata = async (req, res, findByProperty = "") => {
+  let Model = null;
+  if (findByProperty === "album") Model = Album;
+  if (findByProperty === "artist") Model = Artist;
+  if (findByProperty === "title") Model = Song;
+
+  const { album, artist, title } = req.params;
+  const param = album || artist || title;
+  const fields = {};
+
+  if (title) {
+    const [artist, title] = param.split(" - ");
+    fields["artist"] = artist;
+    fields["title"] = title;
+  } else {
+    fields[findByProperty] = param;
+  }
+
+  const { _id, timesPlayed } = await Model.findOne(fields);
+  await Model.findByIdAndUpdate(_id, { timesPlayed: timesPlayed + 1 });
+
+  res.json("Success");
+};
+
 //Deletes a song from the database using Artist + Song Title
 /*exports.deleteSong = async (req, res) => {
   try {
@@ -153,7 +178,7 @@ exports.countDocuments = async (req, res) => {
     const deletedSong = await Song.findByIdAndRemove(id);
 
     //Updates duration, count and the songs array of the Album model
-    const album = await Album.findOne({ album: deletedSong.album });
+    const album = await Album.find({ album: deletedSong.album });
     if (album) {
       const updatedFields = {
         duration: album.duration - deletedSong.duration,

@@ -1,21 +1,20 @@
 .GridElement {
   position: relative;
-  border: 1px solid #000;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  border-radius: 3px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
   padding: 10px;
-  border-radius: 10px;
   transition: transform 1s;
 }
 
 .GridElement img {
   width: 100%;
-  border-radius: 5px;
+  border-radius: 3px 3px 0 0;
   cursor: pointer;
 }
 
 .GridElement p {
   display: block;
-  margin: 2.5px;
+  margin: 2.5px 0;
   color: var(--interfaceColor);
   text-align: center;
   z-index: 10;
@@ -68,11 +67,32 @@
 }
 
 @media (max-width: 450px) {
-  .GridElement p:first-of-type {
+  .GridElement {
+    padding-bottom: 5px;
+  }
+  .GridElement p {
+    text-align: left;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .GridElement p:nth-of-type(1) {
     font-size: 0.8em;
   }
-  .GridElement p:not(:first-of-type) {
-    font-size: 0.7em;
+  .GridElement p:nth-of-type(2) {
+    font-size: 0.6em;
+  }
+  .GridElement p:nth-of-type(3),
+  .GridElement p:nth-of-type(4) {
+    display: none;
+  }
+  .Favorite {
+    top: 14px;
+    right: 15px;
+  }
+  .AddToPlaylist {
+    top: 14px;
+    right: 48px;
   }
 }
 

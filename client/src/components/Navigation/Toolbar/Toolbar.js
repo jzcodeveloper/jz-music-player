@@ -1,31 +1,32 @@
 import React from "react";
-import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 
 import classes from "./Toolbar.css";
 import icon from "../../../assets/icon.png";
 import NavigationItems from "../NavigationItems/NavigationItems";
 
-const Toolbar = ({ toggleSide, isAuth }) => (
-  <nav className={classes.Toolbar}>
-    <div onClick={toggleSide}>
-      <img src={icon} alt="Menu Icon" />
-    </div>
-    <nav className={classes.DesktopOnly}>
-      <NavigationItems isAuth={isAuth} />
+const Toolbar = ({ toggleSide }) => {
+  const isAuth = useSelector(({ auth }) => auth.isAuthenticated);
+
+  return (
+    <nav className={classes.Toolbar}>
+      <div className={classes.MobileIcon} onClick={toggleSide}>
+        <img src={icon} alt="Menu Icon" />
+      </div>
+      <div className={classes.DesktopIcon}>
+        <img src={icon} alt="Menu Icon" />
+      </div>
+      <p>JZ Music Player</p>
+      <nav className={classes.DesktopOnly}>
+        <NavigationItems isAuth={isAuth} />
+      </nav>
     </nav>
-  </nav>
-);
+  );
+};
 
 Toolbar.propTypes = {
-  toggleSide: PropTypes.func.isRequired,
-  isAuth: PropTypes.bool.isRequired
+  toggleSide: PropTypes.func.isRequired
 };
 
-const mapStateToProps = state => {
-  return {
-    isAuth: state.auth.isAuthenticated
-  };
-};
-
-export default connect(mapStateToProps)(Toolbar);
+export default Toolbar;

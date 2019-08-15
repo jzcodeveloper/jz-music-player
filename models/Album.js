@@ -24,15 +24,6 @@ const Album = new Schema({
       ref: "Song"
     }
   ],
-  favorites: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "User"
-    }
-  ],
-  favoritesLength: {
-    type: Number
-  },
   timesPlayed: {
     type: Number
   }

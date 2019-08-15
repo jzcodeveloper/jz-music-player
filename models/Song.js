@@ -29,15 +29,6 @@ const Song = new Schema({
   year: {
     type: Number
   },
-  favorites: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "User"
-    }
-  ],
-  favoritesLength: {
-    type: Number
-  },
   timesPlayed: {
     type: Number
   }

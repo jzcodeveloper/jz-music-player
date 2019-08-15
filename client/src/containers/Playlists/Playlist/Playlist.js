@@ -1,12 +1,12 @@
 import React, { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
-import { connect } from "react-redux";
+import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 
 import {
   editPlaylist,
   removePlaylist
-} from "../../../actions/playlistsActions";
+} from "../../../store/actions/playlistsActions";
 
 import classes from "./Playlist.css";
 import Confirmation from "../../../components/UI/Confirmation/Confirmation";
@@ -16,7 +16,9 @@ import ListElement from "../../../components/App/ListElement/ListElement";
 
 import { secondsToHms } from "../../../utils/utility";
 
-const Playlist = ({ editPlaylist, removePlaylist, index, playlist }) => {
+const Playlist = ({ index, playlist }) => {
+  const dispatch = useDispatch();
+
   const [state, setState] = useState({
     showModal: false,
     showConfirmation: false,
@@ -44,12 +46,12 @@ const Playlist = ({ editPlaylist, removePlaylist, index, playlist }) => {
   };
 
   const onEditPlaylist = payload => {
-    editPlaylist(_id, payload);
+    dispatch(editPlaylist(_id, payload));
   };
 
   const onRemovePlaylist = () => {
     closePlaylist();
-    setTimeout(() => removePlaylist(_id), 500);
+    setTimeout(() => dispatch(removePlaylist(_id)), 500);
   };
 
   const closePlaylist = () => {
@@ -128,10 +130,9 @@ const Playlist = ({ editPlaylist, removePlaylist, index, playlist }) => {
 
         <div>
           {songs.length > 0 ? (
-            songs.map((song, index) => (
+            songs.map(song => (
               <ListElement
                 key={song._id}
-                index={index + 1}
                 pathname="songs"
                 info={song}
                 playlist={playlist}
@@ -178,13 +179,8 @@ const Playlist = ({ editPlaylist, removePlaylist, index, playlist }) => {
 };
 
 Playlist.propTypes = {
-  editPlaylist: PropTypes.func.isRequired,
-  removePlaylist: PropTypes.func.isRequired,
   index: PropTypes.number.isRequired,
-  playlist: PropTypes.object
+  playlist: PropTypes.object.isRequired
 };
 
-export default connect(
-  null,
-  { editPlaylist, removePlaylist }
-)(Playlist);
+export default Playlist;

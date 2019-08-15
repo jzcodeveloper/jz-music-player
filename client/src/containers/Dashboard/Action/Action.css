@@ -84,13 +84,13 @@
   align-items: center;
   min-width: 200px;
   padding: 20px;
-  font-size: 10em;
+  font-size: 8em;
   box-sizing: border-box;
 }
 
 @media (max-width: 600px) {
   .Image {
-    height: 400px;
+    height: 350px;
   }
   .Content {
     flex-flow: column;

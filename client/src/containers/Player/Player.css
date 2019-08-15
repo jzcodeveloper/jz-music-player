@@ -1,8 +1,4 @@
 .Player {
-  margin-bottom: -40px;
-}
-
-.Player > section {
   margin: 0;
   padding: 0;
   width: 100%;
@@ -12,7 +8,7 @@
   height: 80vh;
 }
 
-.Player > section > div {
+.Player > div {
   position: relative;
   width: 100%;
   display: flex;
@@ -20,7 +16,7 @@
   justify-content: flex-end;
 }
 
-.Player > section > div:first-child {
+.Player > div:first-child {
   max-width: 33.33%;
 }
 
@@ -78,13 +74,13 @@
 }
 
 @media (max-width: 450px) {
-  .Player > section {
+  .Player {
     flex-flow: column;
   }
-  .Player > section > div:first-child {
+  .Player > div:first-child {
     display: none;
   }
-  .Player > section > div {
+  .Player > div {
     margin-top: 60px;
     height: calc(100% - 60px);
   }

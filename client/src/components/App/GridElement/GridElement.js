@@ -1,16 +1,14 @@
 import React from "react";
-import { connect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 
-import { updateFavorites } from "../../../actions/favoriteActions";
+import { updateFavorites } from "../../../store/actions/favoriteActions";
 
 import classes from "./GridElement.css";
 import background from "../../../assets/background.jpg";
 import { secondsToHms } from "../../../utils/utility";
 
 const GridElement = ({
-  updateFavorites,
-  user,
   pathname,
   history,
   info: {
@@ -26,8 +24,13 @@ const GridElement = ({
   },
   showPlaylists
 }) => {
+  const dispatch = useDispatch();
+  const { favoriteAlbums, favoriteArtists, favoriteSongs } = useSelector(
+    ({ auth }) => auth.user
+  );
+
   const onFavoriteClick = (route, id) => {
-    updateFavorites(route, id);
+    dispatch(updateFavorites(route, id));
   };
 
   const onAlbumArtClick = () => {
@@ -42,11 +45,11 @@ const GridElement = ({
   let icon = "fa-star ";
 
   if (pathname === "albums") {
-    icon += user.favoriteAlbums.indexOf(_id) >= 0 ? "fas" : "far";
+    icon += favoriteAlbums.indexOf(_id) >= 0 ? "fas" : "far";
   } else if (pathname === "artists") {
-    icon += user.favoriteArtists.indexOf(_id) >= 0 ? "fas" : "far";
+    icon += favoriteArtists.indexOf(_id) >= 0 ? "fas" : "far";
   } else {
-    icon += user.favoriteSongs.indexOf(_id) >= 0 ? "fas" : "far";
+    icon += favoriteSongs.indexOf(_id) >= 0 ? "fas" : "far";
   }
 
   return (
@@ -84,21 +87,10 @@ const GridElement = ({
 };
 
 GridElement.propTypes = {
-  updateFavorites: PropTypes.func.isRequired,
   showPlaylists: PropTypes.func.isRequired,
-  user: PropTypes.object.isRequired,
   pathname: PropTypes.string.isRequired,
   history: PropTypes.object.isRequired,
   info: PropTypes.object.isRequired
 };
 
-const mapStateToProps = state => {
-  return {
-    user: state.auth.user
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  { updateFavorites }
-)(GridElement);
+export default GridElement;

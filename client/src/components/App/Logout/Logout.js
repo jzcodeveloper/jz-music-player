@@ -1,23 +1,17 @@
 import React, { useEffect } from "react";
 import { Redirect } from "react-router-dom";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
+import { useDispatch } from "react-redux";
 
-import { logoutUser } from "../../../actions/authActions";
+import { logoutUser } from "../../../store/actions/authActions";
 
-const Logout = ({ logoutUser }) => {
+const Logout = () => {
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    logoutUser();
+    dispatch(logoutUser());
   }, []);
 
   return <Redirect to="/" />;
 };
 
-Logout.propTypes = {
-  logoutUser: PropTypes.func.isRequired
-};
-
-export default connect(
-  null,
-  { logoutUser }
-)(Logout);
+export default Logout;

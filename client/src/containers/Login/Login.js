@@ -1,21 +1,24 @@
 import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Redirect } from "react-router-dom";
-import PropTypes from "prop-types";
 
-import { login } from "../../actions/authActions";
-import { setErrors } from "../../actions/errorsActions";
+import { login } from "../../store/actions/authActions";
+import { setErrors } from "../../store/actions/errorsActions";
 
 import classes from "./Login.css";
 
-const Login = ({ login, setErrors, isAuthenticated, errors }) => {
+const Login = () => {
+  const dispatch = useDispatch();
+  const isAuth = useSelector(({ auth }) => auth.isAuthenticated);
+  const errors = useSelector(({ errors }) => errors);
+
   const [state, setState] = useState({ email: "", password: "" });
 
   const { email, password } = state;
 
   useEffect(() => {
     document.title = `JZ Music Player - Login`;
-    return () => setErrors();
+    return () => dispatch(setErrors());
   }, []);
 
   const onChange = e => {
@@ -24,10 +27,10 @@ const Login = ({ login, setErrors, isAuthenticated, errors }) => {
 
   const onSubmit = e => {
     e.preventDefault();
-    login({ email, password });
+    dispatch(login({ email, password }));
   };
 
-  if (isAuthenticated) return <Redirect to="/dashboard" />;
+  if (isAuth) return <Redirect to="/dashboard" />;
 
   return (
     <div className={classes.Login}>
@@ -59,21 +62,4 @@ const Login = ({ login, setErrors, isAuthenticated, errors }) => {
   );
 };
 
-Login.propTypes = {
-  login: PropTypes.func.isRequired,
-  setErrors: PropTypes.func.isRequired,
-  isAuthenticated: PropTypes.bool.isRequired,
-  errors: PropTypes.object
-};
-
-const mapStateToProps = state => {
-  return {
-    isAuthenticated: state.auth.isAuthenticated,
-    errors: state.errors
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  { login, setErrors }
-)(Login);
+export default Login;

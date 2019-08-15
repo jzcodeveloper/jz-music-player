@@ -49,6 +49,21 @@ router.get("/playlists/:name", auth, (req, res) => {
   Metadata.sendAllMetadata(req, res, "name");
 });
 
+//Updates songs metadata for a given album (timesPlayed property)
+router.get("/update/albums/:album", auth, (req, res) => {
+  Metadata.updateMetadata(req, res, "album");
+});
+
+//Updates songs metadata for a given artist (timesPlayed property)
+router.get("/update/artists/:artist", auth, (req, res) => {
+  Metadata.updateMetadata(req, res, "artist");
+});
+
+//Updates song metadata for a given song (timesPlayed property)
+router.get("/update/songs/:title", auth, (req, res) => {
+  Metadata.updateMetadata(req, res, "title");
+});
+
 //Deletes a song by id
 router.delete("/songs/:id", auth, (req, res) => {
   Metadata.deleteSong(req, res);
