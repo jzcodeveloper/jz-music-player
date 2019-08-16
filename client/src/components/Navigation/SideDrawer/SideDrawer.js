@@ -7,7 +7,7 @@ import Backdrop from "../../UI/Backdrop/Backdrop";
 import NavigationItems from "../NavigationItems/NavigationItems";
 
 const SideDrawer = ({ show, close }) => {
-  const isAuth = useSelector(({ auth }) => auth.isAuthenticated);
+  const { isAuthenticated } = useSelector(({ auth }) => auth);
 
   const assignedClasses = [classes.SideDrawer];
   if (show) {
@@ -20,7 +20,7 @@ const SideDrawer = ({ show, close }) => {
     <Fragment>
       <Backdrop show={show} click={close} />
       <div className={assignedClasses.join(" ")} onClick={close}>
-        <NavigationItems isAuth={isAuth} />
+        <NavigationItems isAuth={isAuthenticated} />
       </div>
     </Fragment>
   );

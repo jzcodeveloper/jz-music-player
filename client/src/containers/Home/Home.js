@@ -8,15 +8,17 @@ import classes from "./Home.css";
 
 const Home = () => {
   const dispatch = useDispatch();
-  const count = useSelector(({ count }) => count.count);
-  const isAuth = useSelector(({ auth }) => auth.isAuthenticated);
+
+  const { count } = useSelector(({ count }) => count);
+
+  const { isAuthenticated } = useSelector(({ auth }) => auth);
 
   useEffect(() => {
     document.title = `JZ Music Player - Home`;
     if (count === 0) dispatch(countSongs());
   }, []);
 
-  if (isAuth) return <Redirect to="/dashboard" />;
+  if (isAuthenticated) return <Redirect to="/dashboard" />;
 
   return (
     <div className={classes.Home}>

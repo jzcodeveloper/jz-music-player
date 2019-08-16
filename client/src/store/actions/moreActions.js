@@ -1,12 +1,7 @@
 import axios from "../axios";
 import * as types from "./types";
 
-export const fetchMore = (
-  payload,
-  from,
-  limit,
-  query = ""
-) => async dispatch => {
+export const fetchMore = (payload, from, limit, query) => async dispatch => {
   dispatch({ type: types.FETCH_MORE_START });
   try {
     const { data } = await axios.get(
@@ -27,7 +22,7 @@ export const fetchLoadMore = (
   payload,
   from,
   limit,
-  query = ""
+  query
 ) => async dispatch => {
   try {
     const { data } = await axios.get(

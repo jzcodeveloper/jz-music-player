@@ -1,9 +1,11 @@
 const client = require("../config/redis");
 
-const Song = require("../models/Song");
-const Album = require("../models/Album");
-const Artist = require("../models/Artist");
-const Playlist = require("../models/Playlist");
+const models = {
+  Song: require("../models/Song"),
+  Album: require("../models/Album"),
+  Artist: require("../models/Artist"),
+  Playlist: require("../models/Playlist")
+};
 
 //Sends albums/artists/songs metadata with limit
 exports.sendTopMetadata = async (req, res) => {
@@ -15,17 +17,20 @@ exports.sendTopMetadata = async (req, res) => {
     if (result) {
       res.json(JSON.parse(result));
     } else {
-      const albumsInfo = await Album.find({})
+      const albumsInfo = await models["Album"]
+        .find({})
         .sort({ timesPlayed: -1 })
         .limit(limit)
         .populate("albumArt");
 
-      const artistsInfo = await Artist.find({})
+      const artistsInfo = await models["Artist"]
+        .find({})
         .sort({ timesPlayed: -1 })
         .limit(limit)
         .populate("albumArt");
 
-      const songsInfo = await Song.find({})
+      const songsInfo = await models["Song"]
+        .find({})
         .sort({ timesPlayed: -1 })
         .limit(limit)
         .populate("albumArt");
@@ -43,28 +48,27 @@ exports.sendTopMetadata = async (req, res) => {
 };
 
 //Sends all albums/artists/songs metadata with from, limit and query
-exports.sendMetadata = async (req, res, findByProperty = "") => {
+exports.sendMetadata = async (req, res, Model) => {
   try {
-    let Model = null;
-    if (findByProperty === "album") Model = Album;
-    if (findByProperty === "artist") Model = Artist;
-    if (findByProperty === "title") Model = Song;
     const query = new RegExp(req.query.query, "i");
     const from = Number(req.query.from);
     const limit = Number(req.query.limit);
 
     //Check whether there is a key already in the cache
-    const key = `more/${findByProperty}/${query}/${from}/${limit}`;
+    const key = `more/${Model}/${query}/${from}/${limit}`;
     const result = await client.getAsync(key);
     if (result) {
       res.json(JSON.parse(result));
     } else {
       const fields = {};
-      fields[findByProperty] = query;
+
+      if (Model === "Album") fields["album"] = query;
+      if (Model === "Artist") fields["artist"] = query;
+      if (Model === "Song") fields["title"] = query;
 
       const info = {
-        count: await Model.find(fields).countDocuments(),
-        info: await Model.find(fields)
+        count: await models[Model].find(fields).countDocuments(),
+        info: await models[Model].find(fields)
           .skip(from)
           .limit(limit)
           .populate("albumArt")
@@ -81,37 +85,34 @@ exports.sendMetadata = async (req, res, findByProperty = "") => {
 };
 
 //Sends metadata for a given album/artist/song/playlist
-exports.sendAllMetadata = async (req, res, findByProperty = "") => {
+exports.sendAllMetadata = async (req, res, Model) => {
   try {
-    let Model = null;
-    if (findByProperty === "album") Model = Album;
-    if (findByProperty === "artist") Model = Artist;
-    if (findByProperty === "title") Model = Song;
-    if (findByProperty === "name") Model = Playlist;
-
     const { album, artist, title, name } = req.params;
     const param = album || artist || title || name;
-    const fields = {};
 
     //Check whether there is a key already in the cache
     const result = await client.getAsync(`player/${param}`);
     if (result) {
       res.json(JSON.parse(result));
     } else {
+      const fields = {};
+
       if (title) {
         const [artist, title] = param.split(" - ");
         fields["artist"] = artist;
         fields["title"] = title;
 
-        const info = await Model.find(fields).populate("albumArt");
+        const info = await models[Model].find(fields).populate("albumArt");
 
         //Caching response
         await client.setexAsync(`player/${param}`, 3600, JSON.stringify(info));
         res.json(info);
       } else {
-        fields[findByProperty] = param;
+        if (album) fields["album"] = album;
+        if (artist) fields["artist"] = artist;
+        if (name) fields["name"] = name;
 
-        const { songs } = await Model.findOne(fields).populate({
+        const { songs } = await models[Model].findOne(fields).populate({
           path: "songs",
           populate: { path: "albumArt" }
         });
@@ -127,17 +128,17 @@ exports.sendAllMetadata = async (req, res, findByProperty = "") => {
   }
 };
 
-//Count documents for the Song Model
-exports.countDocuments = async (req, res) => {
+//Count documents for the any Model
+exports.countDocuments = async (req, res, Model) => {
   try {
     //Check whether there is a key already in the cache
-    const result = await client.getAsync(`count/songs`);
+    const result = await client.getAsync(`count/${Model}`);
     if (result) {
       res.json(JSON.parse(result));
     } else {
-      const count = await Song.find({}).countDocuments();
+      const count = await models[Model].find({}).countDocuments();
       //Caching response
-      await client.setexAsync(`count/songs`, 3600, JSON.stringify(count));
+      await client.setexAsync(`count/${Model}`, 3600, JSON.stringify(count));
       res.json(count);
     }
   } catch (error) {
@@ -147,12 +148,7 @@ exports.countDocuments = async (req, res) => {
 };
 
 //Updates metadata for a given album, artist or song (timesPlayed property)
-exports.updateMetadata = async (req, res, findByProperty = "") => {
-  let Model = null;
-  if (findByProperty === "album") Model = Album;
-  if (findByProperty === "artist") Model = Artist;
-  if (findByProperty === "title") Model = Song;
-
+exports.updateMetadata = async (req, res, Model) => {
   const { album, artist, title } = req.params;
   const param = album || artist || title;
   const fields = {};
@@ -161,12 +157,12 @@ exports.updateMetadata = async (req, res, findByProperty = "") => {
     const [artist, title] = param.split(" - ");
     fields["artist"] = artist;
     fields["title"] = title;
-  } else {
-    fields[findByProperty] = param;
   }
+  if (album) fields["album"] = param;
+  if (artist) fields["artist"] = param;
 
-  const { _id, timesPlayed } = await Model.findOne(fields);
-  await Model.findByIdAndUpdate(_id, { timesPlayed: timesPlayed + 1 });
+  const { _id, timesPlayed } = await models[Model].findOne(fields);
+  await models[Model].findByIdAndUpdate(_id, { timesPlayed: timesPlayed + 1 });
 
   res.json("Success");
 };

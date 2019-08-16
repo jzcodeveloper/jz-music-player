@@ -2,20 +2,19 @@ const Validator = require("validator");
 const isEmpty = require("./isEmpty");
 
 module.exports = function validatePlaylists(body) {
-  let errors = {};
+  const { name, description } = body;
 
-  body.name = !isEmpty(body.name) ? body.name : "";
-  body.description = !isEmpty(body.description) ? body.description : "";
+  const errors = {};
 
-  if (Validator.isEmpty(body.name)) {
+  if (isEmpty(name)) {
     errors.name = "Playlist Name is required";
   }
 
-  if (Validator.isEmpty(body.description)) {
+  if (isEmpty(description)) {
     errors.description = "Playlist Description is required";
   }
 
-  if (!Validator.isLength(body.description, { min: 2, max: 35 })) {
+  if (!Validator.isLength(description, { min: 2, max: 35 })) {
     errors.description =
       "Playlist Description must be between 2 and 35 characters";
   }

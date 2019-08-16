@@ -15,7 +15,9 @@ const Modal = ({
   action
 }) => {
   const dispatch = useDispatch();
-  const playlists = useSelector(({ playlists }) => playlists.playlists);
+
+  const { playlists } = useSelector(({ playlists }) => playlists);
+
   const errors = useSelector(({ errors }) => errors);
 
   const [state, setState] = useState({ name: "", description: "" });

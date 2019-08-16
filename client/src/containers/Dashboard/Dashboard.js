@@ -5,7 +5,7 @@ import classes from "./Dashboard.css";
 import Action from "./Action/Action";
 
 const Dashboard = () => {
-  const name = useSelector(({ auth }) => auth.user.name);
+  const { name } = useSelector(({ auth }) => auth.user);
 
   useEffect(() => {
     document.title = `JZ Music Player - Dashboard`;

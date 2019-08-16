@@ -13,8 +13,8 @@ import Playlist from "./Playlist/Playlist";
 
 const Playlists = () => {
   const dispatch = useDispatch();
-  const loading = useSelector(({ playlists }) => playlists.loading);
-  const playlists = useSelector(({ playlists }) => playlists.playlists);
+
+  const { loading, playlists } = useSelector(({ playlists }) => playlists);
 
   const [showModal, setShowModal] = useState(false);
 

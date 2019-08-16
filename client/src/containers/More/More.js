@@ -13,8 +13,8 @@ import AddToPlaylist from "../../components/App/AddToPlaylist/AddToPlaylist";
 
 const More = ({ history, location: { pathname } }) => {
   const dispatch = useDispatch();
-  const loading = useSelector(({ more }) => more.loading);
-  const more = useSelector(({ more }) => more.more);
+
+  const { loading, more } = useSelector(({ more }) => more);
 
   const [state, setState] = useState({
     from: 0,

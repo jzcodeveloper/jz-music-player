@@ -25,6 +25,7 @@ const GridElement = ({
   showPlaylists
 }) => {
   const dispatch = useDispatch();
+
   const { favoriteAlbums, favoriteArtists, favoriteSongs } = useSelector(
     ({ auth }) => auth.user
   );

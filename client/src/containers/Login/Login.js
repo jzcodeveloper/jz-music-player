@@ -9,7 +9,9 @@ import classes from "./Login.css";
 
 const Login = () => {
   const dispatch = useDispatch();
-  const isAuth = useSelector(({ auth }) => auth.isAuthenticated);
+
+  const { isAuthenticated } = useSelector(({ auth }) => auth);
+
   const errors = useSelector(({ errors }) => errors);
 
   const [state, setState] = useState({ email: "", password: "" });
@@ -30,7 +32,7 @@ const Login = () => {
     dispatch(login({ email, password }));
   };
 
-  if (isAuth) return <Redirect to="/dashboard" />;
+  if (isAuthenticated) return <Redirect to="/dashboard" />;
 
   return (
     <div className={classes.Login}>

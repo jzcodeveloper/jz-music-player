@@ -7,7 +7,7 @@ import icon from "../../../assets/icon.png";
 import NavigationItems from "../NavigationItems/NavigationItems";
 
 const Toolbar = ({ toggleSide }) => {
-  const isAuth = useSelector(({ auth }) => auth.isAuthenticated);
+  const { isAuthenticated } = useSelector(({ auth }) => auth);
 
   return (
     <nav className={classes.Toolbar}>
@@ -19,7 +19,7 @@ const Toolbar = ({ toggleSide }) => {
       </div>
       <p>JZ Music Player</p>
       <nav className={classes.DesktopOnly}>
-        <NavigationItems isAuth={isAuth} />
+        <NavigationItems isAuth={isAuthenticated} />
       </nav>
     </nav>
   );

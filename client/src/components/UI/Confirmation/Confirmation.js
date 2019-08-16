@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import PropTypes from "prop-types";
 
 import classes from "./Confirmation.css";
@@ -11,6 +11,8 @@ const Confirmation = ({
   caption1,
   caption2
 }) => {
+  const uniqueID = useRef(Date.now().toString());
+
   const onClick = () => {
     onCloseConfirmation();
     setTimeout(() => action(), 700);
@@ -18,14 +20,14 @@ const Confirmation = ({
 
   const onCloseConfirmation = () => {
     const { OpenConfirmation, CloseConfirmation } = classes;
-    const el = document.querySelector(`.${OpenConfirmation}`);
+    const el = document.getElementById(uniqueID.current);
     if (el) el.classList.replace(OpenConfirmation, CloseConfirmation);
     setTimeout(() => closeConfirmation(), 700);
   };
 
   return (
     <section className={classes.Confirmation}>
-      <div className={classes.OpenConfirmation}>
+      <div className={classes.OpenConfirmation} id={uniqueID.current}>
         <h1>{title}</h1>
         <span>{question}</span>
         <div>

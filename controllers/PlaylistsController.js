@@ -8,8 +8,9 @@ const validatePlaylists = require("../validation/playlists");
 //Returns all playlists
 exports.getAll = async (req, res) => {
   try {
-    const { id } = req.user;
-    const playlists = await Playlist.find({ user: id }).populate({
+    const { _id } = req.user;
+
+    const playlists = await Playlist.find({ user: _id }).populate({
       path: "songs",
       populate: { path: "albumArt" }
     });
@@ -52,10 +53,10 @@ exports.createPlaylist = async (req, res) => {
       return res.status(400).json(errors);
     }
 
-    const playlist = await Playlist.findOne({
-      name: req.body.name,
-      user: req.user.id
-    });
+    const { _id } = req.user;
+    const { name, description } = req.body;
+
+    const playlist = await Playlist.findOne({ name, user: _id });
 
     if (playlist) {
       errors.name = "Playlist Name already exists";
@@ -63,12 +64,12 @@ exports.createPlaylist = async (req, res) => {
     }
 
     const newPlaylist = new Playlist({
-      name: req.body.name,
-      description: req.body.description,
+      name,
+      description,
       count: 0,
       duration: 0,
       songs: [],
-      user: req.user.id
+      user: _id
     });
 
     await newPlaylist.save();
@@ -90,16 +91,15 @@ exports.editPlaylist = async (req, res) => {
     }
 
     const { playlistId } = req.params;
+    const { name, description } = req.body;
+
     const playlist = await Playlist.findById(playlistId);
 
     if (!playlist) {
       return res.status(404).json({ msg: "Playlist not found" });
     }
 
-    const updatedFields = {
-      name: req.body.name,
-      description: req.body.description
-    };
+    const updatedFields = { name, description };
 
     const updatedPlaylist = await Playlist.findByIdAndUpdate(
       playlistId,
@@ -123,16 +123,20 @@ exports.addToPlaylist = async (req, res, model) => {
     if (model === "Song") Model = Song;
 
     const { playlistId, itemId } = req.params;
+
     const playlist = await Playlist.findById(playlistId);
 
     if (!playlist) {
       return res.status(404).json({ msg: "Playlist not found" });
     }
 
-    const info =
-      model === "Song"
-        ? await Model.findById(itemId)
-        : await Model.findById(itemId).populate("songs");
+    let info = null;
+
+    if (model === "Song") {
+      info = await Model.findById(itemId);
+    } else {
+      info = await Model.findById(itemId).populate("songs");
+    }
 
     if (!info) {
       return res.status(404).json({ msg: "Info not found" });
@@ -144,22 +148,20 @@ exports.addToPlaylist = async (req, res, model) => {
       songs: [...playlist.songs]
     };
 
+    const { songs } = updatedFields;
+
     if (model === "Song") {
-      if (
-        !updatedFields.songs.find(el => el.toString() === info._id.toString())
-      ) {
+      if (!songs.find(el => el.toString() === info._id.toString())) {
         updatedFields.count++;
         updatedFields.duration += info.duration;
-        updatedFields.songs.push(info._id);
+        songs.push(info._id);
       }
     } else {
       info.songs.map(song => {
-        if (
-          !updatedFields.songs.find(el => el.toString() === song._id.toString())
-        ) {
+        if (!songs.find(el => el.toString() === song._id.toString())) {
           updatedFields.count++;
           updatedFields.duration += song.duration;
-          updatedFields.songs.push(song);
+          songs.push(song);
         }
       });
     }
@@ -181,6 +183,7 @@ exports.addToPlaylist = async (req, res, model) => {
 exports.removeSong = async (req, res) => {
   try {
     const { playlistId, songId } = req.params;
+
     const playlist = await Playlist.findById(playlistId);
 
     if (!playlist) {
@@ -195,13 +198,15 @@ exports.removeSong = async (req, res) => {
       songs: [...playlist.songs]
     };
 
-    const index = updatedFields.songs.findIndex(el => el.toString() === songId);
+    const { songs } = updatedFields;
+
+    const index = songs.findIndex(el => el.toString() === songId);
 
     if (index < 0) {
       return res.status(404).json({ msg: "Song not found in this Playlist" });
     }
 
-    updatedFields.songs.splice(index, 1);
+    songs.splice(index, 1);
 
     const updatedPlaylist = await Playlist.findByIdAndUpdate(
       playlistId,
@@ -220,6 +225,7 @@ exports.removeSong = async (req, res) => {
 exports.removePlaylist = async (req, res) => {
   try {
     const { playlistId } = req.params;
+
     const playlist = await Playlist.findByIdAndRemove(playlistId);
 
     if (!playlist) {

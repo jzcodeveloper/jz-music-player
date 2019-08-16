@@ -20,9 +20,10 @@ import PlaylistItem from "./PlaylistItem/PlaylistItem";
 
 const Player = ({ location: { pathname } }) => {
   const dispatch = useDispatch();
-  const loading = useSelector(({ player }) => player.loading);
-  const playlist = useSelector(({ player }) => player.playlist);
-  const currentSongIndex = useSelector(({ player }) => player.currentSongIndex);
+
+  const { loading, playlist, currentSongIndex } = useSelector(
+    ({ player }) => player
+  );
 
   const [showPlaylist, setShowPlaylist] = useState(false);
 
@@ -32,9 +33,7 @@ const Player = ({ location: { pathname } }) => {
     document.title = `JZ Music Player - Player`;
     dispatch(fetchPlaylist(path));
 
-    return () => {
-      dispatch(resetPlaylist());
-    };
+    return () => dispatch(resetPlaylist());
   }, []);
 
   const toggleActiveClass = () => {

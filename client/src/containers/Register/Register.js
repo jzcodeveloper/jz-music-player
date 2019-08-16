@@ -9,7 +9,9 @@ import classes from "./Register.css";
 
 const Register = () => {
   const dispatch = useDispatch();
-  const isAuth = useSelector(({ auth }) => auth.isAuthenticated);
+
+  const { isAuthenticated } = useSelector(({ auth }) => auth);
+
   const errors = useSelector(({ errors }) => errors);
 
   const [state, setState] = useState({
@@ -35,7 +37,7 @@ const Register = () => {
     dispatch(register({ name, email, password, password2 }));
   };
 
-  if (isAuth) return <Redirect to="/dashboard" />;
+  if (isAuthenticated) return <Redirect to="/dashboard" />;
 
   return (
     <div className={classes.Register}>

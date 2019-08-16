@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
@@ -17,6 +17,8 @@ import ListElement from "../../../components/App/ListElement/ListElement";
 import { secondsToHms } from "../../../utils/utility";
 
 const Playlist = ({ index, playlist }) => {
+  const uniqueID = useRef(Date.now().toString());
+
   const dispatch = useDispatch();
 
   const [state, setState] = useState({
@@ -27,6 +29,7 @@ const Playlist = ({ index, playlist }) => {
   });
 
   const { showModal, showConfirmation, showNotification, action } = state;
+
   const { _id, name, description, count, duration, songs } = playlist;
 
   const toggleClassName = () => {
@@ -56,11 +59,8 @@ const Playlist = ({ index, playlist }) => {
 
   const closePlaylist = () => {
     const { OpenPlaylist, ClosePlaylist } = classes;
-    const selector = `.${OpenPlaylist}`;
-    const elements = document.querySelectorAll(selector);
-    if (elements[index]) {
-      elements[index].classList.replace(OpenPlaylist, ClosePlaylist);
-    }
+    const el = document.getElementById(uniqueID.current);
+    if (el) el.classList.replace(OpenPlaylist, ClosePlaylist);
   };
 
   const onRemoveClick = () => {
@@ -96,7 +96,7 @@ const Playlist = ({ index, playlist }) => {
 
   return (
     <Fragment>
-      <div className={`${classes.OpenPlaylist}`}>
+      <div className={`${classes.OpenPlaylist}`} id={uniqueID.current}>
         <div className={`${classes.Playlist}`}>
           <div>
             <span>{name}</span>

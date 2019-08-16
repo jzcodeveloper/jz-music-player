@@ -9,7 +9,9 @@ import ListElement from "../../components/App/ListElement/ListElement";
 
 const Favorites = () => {
   const dispatch = useDispatch();
-  const loading = useSelector(({ favorite }) => favorite.loading);
+
+  const { loading } = useSelector(({ favorite }) => favorite);
+
   const { favoriteAlbums, favoriteArtists, favoriteSongs } = useSelector(
     ({ favorite }) => favorite.favorite
   );

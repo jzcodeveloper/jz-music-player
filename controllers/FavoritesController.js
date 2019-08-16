@@ -3,9 +3,11 @@ const User = require("../models/User");
 //Updates the favorites array in the Model passed as argument to the function
 exports.updateFavorites = async (req, res, model) => {
   try {
+    const { _id } = req.user;
     const { id } = req.params;
+
     const key = `favorite${model}`;
-    const user = await User.findById(req.user._id);
+    const user = await User.findById(_id);
     const index = user[key].indexOf(id);
 
     if (index >= 0) {
@@ -15,20 +17,14 @@ exports.updateFavorites = async (req, res, model) => {
     }
 
     const updatedModel = await User.findByIdAndUpdate(
-      req.user._id,
+      _id,
       { [key]: user[key] },
       { new: true }
     );
 
-    const info = {
-      id,
-      model,
-      favoriteAlbums: updatedModel.favoriteAlbums,
-      favoriteArtists: updatedModel.favoriteArtists,
-      favoriteSongs: updatedModel.favoriteSongs
-    };
+    const { favoriteAlbums, favoriteArtists, favoriteSongs } = updatedModel;
 
-    res.json(info);
+    res.json({ id, model, favoriteAlbums, favoriteArtists, favoriteSongs });
   } catch (error) {
     console.log(error);
     res.status(500).send("Internal Server Error");
@@ -52,11 +48,9 @@ exports.sendMetadata = async (req, res) => {
         populate: { path: "albumArt" }
       });
 
-    res.json({
-      favoriteAlbums: user.favoriteAlbums,
-      favoriteArtists: user.favoriteArtists,
-      favoriteSongs: user.favoriteSongs
-    });
+    const { favoriteAlbums, favoriteArtists, favoriteSongs } = user;
+
+    res.json({ favoriteAlbums, favoriteArtists, favoriteSongs });
   } catch (error) {
     console.log(error);
     res.status(500).send("Internal Server Error");

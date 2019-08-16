@@ -16,10 +16,8 @@ import { checkAuthState } from "./store/actions/authActions";
 import "./App.css";
 
 const App = () => {
-  const [state, setState] = useState({
-    showSide: false,
-    loading: true
-  });
+  const [state, setState] = useState({ showSide: false, loading: true });
+
   const { showSide, loading } = state;
 
   useEffect(() => {

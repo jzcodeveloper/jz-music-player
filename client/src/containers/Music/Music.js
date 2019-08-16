@@ -12,7 +12,9 @@ import AddToPlaylist from "../../components/App/AddToPlaylist/AddToPlaylist";
 
 const Music = ({ history }) => {
   const dispatch = useDispatch();
-  const loading = useSelector(({ music }) => music.loading);
+
+  const { loading } = useSelector(({ music }) => music);
+
   const { albumsInfo, artistsInfo, songsInfo } = useSelector(
     ({ music }) => music.metadata
   );
@@ -27,10 +29,7 @@ const Music = ({ history }) => {
 
   useEffect(() => {
     document.title = `JZ Music Player - Music`;
-    const lengths = [albumsInfo.length, artistsInfo.length, songsInfo.length];
-    if (lengths[0] === 0 || lengths[1] === 0 || lengths[2] === 0) {
-      dispatch(fetchMetadata());
-    }
+    if (albumsInfo.length === 0) dispatch(fetchMetadata());
   }, []);
 
   const onShowPlaylists = (pathname, itemId) => {

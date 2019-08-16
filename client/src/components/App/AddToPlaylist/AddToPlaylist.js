@@ -13,7 +13,8 @@ import Modal from "../Modal/Modal";
 
 const AddToPlaylist = ({ closePlaylists, pathname, itemId }) => {
   const dispatch = useDispatch();
-  const playlists = useSelector(({ playlists }) => playlists.playlists);
+
+  const { playlists } = useSelector(({ playlists }) => playlists);
 
   const [state, setState] = useState({
     selectedPlaylistIndex: null,
