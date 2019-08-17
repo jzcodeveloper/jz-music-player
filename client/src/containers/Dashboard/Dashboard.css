@@ -1,5 +1,5 @@
 .Dashboard {
-  width: 90%;
+  width: 100%;
   margin: 80px auto 40px auto;
 }
 
@@ -19,18 +19,8 @@
   color: brown;
 }
 
-@media (max-width: 1100px) {
+@media (min-width: 1100px) {
   .Dashboard {
-    width: 100%;
-  }
-}
-
-@media (max-width: 400px) {
-  .Music,
-  .Favorites,
-  .Playlists {
-    height: 200px;
-    width: 200px;
-    margin: 0 auto;
+    width: 90%;
   }
 }

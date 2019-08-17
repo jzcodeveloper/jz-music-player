@@ -2,23 +2,27 @@
   width: 100%;
   display: flex;
   flex-flow: column;
+  align-items: center;
   position: relative;
 }
 
 .Music > span {
   margin: 16px 14px;
-  padding: 20px 30px;
+  padding: 10px;
   font-size: 2em;
   font-weight: bold;
+  text-align: center;
   color: rgba(0, 0, 0, 0.8);
   background-color: rgb(51, 178, 224, 0.8);
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  width: 85%;
 }
 
 .Music > div {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   align-items: center;
-  justify-content: space-between;
+  justify-items: center;
   overflow: hidden;
   width: 100%;
 }
@@ -26,8 +30,8 @@
 .Music > div > div {
   text-align: center;
   padding: 10px;
-  margin: 15px;
-  width: 200px;
+  width: 146px;
+  margin: 13px 5px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
   box-sizing: border-box;
   transition: transform 1s;
@@ -37,6 +41,13 @@
 .Music > div > div:hover,
 .Music > div > div:active {
   transform: scale(1.05);
+}
+
+.Music > div > div:last-of-type {
+  grid-column: 1/3;
+  font-weight: bold;
+  margin: 12px 0;
+  box-sizing: border-box;
 }
 
 .Music a {
@@ -58,12 +69,9 @@
   overflow: hidden;
 }
 
-.Music > div > button:nth-of-type(2) > p {
-  margin: 0 0 0 20px;
-}
-
-.Music > div > button:nth-of-type(1) > p {
-  margin: 0 0 0 -40px;
+.Music > div > button:nth-of-type(1),
+.Music > div > button:nth-of-type(2) {
+  display: none;
 }
 
 .Music > div:nth-of-type(1) > button:nth-of-type(2),
@@ -83,39 +91,46 @@
 }
 
 @media (min-width: 450px) {
+  .Music {
+    align-items: stretch;
+  }
+
+  .Music > span {
+    text-align: left;
+    padding: 20px 30px;
+
+    width: auto;
+  }
+
+  .Music > div {
+    display: flex;
+  }
+
   .Music > div > div {
-    width: 230px;
+    width: 190px;
     margin: 15px;
+  }
+
+  .Music > div > div:last-of-type {
+    margin: 15px;
+  }
+
+  .Music > div > button:nth-of-type(1),
+  .Music > div > button:nth-of-type(2) {
+    display: block;
+  }
+
+  .Music > div > button:nth-of-type(2) > p {
+    margin: 0 0 0 20px;
+  }
+
+  .Music > div > button:nth-of-type(1) > p {
+    margin: 0 0 0 -40px;
   }
 }
 
-@media (max-width: 450px) {
-  .Music {
-    align-items: center;
-  }
-  .Music > span {
-    text-align: center;
-    padding: 10px;
-    width: 85%;
-  }
-  .Music > div {
-    display: grid;
-    justify-items: center;
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .Music > div > button:nth-of-type(1),
-  .Music > div > button:nth-of-type(2) {
-    display: none;
-  }
+@media (min-width: 600px) {
   .Music > div > div {
-    width: 146px;
-    margin: 13px 5px;
-  }
-  .Music > div > div:last-of-type {
-    padding: 10px;
-    grid-column: 1/3;
-    font-weight: bold;
-    margin: 12px 0;
-    box-sizing: border-box;
+    width: 230px;
   }
 }

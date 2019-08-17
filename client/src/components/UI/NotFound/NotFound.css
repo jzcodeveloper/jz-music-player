@@ -7,7 +7,7 @@
 }
 
 .NotFound img {
-  width: 250px;
+  width: 175px;
   border-radius: 20px;
 }
 
@@ -15,13 +15,14 @@
   margin: 0;
   text-align: center;
   margin: 30px auto;
+  font-size: 1.5em;
 }
 
-@media (max-width: 450px) {
+@media (min-width: 450px) {
   .NotFound img {
-    width: 175px;
+    width: 250px;
   }
   .NotFound h1 {
-    font-size: 1.5em;
+    font-size: 2em;
   }
 }

@@ -3,6 +3,7 @@
   padding: 0;
   width: 100%;
   display: flex;
+  flex-flow: column;
   background-image: url("../../assets//background.jpg");
   background-position: 50%;
   height: 80vh;
@@ -14,10 +15,14 @@
   display: flex;
   flex-flow: column;
   justify-content: flex-end;
+
+  margin-top: 60px;
+  height: calc(100% - 60px);
 }
 
 .Player > div:first-child {
   max-width: 33.33%;
+  display: none;
 }
 
 .Player span.active {
@@ -30,7 +35,7 @@
 }
 
 .TopSection {
-  display: none;
+  display: flex;
   align-items: center;
   position: fixed;
   top: 60px;
@@ -58,6 +63,25 @@
   color: var(--interfaceColor);
 }
 
+@media (min-width: 800px) {
+  .Player {
+    flex-flow: row;
+  }
+
+  .Player > div {
+    margin-top: 0;
+    height: auto;
+  }
+
+  .Player > div:first-child {
+    display: block;
+  }
+
+  .TopSection {
+    display: none;
+  }
+}
+
 @keyframes anim {
   0% {
     background-color: white;
@@ -70,24 +94,5 @@
   100% {
     background-color: white;
     color: black;
-  }
-}
-
-@media (max-width: 450px) {
-  .Player {
-    flex-flow: column;
-  }
-  .Player > div:first-child {
-    display: none;
-  }
-  .Player > div {
-    margin-top: 60px;
-    height: calc(100% - 60px);
-  }
-  .Player span {
-    font-size: 0.9em;
-  }
-  .TopSection {
-    display: flex;
   }
 }

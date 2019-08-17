@@ -8,6 +8,13 @@
   list-style: none;
   display: flex;
   flex-flow: column;
+
+  z-index: 50;
+  position: absolute;
+  top: 0;
+  background-image: url("../../../assets//background.jpg");
+  background-position: 50%;
+  background-size: cover;
 }
 
 .Playlist > li:first-child {
@@ -66,13 +73,10 @@
   color: white;
 }
 
-@media (max-width: 450px) {
+@media (min-width: 800px) {
   .Playlist {
-    z-index: 50;
-    position: absolute;
-    top: 0;
-    background-image: url("../../../assets//background.jpg");
-    background-position: 50%;
-    background-size: cover;
+    z-index: 0;
+    position: static;
+    background: none;
   }
 }

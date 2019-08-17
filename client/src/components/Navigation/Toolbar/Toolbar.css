@@ -34,24 +34,28 @@
 }
 
 .MobileIcon {
-  display: none;
-  cursor: pointer;
+  display: flex;
 }
 
 .DesktopIcon {
-  display: flex;
+  display: none;
   cursor: auto;
 }
 
-@media (max-width: 1000px) {
+.DesktopOnly {
+  display: none;
+}
+
+@media (min-width: 1000px) {
   .DesktopOnly {
-    display: none;
+    display: inline-block;
   }
 
   .MobileIcon {
-    display: flex;
-  }
-  .DesktopIcon {
     display: none;
+  }
+
+  .DesktopIcon {
+    display: flex;
   }
 }

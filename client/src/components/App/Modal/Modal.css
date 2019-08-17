@@ -13,7 +13,7 @@
 
 .Modal > div {
   overflow: hidden;
-  width: 45%;
+  width: 300px;
   padding: 20px;
   display: flex;
   flex-flow: column;
@@ -27,7 +27,7 @@
 .Modal h1 {
   padding: 0 10px 10px 10px;
   text-align: center;
-  font-size: 2em;
+  font-size: 1.8em;
   font-weight: normal;
   margin: 0 auto;
 }
@@ -35,6 +35,7 @@
 .Modal span {
   text-align: center;
   margin: auto;
+  font-size: 0.9em;
 }
 
 .Modal input {
@@ -117,18 +118,18 @@
   animation: closeModal 0.7s ease forwards;
 }
 
-@media (max-width: 600px) {
-  .Modal > div {
-    width: 300px;
+@media (min-width: 450px) {
+  .Modal h1 {
+    font-size: 2em;
+  }
+  .Modal span {
+    font-size: 1em;
   }
 }
 
-@media (max-width: 450px) {
-  .Modal h1 {
-    font-size: 1.8em;
-  }
-  .Modal span {
-    font-size: 0.9em;
+@media (min-width: 600px) {
+  .Modal > div {
+    width: 45%;
   }
 }
 

@@ -14,12 +14,12 @@
 
 .Modal p {
   color: rgba(180, 180, 180, 0.5);
-  font-size: 2.5em;
+  font-size: 2em;
   font-family: "Courier New", Courier, monospace;
   font-weight: bold;
 }
 .Modal img {
-  width: 160px;
+  width: 110px;
   animation: spin 2s ease forwards;
 }
 
@@ -28,20 +28,20 @@
   width: 100%;
 }
 
+@media (min-width: 450px) {
+  .Modal p {
+    font-size: 2.5em;
+  }
+  .Modal img {
+    width: 160px;
+  }
+}
+
 @keyframes spin {
   from {
     transform: rotate(0deg);
   }
   to {
     transform: rotate(360deg);
-  }
-}
-
-@media (max-width: 450px) {
-  .Modal p {
-    font-size: 2em;
-  }
-  .Modal img {
-    width: 110px;
   }
 }

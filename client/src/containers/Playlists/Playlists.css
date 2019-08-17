@@ -1,7 +1,11 @@
 .Playlists {
-  width: 90%;
+  width: 100%;
   min-height: 70vh;
   margin: 80px auto 40px auto;
+}
+
+.Playlists p {
+  font-size: 0.8em;
 }
 
 .Playlists > h1 {
@@ -10,7 +14,7 @@
 
 .Playlists > div {
   margin: 22px 10px;
-  padding: 10px;
+  padding: 5px;
   border-radius: 3px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
@@ -43,35 +47,18 @@
   transform: scale(1.02);
 }
 
-@media (max-width: 1100px) {
-  .Playlists {
-    width: 100%;
-  }
-}
-
-@media (max-width: 700px) {
-  .Playlists > div > div p:nth-of-type(2) {
-    display: none;
-  }
-}
-
-@media (max-width: 600px) {
-  .Playlists > div p:nth-of-type(4) {
-    display: none;
-  }
-}
-
-@media (max-width: 450px) {
-  .Playlists > div p:nth-of-type(2) {
-    display: none;
-  }
+@media (min-width: 450px) {
   .Playlists p {
-    font-size: 0.8em;
+    font-size: 1em;
+  }
+
+  .Playlists > div {
+    padding: 10px;
   }
 }
 
-@media (max-width: 450px) {
-  .Playlists > div {
-    padding: 5px;
+@media (min-width: 1100px) {
+  .Playlists {
+    width: 90%;
   }
 }

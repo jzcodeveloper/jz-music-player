@@ -1,6 +1,6 @@
 .ListElement {
   display: flex;
-  margin: 38px 10px;
+  margin: 30px 10px;
   justify-items: center;
   align-items: center;
   padding: 10px;
@@ -12,15 +12,27 @@
 .ListElement img {
   flex: 0.5;
   border-radius: 3px;
-  width: 100px;
+  width: 70px;
 }
 
 .ListElement p {
   text-align: center;
   flex: 1;
   margin: 2.5px;
-  font-size: 1em;
+  font-size: 0.8em;
   color: rgba(0, 0, 0, 0.8);
+}
+
+.ListElement p:nth-of-type(2) {
+  display: none;
+}
+
+.ListElement p:nth-of-type(3) {
+  display: none;
+}
+
+.ListElement p:nth-of-type(4) {
+  display: none;
 }
 
 .ListElement > button,
@@ -64,31 +76,30 @@
   animation: closeListElement 0.7s ease-out forwards;
 }
 
-@media (max-width: 700px) {
-  .ListElement p:nth-of-type(3) {
-    display: none;
-  }
-}
-
-@media (max-width: 600px) {
-  .ListElement p:nth-of-type(4) {
-    display: none;
-  }
-}
-
-@media (max-width: 450px) {
+@media (min-width: 450px) {
   .ListElement {
-    margin: 30px 10px;
+    margin: 38px 10px;
   }
   .ListElement p:nth-of-type(2) {
-    display: none;
+    display: block;
   }
   .ListElement p {
-    font-size: 0.8em;
+    font-size: 1em;
   }
   .ListElement img {
-    flex: 0.5;
-    width: 70px;
+    width: 100px;
+  }
+}
+
+@media (min-width: 600px) {
+  .ListElement p:nth-of-type(4) {
+    display: block;
+  }
+}
+
+@media (min-width: 800px) {
+  .ListElement p:nth-of-type(3) {
+    display: block;
   }
 }
 

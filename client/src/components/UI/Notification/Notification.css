@@ -12,7 +12,7 @@
 }
 
 .Notification > div {
-  width: 40%;
+  width: 300px;
   padding: 20px;
   overflow: hidden;
   display: flex;
@@ -28,7 +28,7 @@
   width: 100%;
   padding: 0 10px 10px 10px;
   text-align: center;
-  font-size: 2em;
+  font-size: 1.8em;
   font-weight: normal;
   margin: 0 auto;
   border-bottom: 1px solid #000;
@@ -36,7 +36,7 @@
 }
 
 .Notification span {
-  font-size: 1.2em;
+  font-size: 0.9em;
   text-align: center;
   margin: 15px auto 5px auto;
 }
@@ -81,18 +81,18 @@
   animation: closeNotification 0.7s ease forwards;
 }
 
-@media (max-width: 600px) {
-  .Notification > div {
-    width: 300px;
+@media (min-width: 450px) {
+  .Notification h1 {
+    font-size: 2em;
+  }
+  .Notification span {
+    font-size: 1.2em;
   }
 }
 
-@media (max-width: 450px) {
-  .Notification h1 {
-    font-size: 1.8em;
-  }
-  .Notification span {
-    font-size: 0.9em;
+@media (min-width: 600px) {
+  .Notification > div {
+    width: 45%;
   }
 }
 

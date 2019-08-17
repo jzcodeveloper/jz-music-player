@@ -1,7 +1,7 @@
 .Image {
   position: relative;
   width: calc(100% - 20px);
-  height: 220px;
+  height: 350px;
   margin: 22px 10px;
   border-radius: 10px;
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
@@ -39,6 +39,7 @@
 
 .Content {
   display: flex;
+  flex-flow: column;
   justify-content: center;
   width: 100%;
 }
@@ -49,7 +50,7 @@
   align-content: center;
   align-items: center;
   flex-flow: column;
-  padding: 20px;
+  padding: 0 20px 20px 20px;
   width: 100%;
   box-sizing: border-box;
 }
@@ -88,17 +89,16 @@
   box-sizing: border-box;
 }
 
-@media (max-width: 600px) {
+@media (min-width: 600px) {
   .Image {
-    height: 350px;
+    height: 220px;
   }
+
   .Content {
-    flex-flow: column;
+    flex-flow: row;
   }
+
   .Content > div {
-    padding-top: 0;
-  }
-  .Content p {
-    margin-top: 0;
+    padding-top: 20px;
   }
 }

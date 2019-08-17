@@ -27,7 +27,7 @@ const Dashboard = () => {
       <Action
         iconStyle={classes.Favorites}
         iconClass="fas fa-star"
-        description="Add songs to your favorites by going to My Favorites page,
+        description="Manage your favorite songs by going to My Favorites page,
               here you'll see all the songs, albums, and artists that you
               previously added, so that you can listen to them!"
         linkPath="/favorites"

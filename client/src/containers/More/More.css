@@ -6,31 +6,33 @@
 .More > div {
   max-width: 100%;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: repeat(2, 1fr);
   align-items: center;
   justify-items: center;
   box-sizing: border-box;
 }
 
 .More > div > div {
-  width: 230px;
-  margin: 15px;
+  width: 146px;
+  margin: 13px 5px;
+  padding-bottom: 5px;
+  border-radius: 3px;
   box-sizing: border-box;
 }
 
 .SearchIcon {
   position: fixed;
+  padding: 17.5px;
+  font-size: 1.6em;
   right: 30px;
   bottom: 30px;
-  padding: 20px;
   color: white;
-  font-size: 2em;
   border-radius: 50%;
   cursor: pointer;
   background-color: rgb(73, 195, 240);
   box-shadow: 0px 1px 7px rgba(0, 0, 0, 0.7);
-  opacity: 0.5;
   transition: opacity 1s ease;
+  opacity: 0.8;
   z-index: 50;
 }
 
@@ -64,53 +66,45 @@
   transform: scale(1.1);
 }
 
-@media (min-width: 1850px) {
-  .More > div {
-    grid-template-columns: repeat(7, 1fr);
+@media (min-width: 450px) {
+  .More > div > div {
+    width: 190px;
+    margin: 15px;
   }
 }
 
-@media (max-width: 1850px) {
-  .More > div {
-    grid-template-columns: repeat(6, 1fr);
+@media (min-width: 600px) {
+  .More > div > div {
+    width: 230px;
   }
 }
 
-@media (max-width: 1580px) {
-  .More > div {
-    grid-template-columns: repeat(5, 1fr);
-  }
-}
-
-@media (max-width: 1300px) {
-  .More > div {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-@media (max-width: 1050px) {
+@media (min-width: 800px) {
   .More > div {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
-@media (max-width: 800px) {
+@media (min-width: 1050px) {
   .More > div {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(4, 1fr);
   }
 }
 
-@media (max-width: 450px) {
-  .More > div > div {
-    width: 146px;
-    margin: 13px 5px;
-    padding-bottom: 5px;
-    border: none;
-    border-radius: 3px;
+@media (min-width: 1300px) {
+  .More > div {
+    grid-template-columns: repeat(5, 1fr);
   }
-  .SearchIcon {
-    opacity: 0.8;
-    padding: 17.5px;
-    font-size: 1.6em;
+}
+
+@media (min-width: 1580px) {
+  .More > div {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+@media (min-width: 1850px) {
+  .More > div {
+    grid-template-columns: repeat(7, 1fr);
   }
 }

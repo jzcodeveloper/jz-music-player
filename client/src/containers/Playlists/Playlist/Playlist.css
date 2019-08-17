@@ -21,7 +21,7 @@
 
 .Playlist span {
   padding: 0;
-  font-size: 1.5em;
+  font-size: 1em;
   font-weight: bold;
   text-align: center;
 }
@@ -30,6 +30,15 @@
   flex: 1;
   text-align: center;
   margin: 0;
+}
+
+.Playlist > p:nth-of-type(1),
+.Playlist > p:nth-of-type(2) {
+  display: none;
+}
+
+.Playlist button {
+  flex: 1;
 }
 
 .Playlist > div > button,
@@ -87,21 +96,25 @@
   text-align: center;
 }
 
-@media (max-width: 450px) {
-  .Playlist div:nth-of-type(2) {
-    width: 100%;
-  }
-  .Playlist > p:nth-of-type(1) {
-    display: none;
-  }
-  .Playlist > p:nth-of-type(2) {
-    display: none;
-  }
+@media (min-width: 450px) {
   .Playlist span {
     font-size: 1.1em;
   }
+
   .Playlist button {
-    flex: 1;
+    flex: auto;
+  }
+}
+
+@media (min-width: 600px) {
+  .Playlist > p:nth-of-type(1) {
+    display: block;
+  }
+}
+
+@media (min-width: 800px) {
+  .Playlist > p:nth-of-type(2) {
+    display: block;
   }
 }
 

@@ -4,22 +4,24 @@
   justify-content: center;
   height: 100%;
   width: 100%;
+
+  background-image: url("../../../assets//background.jpg");
+  background-position: 50%;
+  background-size: cover;
 }
 
 .Information p {
   margin: 10px;
   color: white;
   text-align: center;
-  font-size: 1.2em;
+  font-size: 1em;
 }
 
-@media (max-width: 450px) {
+@media (min-width: 800px) {
   .Information {
-    background-image: url("../../../assets//background.jpg");
-    background-position: 50%;
-    background-size: cover;
+    background: none;
   }
   .Information p {
-    font-size: 1em;
+    font-size: 1.2em;
   }
 }

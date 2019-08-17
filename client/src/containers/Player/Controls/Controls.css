@@ -52,7 +52,8 @@
 .Repeat {
   position: absolute;
   top: -40px;
-  left: calc(33.33% + 10px);
+  left: 10px;
+
   font-size: 1.6em;
   color: white;
 }
@@ -66,6 +67,7 @@
 }
 
 .Volume {
+  display: none;
   position: absolute;
   top: -40px;
   right: 55px;
@@ -86,8 +88,8 @@
 }
 
 .VolumeIndicator {
+  display: none;
   position: absolute;
-  display: flex;
   top: 9px;
   left: 45px;
   width: 120px;
@@ -137,17 +139,12 @@
   height: 6px;
 }
 
-@media (max-width: 450px) {
+@media (min-width: 800px) {
   .Repeat {
-    top: -40px;
-    left: 10px;
-  }
-  .Shuffle {
-    top: -40px;
-    right: 10px;
+    left: calc(33.33% + 10px);
   }
   .Volume,
   .VolumeIndicator {
-    display: none;
+    display: flex;
   }
 }

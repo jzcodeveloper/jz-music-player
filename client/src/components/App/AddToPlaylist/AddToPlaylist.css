@@ -12,7 +12,7 @@
 }
 
 .AddToPlaylist > div {
-  width: 45%;
+  width: 300px;
   overflow: hidden;
   padding: 20px;
   display: flex;
@@ -119,7 +119,7 @@
 
 .Playlist span {
   flex: 1;
-  font-size: 1.4em;
+  font-size: 1.2em;
   font-weight: bold;
 
   white-space: nowrap;
@@ -135,12 +135,13 @@
   animation: closeModal 0.7s ease forwards;
 }
 
-@media (max-width: 600px) {
+@media (min-width: 600px) {
   .AddToPlaylist > div {
-    width: 300px;
+    width: 45%;
   }
+
   .Playlist span {
-    font-size: 1.2em;
+    font-size: 1.4em;
   }
 }
 
