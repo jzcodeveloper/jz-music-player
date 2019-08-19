@@ -2,7 +2,7 @@ import * as types from "../actions/types";
 
 const initialState = {};
 
-const setErrors = (state, payload) => {
+const setErrors = (state, payload = {}) => {
   return payload;
 };
 

@@ -4,7 +4,7 @@ import classes from "./Spinner.css";
 
 const Spinner = () => (
   <div className={classes.Container}>
-    <div className={classes.Loader}>Loading...</div>
+    <div className={classes.Loader} />
   </div>
 );
 

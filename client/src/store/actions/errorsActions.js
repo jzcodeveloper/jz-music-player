@@ -1,8 +1,3 @@
 import * as types from "./types";
 
-export const setErrors = (payload = {}) => {
-  return {
-    type: types.SET_ERRORS,
-    payload
-  };
-};
+export const setErrors = payload => ({ type: types.SET_ERRORS, payload });

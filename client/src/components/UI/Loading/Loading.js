@@ -6,7 +6,7 @@ import icon from "../../../assets/icon.png";
 const Loading = () => (
   <div className={classes.Modal}>
     <div className={classes.Container}>
-      <img src={icon} alt="Icon" className={classes.Icon} />
+      <img src={icon} alt="Icon" />
     </div>
     <p>JZ Music Player</p>
   </div>
