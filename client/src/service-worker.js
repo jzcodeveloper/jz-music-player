@@ -15,7 +15,7 @@ workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 ///// DYNAMIC CACHING - FONTS /////
 ///////////////////////////////////
 workbox.routing.registerRoute(
-  /fontawesome/,
+  /fontawesome\.com/,
   new workbox.strategies.CacheFirst({
     cacheName: "fonts",
     cacheExpiration: { maxEntries: 1, maxAgeSeconds: 60 * 60 * 24 * 30 }
