@@ -4,7 +4,7 @@
   width: 100%;
   display: flex;
   flex-flow: column;
-  background-image: url("../../assets//background.jpg");
+  background-image: url("../../images//background.jpg");
   background-position: 50%;
   height: 80vh;
 }

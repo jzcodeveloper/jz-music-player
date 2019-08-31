@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 
 import classes from "./PlaylistItem.css";
-import background from "../../../assets/background.jpg";
+import background from "../../../images/background.jpg";
 
 const PlaylistItem = ({ albumArt: { albumArt }, title, artist }) => {
   return (
@@ -11,7 +11,7 @@ const PlaylistItem = ({ albumArt: { albumArt }, title, artist }) => {
         className={classes.Image}
         src={
           albumArt !== ""
-            ? require(`../../../assets/albumArts/${albumArt}`)
+            ? require(`../../../images/albumArts/${albumArt}`)
             : background
         }
         alt="Album Art"

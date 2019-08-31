@@ -7,7 +7,7 @@ import { updateFavorites } from "../../../store/actions/favoriteActions";
 import { removeFromPlaylist } from "../../../store/actions/playlistsActions";
 
 import classes from "./ListElement.css";
-import background from "../../../assets/background.jpg";
+import background from "../../../images/background.jpg";
 import { secondsToHms } from "../../../utils/utility";
 
 import Confirmation from "../../UI/Confirmation/Confirmation";
@@ -101,7 +101,7 @@ const ListElement = ({
         <img
           src={
             albumArt !== ""
-              ? require(`../../../assets/albumArts/${albumArt.albumArt}`)
+              ? require(`../../../images/albumArts/${albumArt.albumArt}`)
               : background
           }
           alt="Album Art"

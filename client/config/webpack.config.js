@@ -550,7 +550,8 @@ module.exports = function(webpackEnv) {
       // Generate a service worker script that will precache, and keep up to date,
       // the HTML & assets that are part of the Webpack build.
       isEnvProduction &&
-        new WorkboxWebpackPlugin.GenerateSW({
+        // Use this to use the default service worker
+        /* new WorkboxWebpackPlugin.GenerateSW({
           clientsClaim: true,
           exclude: [/\.map$/, /asset-manifest\.json$/],
           importWorkboxFrom: "cdn",
@@ -562,7 +563,14 @@ module.exports = function(webpackEnv) {
             // public/ and not a SPA route
             new RegExp("/[^/]+\\.[^/]+$")
           ]
+        }), */
+        // Use this to use a custom service worker
+        new WorkboxWebpackPlugin.InjectManifest({
+          swSrc: "./src/service-worker.js",
+          exclude: [/\.map$/, /asset-manifest\.json$/],
+          importWorkboxFrom: "cdn"
         }),
+
       // TypeScript type checking
       useTypeScript &&
         new ForkTsCheckerWebpackPlugin({

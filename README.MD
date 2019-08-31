@@ -12,4 +12,10 @@ Web application that allows its users to listen to music; In addition, they're a
 - NodeJS (Back-end Environment)
 - Redux (State management)
 - Redis (Data caching)
+- Workbox (Offline Support)
+
+# This application offers the following features:
+
 - Mobile First Design (Styling)
+- Offline Support (Static And Dynamic Caching)
+- Background Sync (Requests Caching)

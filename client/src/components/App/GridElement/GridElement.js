@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import { updateFavorites } from "../../../store/actions/favoriteActions";
 
 import classes from "./GridElement.css";
-import background from "../../../assets/background.jpg";
+import background from "../../../images/background.jpg";
 import { secondsToHms } from "../../../utils/utility";
 
 const GridElement = ({
@@ -58,7 +58,7 @@ const GridElement = ({
       <img
         src={
           albumArt !== ""
-            ? require(`../../../assets/albumArts/${albumArt.albumArt}`)
+            ? require(`../../../images/albumArts/${albumArt.albumArt}`)
             : background
         }
         alt="Album Art"

@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import classes from "./NotFound.css";
-import NotFoundImage from "../../../assets/not-found.jpg";
+import NotFoundImage from "../../../images/not-found.jpg";
 
 const NotFound = ({ msg }) => {
   return (
