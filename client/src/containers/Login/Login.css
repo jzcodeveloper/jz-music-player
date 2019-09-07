@@ -1,13 +1,13 @@
 .Login {
   width: 100%;
-  min-height: 70vh;
-  margin: 80px auto 40px auto;
+  min-height: calc(100vh - 120px);
   display: flex;
   justify-content: center;
 }
 
 .Login form {
   width: 300px;
+  padding: 20px;
   justify-content: center;
 }
 

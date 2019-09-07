@@ -3,7 +3,7 @@
   flex-flow: column;
   justify-content: center;
   align-items: center;
-  height: 80vh;
+  min-height: calc(100vh - 120px);
 }
 
 .NotFound img {

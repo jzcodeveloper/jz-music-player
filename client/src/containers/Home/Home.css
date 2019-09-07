@@ -3,7 +3,7 @@
   background: url("../../images/background.jpg") no-repeat;
   background-size: cover;
   background-position: center;
-  height: 80vh;
+  min-height: calc(100vh - 120px);
 }
 
 .Overlay {
