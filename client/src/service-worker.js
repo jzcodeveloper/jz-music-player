@@ -2,13 +2,12 @@
 ///// GLOBAL SETTINGS /////
 ///////////////////////////
 
-workbox.skipWaiting();
-workbox.clientsClaim();
+workbox.core.skipWaiting();
+workbox.core.clientsClaim();
 
 ///////////////////////////////////
 ///// STATIC CACHING - ASSETS /////
 ///////////////////////////////////
-workbox.precaching.suppressWarnings();
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
 ///////////////////////////////////
