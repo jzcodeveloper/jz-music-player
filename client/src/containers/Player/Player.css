@@ -6,7 +6,7 @@
   flex-flow: column;
   background-image: url("../../images//background.jpg");
   background-position: 50%;
-  min-height: calc(100vh - 133.5px);
+  height: calc(100vh - 133.5px);
 }
 
 .Player > div {
@@ -16,7 +16,7 @@
   flex-flow: column;
   justify-content: flex-end;
   margin-top: 60px;
-  height: calc(100% - 60px);
+  height: 100%;
 }
 
 .Player > div:first-child {
@@ -43,6 +43,7 @@
   height: 60px;
   box-sizing: border-box;
   background-color: whitesmoke;
+  z-index: 50;
 }
 
 .TopSection > div {
