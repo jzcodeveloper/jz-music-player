@@ -28,29 +28,20 @@ workbox.routing.registerRoute(
 ///////////////////////////////////
 ///// DYNAMIC CACHING - SONGS /////
 ///////////////////////////////////
-const strategy = new workbox.strategies.NetworkFirst({
-  cacheName: "songs",
-  plugins: [
-    new workbox.expiration.Plugin({
-      maxEntries: 20
-    })
-  ]
-});
-
-const customHandler = async ({ url, event, params }) => {
-  try {
-    const response = await caches.match(url);
-    if (response) {
-      return response;
-    } else {
-      return strategy.makeRequest({ event, request: event.request });
-    }
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-workbox.routing.registerRoute(/.*\.mp3$/, customHandler);
+workbox.routing.registerRoute(
+  /.*\.mp3$/,
+  new workbox.strategies.CacheFirst({
+    cacheName: "songs",
+    plugins: [
+      new workbox.cacheableResponse.Plugin({
+        statuses: [0, 200]
+      }),
+      new workbox.expiration.Plugin({
+        maxEntries: 20
+      })
+    ]
+  })
+);
 
 ///////////////////////////
 ///// BACKGROUND SYNC /////
