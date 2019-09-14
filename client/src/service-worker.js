@@ -21,14 +21,14 @@ workbox.routing.registerRoute(
   })
 );
 
-///////////////////////////////////
-///// DYNAMIC CACHING - SONGS /////
-///////////////////////////////////
+////////////////////////////////////
+///// DYNAMIC CACHING - IMAGES /////
+////////////////////////////////////
 workbox.routing.registerRoute(
-  /\.mp3$/,
+  /\.(?:jpg|jpeg|png)$/,
   new workbox.strategies.CacheFirst({
-    cacheName: "songs",
-    cacheExpiration: { maxEntries: 20, maxAgeSeconds: 60 * 60 * 24 * 30 }
+    cacheName: "images",
+    cacheExpiration: { maxEntries: 20 }
   })
 );
 
