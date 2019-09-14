@@ -29,7 +29,7 @@ workbox.routing.registerRoute(
 ///// DYNAMIC CACHING - IMAGES /////
 ////////////////////////////////////
 workbox.routing.registerRoute(
-  /\.(?:jpg|jpeg|png)$/,
+  /.*\.(?:jpg|jpeg|png)$/,
   new workbox.strategies.CacheFirst({
     cacheName: "images",
     plugins: [
@@ -39,6 +39,33 @@ workbox.routing.registerRoute(
     ]
   })
 );
+
+///////////////////////////////////
+///// DYNAMIC CACHING - SONGS /////
+///////////////////////////////////
+const strategy = new workbox.strategies.NetworkFirst({
+  cacheName: "songs",
+  plugins: [
+    new workbox.expiration.Plugin({
+      maxEntries: 20
+    })
+  ]
+});
+
+const customHandler = async ({ url, event, params }) => {
+  try {
+    const response = await caches.match(url);
+    if (response) {
+      return response;
+    } else {
+      return strategy.makeRequest({ event, request: event.request });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+workbox.routing.registerRoute(/.*\.mp3$/, customHandler);
 
 ///////////////////////////
 ///// BACKGROUND SYNC /////
