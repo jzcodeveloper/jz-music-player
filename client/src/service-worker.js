@@ -25,21 +25,6 @@ workbox.routing.registerRoute(
   })
 );
 
-////////////////////////////////////
-///// DYNAMIC CACHING - IMAGES /////
-////////////////////////////////////
-workbox.routing.registerRoute(
-  /.*\.(?:jpg|jpeg|png)$/,
-  new workbox.strategies.CacheFirst({
-    cacheName: "images",
-    plugins: [
-      new workbox.expiration.Plugin({
-        maxEntries: 20
-      })
-    ]
-  })
-);
-
 ///////////////////////////////////
 ///// DYNAMIC CACHING - SONGS /////
 ///////////////////////////////////
