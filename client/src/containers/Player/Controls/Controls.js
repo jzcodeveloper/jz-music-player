@@ -52,6 +52,7 @@ const Controls = ({
 
   useEffect(() => {
     player.current.src = src;
+    player.current.play();
     setState({ ...state, status: "playing" });
   }, [src]);
 
