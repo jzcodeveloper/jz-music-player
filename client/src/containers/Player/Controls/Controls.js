@@ -1,16 +1,23 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 
 import classes from "./Controls.css";
-import { usePrevious, useInterval } from "../../../hooks/customHooks";
+import {
+  setPreviousIndex,
+  setNextIndex,
+  setRandomIndex
+} from "../../../store/actions/playerActions";
+import { /* usePrevious, */ useInterval } from "../../../hooks/customHooks";
 
 const Controls = ({
   toggleActiveClass,
   src,
-  setPreviousIndex,
-  setNextIndex,
-  setRandomIndex
+  currentSongIndex,
+  playlistLength
 }) => {
+  const dispatch = useDispatch();
+
   const [state, setState] = useState({
     currentTime: 0,
     duration: 0,
@@ -33,7 +40,7 @@ const Controls = ({
     volume
   } = state;
 
-  const prevStatus = usePrevious(status);
+  /* const prevStatus = usePrevious(status); */
   const player = useRef();
 
   useInterval(() => {
@@ -52,20 +59,25 @@ const Controls = ({
 
   useEffect(() => {
     player.current.src = src;
-    player.current.play();
-    setState({ ...state, status: "playing" });
+    setStatus("stopped");
   }, [src]);
 
   useEffect(() => {
     if (status === "paused") {
       player.current.pause();
     }
-    if (status === "playing" && prevStatus === "paused") {
+    if (status === "playing") {
       player.current.play();
     }
-    if (status === "playing" && prevStatus === "stopped") {
+    if (status === "stopped") {
       player.current.load();
-      player.current.play();
+      setState({
+        ...state,
+        currentTime: 0,
+        duration: 0,
+        sliderPosition: 0,
+        status: "playing"
+      });
     }
   }, [status]);
 
@@ -91,25 +103,25 @@ const Controls = ({
 
   const onEnded = () => {
     if (random) {
-      setRandomIndex();
+      onSetRandomIndex();
     } else {
-      setNextIndex();
+      onSetNextIndex();
     }
   };
 
   const onPrev = () => {
     if (random) {
-      setRandomIndex();
+      onSetRandomIndex();
     } else {
-      setPreviousIndex();
+      onSetPreviousIndex();
     }
   };
 
   const onNext = () => {
     if (random) {
-      setRandomIndex();
+      onSetRandomIndex();
     } else {
-      setNextIndex();
+      onSetNextIndex();
     }
   };
 
@@ -127,6 +139,25 @@ const Controls = ({
 
   const setMuted = () => {
     setState({ ...state, muted: !muted });
+  };
+
+  const onSetPreviousIndex = () => {
+    if (currentSongIndex > 0) {
+      dispatch(setPreviousIndex());
+      setStatus("stopped");
+    }
+  };
+
+  const onSetNextIndex = () => {
+    if (playlistLength - 1 > currentSongIndex) {
+      dispatch(setNextIndex());
+      setStatus("stopped");
+    }
+  };
+
+  const onSetRandomIndex = () => {
+    dispatch(setRandomIndex());
+    setStatus("stopped");
   };
 
   const convertedVolume = volume * 100;
@@ -213,7 +244,6 @@ const Controls = ({
       <audio
         controlsList="nodownload"
         ref={player}
-        src={src ? src : null}
         onEnded={onEnded}
         onPlay={toggleActiveClass}
         loop={loop}
@@ -227,9 +257,8 @@ const Controls = ({
 Controls.propTypes = {
   toggleActiveClass: PropTypes.func.isRequired,
   src: PropTypes.string.isRequired,
-  setPreviousIndex: PropTypes.func.isRequired,
-  setNextIndex: PropTypes.func.isRequired,
-  setRandomIndex: PropTypes.func.isRequired
+  currentSongIndex: PropTypes.number.isRequired,
+  playlistLength: PropTypes.number.isRequired
 };
 
 export default Controls;

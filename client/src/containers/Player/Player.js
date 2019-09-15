@@ -5,10 +5,7 @@ import PropTypes from "prop-types";
 import {
   fetchPlaylist,
   resetPlaylist,
-  setSongIndex,
-  setPreviousIndex,
-  setNextIndex,
-  setRandomIndex
+  setSongIndex
 } from "../../store/actions/playerActions";
 
 import classes from "./Player.css";
@@ -50,22 +47,6 @@ const Player = ({ location: { pathname } }) => {
 
   const onClick = index => {
     dispatch(setSongIndex(index));
-  };
-
-  const onSetPreviousIndex = () => {
-    if (currentSongIndex > 0) {
-      dispatch(setPreviousIndex());
-    }
-  };
-
-  const onSetNextIndex = () => {
-    if (playlist.length - 1 > currentSongIndex) {
-      dispatch(setNextIndex());
-    }
-  };
-
-  const onSetRandomIndex = () => {
-    dispatch(setRandomIndex());
   };
 
   const togglePlaylist = () => {
@@ -123,9 +104,8 @@ const Player = ({ location: { pathname } }) => {
           <Controls
             src={song.url}
             toggleActiveClass={toggleActiveClass}
-            setPreviousIndex={onSetPreviousIndex}
-            setNextIndex={onSetNextIndex}
-            setRandomIndex={onSetRandomIndex}
+            currentSongIndex={currentSongIndex}
+            playlistLength={playlist.length}
           />
         </Fragment>
       )}
