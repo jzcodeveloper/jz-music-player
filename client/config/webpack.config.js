@@ -604,8 +604,13 @@ module.exports = function(webpackEnv) {
         }), */
         // Use this to use a custom service worker
         new WorkboxWebpackPlugin.InjectManifest({
+          globDirectory: "public/",
+          globPatterns: [
+            "*",
+            "fontawesome/**/*"
+          ],
           swSrc: "./src/service-worker.js",
-          exclude: [/\.map$/, /asset-manifest\.json$/],
+          exclude: [/\.map$/, /asset-manifest\.json$/, /index\.html$/],
           importWorkboxFrom: "cdn"
         }),
 

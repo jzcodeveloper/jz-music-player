@@ -11,21 +11,6 @@ workbox.core.clientsClaim();
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
 ///////////////////////////////////
-///// DYNAMIC CACHING - FONTS /////
-///////////////////////////////////
-workbox.routing.registerRoute(
-  /.*fontawesome\.com.*/,
-  new workbox.strategies.CacheFirst({
-    cacheName: "fonts",
-    plugins: [
-      new workbox.expiration.Plugin({
-        maxAgeSeconds: 60 * 60 * 24 * 30
-      })
-    ]
-  })
-);
-
-///////////////////////////////////
 ///// DYNAMIC CACHING - SONGS /////
 ///////////////////////////////////
 workbox.routing.registerRoute(
