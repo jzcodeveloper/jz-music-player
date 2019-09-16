@@ -2,7 +2,7 @@
   "short_name": "JZ Music Player",
   "name": "JZ Music Player",
   "description": "Web application that allows its users to listen to music; In addition, they're able to add songs to favorites and manage their own playlists.",
-  "start_url": "/index.html",
+  "start_url": "/",
   "display": "standalone",
   "theme_color": "brown",
   "background_color": "#ffffff",
