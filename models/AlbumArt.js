@@ -5,6 +5,7 @@ const AlbumArt = new Schema({
   album: {
     type: String
   },
+  
   albumArt: {
     type: String
   }

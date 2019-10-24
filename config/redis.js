@@ -1,7 +1,6 @@
 const redis = require("redis");
 const bluebird = require("bluebird");
-const config = require("config");
-const redisURL = config.get("redisURL");
+const redisURL = process.env.REDIS_URL || "redis://localhost:6379";
 
 bluebird.promisifyAll(redis.RedisClient.prototype);
 

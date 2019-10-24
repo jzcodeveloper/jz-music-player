@@ -1,6 +1,5 @@
 {
   "mongoURI": "mongodb://localhost:27017/jz-music-player",
   "jwtSecret": "secret",
-  "expiresIn": 3600,
-  "redisURL": "redis://localhost:6379"
+  "expiresIn": 3600
 }

@@ -6,20 +6,25 @@ const Playlist = new Schema({
     type: String,
     required: true
   },
+  
   description: {
     type: String,
     required: true
   },
+
   count: {
     type: Number
   },
+
   duration: {
     type: Number
   },
+
   user: {
     type: Schema.Types.ObjectId,
     ref: "User"
   },
+
   songs: [
     {
       type: Schema.Types.ObjectId,
