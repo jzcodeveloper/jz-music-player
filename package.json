@@ -1,7 +1,7 @@
 {
   "name": "jz-music-player",
   "version": "1.0.0",
-  "description": "",
+  "description": "Web application that allows its users to listen to music; In addition, they're able to add songs to favorites and manage their own playlists.",
   "main": "index.js",
   "scripts": {
     "start": "node server",
@@ -14,22 +14,18 @@
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "bluebird": "^3.5.5",
-    "concurrently": "^4.1.2",
-    "config": "^3.2.2",
+    "bluebird": "^3.7.1",
+    "config": "^3.2.3",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.7.0",
+    "mongoose": "^5.7.6",
     "redis": "^2.8.0",
     "response-time": "^2.3.2",
     "validator": "^11.1.0"
   },
   "nodemonConfig": {
     "ignore": [
-      "client/**",
-      "node_modules/**",
-      "package-lock.json",
-      "yarn.lock"
+      "client/**"
     ]
   }
 }

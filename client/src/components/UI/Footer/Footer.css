@@ -1,9 +1,39 @@
 .Footer {
-  height: 60px;
+  min-height: 60px;
   width: 100%;
   padding: 20px;
   color: white;
   text-align: center;
   box-sizing: border-box;
   background-color: var(--interfaceColor);
+}
+
+.SocialIcons {
+  margin-bottom: 15px;
+}
+
+.SocialIcons i {
+  font-size: 2em;
+  margin: 0 10px;
+}
+
+.SocialLink {
+  text-decoration: none;
+  color: white;
+  transition: 0.2s all;
+}
+
+.SocialLink:nth-of-type(1):hover {
+  color: #3b5998;
+}
+
+.SocialLink:nth-of-type(2):hover {
+  color: #00aced;
+}
+
+.SocialLink:nth-of-type(3):hover {
+  color: #f46f30;
+}
+.SocialLink:nth-of-type(4):hover {
+  color: #3f729b;
 }

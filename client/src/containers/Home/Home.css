@@ -1,13 +1,22 @@
 .Home {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+/* TOP SECTION START */
+
+.Top {
   position: relative;
   background: url("../../images/background.jpg") no-repeat;
   background-size: cover;
   background-position: center;
-  min-height: calc(100vh - 120px);
+  /* min-height: calc(100vh - 120px); */
+  min-height: calc(100vh - 60px);
 }
 
 .Overlay {
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.2);
   position: absolute;
   top: 0;
   left: 0;
@@ -16,7 +25,7 @@
   display: flex;
 }
 
-.Home > div > div {
+.Top > div > div {
   display: flex;
   flex-flow: column;
   justify-content: center;
@@ -25,19 +34,31 @@
   box-sizing: border-box;
 }
 
-.Home p {
+.Top h1 {
   margin: 15px 0 0 0;
+  padding: 0;
   color: white;
-  font-size: 2em;
+  font-size: 2.4em;
+  font-weight: normal;
   text-align: center;
   line-height: 50px;
 }
 
-.Home > div > div > div {
+.Top p {
+  margin: 30px auto;
+  padding: 0;
+  color: white;
+  font-size: 1.1em;
+  text-align: center;
+  line-height: 25px;
+  letter-spacing: 0.125em;
+}
+
+.Top > div > div > div {
   text-align: center;
 }
 
-.Home a {
+.Top a {
   display: inline-block;
   text-decoration: none;
   padding: 15px 20px;
@@ -46,8 +67,8 @@
   transition: transform 1s ease;
 }
 
-.Home a:hover,
-.Home a:active {
+.Top a:hover,
+.Top a:active {
   transform: scale(1.1);
 }
 
@@ -61,8 +82,240 @@
   color: white;
 }
 
+/* TOP SECTION END */
+
+/* MIDDLE SECTION START */
+
+.Middle {
+  min-height: calc(100vh - 120px);
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.MiddleTitle {
+  position: relative;
+}
+
+.MiddleTitle > h1 {
+  text-align: center;
+  font-weight: normal;
+  font-size: 2.4em;
+}
+
+.MiddleTitle > h1::after {
+  content: "";
+  position: absolute;
+  bottom: -20px;
+  left: calc(50% - 40px);
+  height: 5px;
+  width: 80px;
+  background-color: brown;
+}
+
+.Services {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  padding: 50px 0;
+  grid-gap: 30px;
+  width: 100%;
+}
+
+.Service {
+  position: relative;
+  border: 1px solid #eeeeee;
+  padding: 20px 20px 40px 80px;
+}
+
+.Service:hover::after {
+  width: 100%;
+}
+
+.Service:hover h3,
+.Service:hover i {
+  color: white;
+}
+
+.Service::after {
+  content: "";
+  background-color: #1c1d21;
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 0%;
+  z-index: -1;
+  transition: 0.4s width;
+}
+
+.Service i {
+  position: absolute;
+  top: 40px;
+  font-size: 2.5em;
+  transition: 0.4s color;
+  text-align: center;
+}
+
+.Service:nth-of-type(1) i {
+  left: 18px;
+}
+.Service:nth-of-type(2) i {
+  left: 28px;
+}
+.Service:nth-of-type(3) i {
+  left: 22px;
+}
+.Service:nth-of-type(4) i {
+  left: 18px;
+}
+.Service:nth-of-type(5) i {
+  left: 20px;
+}
+.Service:nth-of-type(6) i {
+  left: 18px;
+}
+
+.Service h3 {
+  transition: 0.4s color;
+}
+
+.Service p {
+  color: #aaa;
+  letter-spacing: 0.125em;
+}
+
+/* MIDDLE SECTION END */
+
+/* BOTTOM SECTION START */
+
+.Bottom {
+  position: relative;
+  background: url("../../images/background-2.png") no-repeat;
+  background-position: center;
+  background-size: cover;
+  /* min-height: calc(100vh - 120px); */
+  min-height: calc(100vh - 60px);
+}
+
+.Overlay2 {
+  background-color: rgba(0, 0, 0, 0.75);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
+.Bottom > div > div {
+  position: relative;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.Bottom h1 {
+  position: relative;
+  margin: 15px 0 0 0;
+  padding: 0;
+  color: white;
+  font-size: 2.8em;
+  font-weight: bold;
+  text-align: center;
+  line-height: 50px;
+}
+
+.Bottom h1::after {
+  content: "";
+  position: absolute;
+  bottom: -30px;
+  left: calc(50% - 40px);
+  height: 5px;
+  width: 80px;
+  background-color: brown;
+}
+
+.Bottom a {
+  text-decoration: none;
+  background-color: transparent;
+  font-size: 2em;
+  border-radius: 100px;
+  padding: 15px 30px;
+  margin-top: 50px;
+  border: 1px solid white;
+  transition: 0.2s background-color;
+}
+
+.Bottom a:hover {
+  background-color: brown;
+}
+
+/* BOTTOM SECTION END */
+
 @media (min-width: 450px) {
-  .Home p {
-    margin: 0;
+  .Top h1,
+  .Middle h1 {
+    font-size: 2.5em;
+  }
+  .Bottom h1 {
+    font-size: 2.9em;
+  }
+  .Top p {
+    font-size: 1.3em;
+    line-height: 30px;
+  }
+  .Top a {
+    font-size: 1.2em;
+  }
+}
+
+@media (min-width: 600px) {
+  .Top h1,
+  .Middle h1 {
+    font-size: 3em;
+  }
+  .Bottom h1 {
+    font-size: 3.4em;
+  }
+  .Top p {
+    font-size: 1.5em;
+    line-height: 35px;
+  }
+  .Top a {
+    font-size: 1.4em;
+  }
+}
+
+@media (min-width: 750px) {
+  .Top p {
+    width: 80%;
+  }
+  .Middle {
+    padding: 20px;
+  }
+
+  .Services {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 900px) {
+  .Top h1,
+  .Middle h1 {
+    font-size: 3em;
+  }
+  .Top p {
+    font-size: 2em;
+    line-height: 50px;
+  }
+  .Bottom h1 {
+    font-size: 3.4em;
+  }
+}
+
+@media (min-width: 1200px) {
+  .Services {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
