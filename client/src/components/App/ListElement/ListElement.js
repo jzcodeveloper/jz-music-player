@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
@@ -93,7 +93,7 @@ const ListElement = ({
   }
 
   return (
-    <Fragment>
+    <>
       <div
         className={`${classes.ListElement} ${classes.OpenListElement}`}
         id={uniqueID.current}
@@ -135,7 +135,7 @@ const ListElement = ({
           closeConfirmation={closeConfirmation}
         />
       ) : null}
-    </Fragment>
+    </>
   );
 };
 

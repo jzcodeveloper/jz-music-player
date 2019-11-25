@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 
@@ -17,12 +17,12 @@ const SideDrawer = ({ show, close }) => {
   }
 
   return (
-    <Fragment>
+    <>
       <Backdrop show={show} click={close} />
       <div className={assignedClasses.join(" ")} onClick={close}>
         <NavigationItems isAuth={isAuthenticated} />
       </div>
-    </Fragment>
+    </>
   );
 };
 

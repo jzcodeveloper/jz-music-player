@@ -1,10 +1,10 @@
-import React, { Fragment } from "react";
+import React from "react";
 
 import classes from "./Search.css";
 
 const Search = ({ onChange, onKeyDown, value, path, close }) => {
   return (
-    <Fragment>
+    <>
       <section className={classes.Search}>
         <i
           className={`fas fa-arrow-circle-left ${classes.Icon}`}
@@ -19,7 +19,7 @@ const Search = ({ onChange, onKeyDown, value, path, close }) => {
           autoFocus
         />
       </section>
-    </Fragment>
+    </>
   );
 };
 

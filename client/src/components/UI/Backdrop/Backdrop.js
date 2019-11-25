@@ -1,12 +1,10 @@
-import React, { Fragment } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 
 import classes from "./Backdrop.css";
 
 const Backdrop = ({ show, click }) => (
-  <Fragment>
-    {show ? <section className={classes.Backdrop} onClick={click} /> : null}
-  </Fragment>
+  <>{show ? <section className={classes.Backdrop} onClick={click} /> : null}</>
 );
 
 Backdrop.propTypes = {

@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Provider } from "react-redux";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
@@ -39,7 +39,7 @@ const App = () => {
         {loading ? (
           <Loading />
         ) : (
-          <Fragment>
+          <>
             <Toolbar toggleSide={toggleSideDrawer} />
             <SideDrawer show={showSide} close={closeSideDrawer} />
             <Switch>
@@ -47,7 +47,7 @@ const App = () => {
               <Route component={Routes} />
             </Switch>
             <Footer />
-          </Fragment>
+          </>
         )}
       </Router>
     </Provider>

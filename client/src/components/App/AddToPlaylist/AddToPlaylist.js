@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 
@@ -59,7 +59,7 @@ const AddToPlaylist = ({ closePlaylists, pathname, itemId }) => {
   const icons = ["fas fa-check-circle", "far fa-circle"];
 
   return (
-    <Fragment>
+    <>
       <section className={classes.AddToPlaylist}>
         <div className={classes.OpenModal}>
           <h1>Add to playlist</h1>
@@ -107,7 +107,7 @@ const AddToPlaylist = ({ closePlaylists, pathname, itemId }) => {
           />
         ) : null}
       </section>
-    </Fragment>
+    </>
   );
 };
 
