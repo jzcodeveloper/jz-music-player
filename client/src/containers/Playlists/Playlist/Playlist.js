@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useRef } from "react";
+import React, { , useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
@@ -95,7 +95,7 @@ const Playlist = ({ index, playlist }) => {
   }
 
   return (
-    <Fragment>
+    <>
       <div className={`${classes.OpenPlaylist}`} id={uniqueID.current}>
         <div className={`${classes.Playlist}`}>
           <div>
@@ -174,7 +174,7 @@ const Playlist = ({ index, playlist }) => {
           closeConfirmation={onCloseConfirmation}
         />
       ) : null}
-    </Fragment>
+    </>
   );
 };
 

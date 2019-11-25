@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 
 import classes from "./PlaylistItem.css";
@@ -6,7 +6,7 @@ import background from "../../../images/background.jpg";
 
 const PlaylistItem = ({ albumArt: { albumArt }, title, artist }) => {
   return (
-    <Fragment>
+    <>
       <img
         className={classes.Image}
         src={
@@ -20,7 +20,7 @@ const PlaylistItem = ({ albumArt: { albumArt }, title, artist }) => {
         <span>{title}</span>
         <span>{artist}</span>
       </div>
-    </Fragment>
+    </>
   );
 };
 

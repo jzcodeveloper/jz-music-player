@@ -51,6 +51,7 @@
   text-align: center;
   line-height: 25px;
   letter-spacing: 0.125em;
+  max-width: 700px;
 }
 
 .Top > div > div > div {
@@ -280,9 +281,6 @@
     font-size: 1.5em;
     line-height: 35px;
   }
-  .Top a {
-    font-size: 1.4em;
-  }
 }
 
 @media (min-width: 750px) {
@@ -304,7 +302,6 @@
     font-size: 3em;
   }
   .Top p {
-    font-size: 2em;
     line-height: 50px;
   }
   .Bottom h1 {

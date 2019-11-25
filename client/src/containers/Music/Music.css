@@ -44,8 +44,9 @@
 .Music > div > div:last-of-type {
   grid-column: 1/3;
   font-weight: bold;
-  margin: 12px 0;
+  margin: 12px 0 24px 0;
   box-sizing: border-box;
+  width: 85%;
 }
 
 .Music a {

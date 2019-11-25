@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
@@ -17,7 +17,7 @@ const Section = ({
   scrollRight
 }) => {
   return (
-    <Fragment>
+    <>
       <span>{sectionTitle}</span>
       <div>
         {info.map(info => (
@@ -40,7 +40,7 @@ const Section = ({
           <p>{">"}</p>
         </button>
       </div>
-    </Fragment>
+    </>
   );
 };
 

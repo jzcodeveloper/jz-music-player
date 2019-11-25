@@ -25,6 +25,7 @@ const Register = () => {
 
   useEffect(() => {
     document.title = `JZ Music Player - Register`;
+    window.scrollTo({ top: 0, behavior: "smooth" });
     return () => dispatch(setErrors());
   }, []);
 

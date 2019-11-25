@@ -20,6 +20,7 @@ const Login = () => {
 
   useEffect(() => {
     document.title = `JZ Music Player - Login`;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     return () => dispatch(setErrors());
   }, []);
 

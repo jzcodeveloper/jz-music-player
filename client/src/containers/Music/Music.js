@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { , useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 
@@ -88,7 +88,7 @@ const Music = ({ history }) => {
   };
 
   return (
-    <Fragment>
+    <>
       {loading ? (
         <Spinner />
       ) : (
@@ -141,7 +141,7 @@ const Music = ({ history }) => {
           ) : null}
         </div>
       )}
-    </Fragment>
+    </>
   );
 };
 

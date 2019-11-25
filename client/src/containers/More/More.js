@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { , useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 
@@ -72,7 +72,7 @@ const More = ({ history, location: { pathname } }) => {
   const songsLength = more.songs.info.length;
 
   return (
-    <Fragment>
+    <>
       {showSearch ? (
         <Search
           onChange={onChange}
@@ -91,7 +91,7 @@ const More = ({ history, location: { pathname } }) => {
       {loading ? (
         <Spinner />
       ) : (
-        <Fragment>
+        <>
           {albumsLength > 0 || artistsLength > 0 || songsLength > 0 ? (
             <div className={classes.More}>
               <div>
@@ -122,9 +122,9 @@ const More = ({ history, location: { pathname } }) => {
           ) : (
             <NotFound msg="Nothing here, try another search" />
           )}
-        </Fragment>
+        </>
       )}
-    </Fragment>
+    </>
   );
 };
 

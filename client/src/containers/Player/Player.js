@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { , useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 
@@ -60,11 +60,11 @@ const Player = ({ location: { pathname } }) => {
   const song = playlist[currentSongIndex];
 
   return (
-    <Fragment>
+    <>
       {loading || !song ? (
         <Spinner />
       ) : (
-        <Fragment>
+        <>
           <div className={classes.TopSection}>
             <PlaylistItem
               albumArt={song.albumArt}
@@ -107,9 +107,9 @@ const Player = ({ location: { pathname } }) => {
             currentSongIndex={currentSongIndex}
             playlistLength={playlist.length}
           />
-        </Fragment>
+        </>
       )}
-    </Fragment>
+    </>
   );
 };
 

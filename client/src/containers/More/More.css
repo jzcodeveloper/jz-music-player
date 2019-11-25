@@ -22,10 +22,10 @@
 
 .SearchIcon {
   position: fixed;
-  padding: 17.5px;
-  font-size: 1.6em;
-  right: 30px;
-  bottom: 30px;
+  padding: 15px;
+  font-size: 1.5em;
+  right: 25px;
+  bottom: 25px;
   color: white;
   border-radius: 50%;
   cursor: pointer;
@@ -42,7 +42,7 @@
 
 .LoadMore {
   display: block;
-  margin: 0 auto 20px auto;
+  margin: 20px auto 30px auto;
   outline: none;
   background-color: rgb(51, 178, 224);
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.7);

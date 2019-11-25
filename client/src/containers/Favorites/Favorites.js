@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from "react";
+import React, { , useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import { fetchFavorites } from "../../store/actions/favoriteActions";
@@ -22,7 +22,7 @@ const Favorites = () => {
   }, []);
 
   return (
-    <Fragment>
+    <>
       {loading || favoriteAlbums === null ? (
         <Spinner />
       ) : (
@@ -64,7 +64,7 @@ const Favorites = () => {
           </div>
         </div>
       )}
-    </Fragment>
+    </>
   );
 };
 
