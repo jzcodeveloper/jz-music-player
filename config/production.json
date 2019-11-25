@@ -1,5 +1,6 @@
 {
   "mongoURI": "mongodb://Javier:jzmp123@ds033484.mlab.com:33484/jz-music-player",
+  "sendgrid-api-key": "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",
   "jwtSecret": "jz-music-player-secret",
   "expiresIn": 3600
 }

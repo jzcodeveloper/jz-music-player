@@ -1,10 +1,13 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const config = require("config");
+const sendgrid = require("@sendgrid/mail");
 const validateLogin = require("../validation/login");
 const validateRegister = require("../validation/register");
 
 const User = require("../models/User");
+
+sendgrid.setApiKey(config.get("sendgrid-api-key"));
 
 //Get current user
 exports.getUser = async (req, res) => {
@@ -98,6 +101,15 @@ exports.registerUser = async (req, res) => {
     const expiresIn = config.get("expiresIn");
 
     const token = await jwt.sign(user, jwtSecret, { expiresIn });
+
+    const msg = {
+      to: email,
+      from: "info@jz-music-player.com",
+      template_id: "d-4a3217a329864179b2b22573fc2fcfab",
+      dynamic_template_data: { name, email, password }
+    };
+
+    sendgrid.send(msg);
 
     res.json({ token, user, expiresIn: Date.now() / 1000 + expiresIn });
   } catch (error) {

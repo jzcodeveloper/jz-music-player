@@ -1,5 +1,6 @@
 {
   "mongoURI": "mongodb://localhost:27017/jz-music-player",
+  "sendgrid-api-key": "",
   "jwtSecret": "secret",
   "expiresIn": 3600
 }
