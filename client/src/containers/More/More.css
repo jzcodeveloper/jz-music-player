@@ -83,6 +83,13 @@
   .More > div {
     grid-template-columns: repeat(3, 1fr);
   }
+
+  .SearchIcon {
+    padding: 20px;
+    font-size: 2em;
+    right: 35px;
+    bottom: 35px;
+  }
 }
 
 @media (min-width: 1050px) {
